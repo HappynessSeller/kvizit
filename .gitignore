@@ -22,3 +22,6 @@ build/
 Thumbs.db
 .vscode/
 .idea/
+
+# Scene debug renders
+art/*-debug.png

@@ -1,0 +1,293 @@
+{
+ "id": "kesailta",
+ "type": "raster",
+ "w": 1448,
+ "h": 1086,
+ "line": "line.webp",
+ "colour": "colour.webp",
+ "labels": "labels.png",
+ "labelScale": 4,
+ "labelStep": 8,
+ "areas": [
+  {
+   "key": "sun",
+   "fi": "Aurinko",
+   "en": "Sun",
+   "mask": "m/sun.png",
+   "x": 950,
+   "y": 238,
+   "w": 154,
+   "h": 106
+  },
+  {
+   "key": "flag",
+   "fi": "Suomen lippu",
+   "en": "Finnish flag",
+   "mask": "m/flag.png",
+   "x": 672,
+   "y": 132,
+   "w": 174,
+   "h": 160
+  },
+  {
+   "key": "pole",
+   "fi": "Lipputanko",
+   "en": "Flagpole",
+   "mask": "m/pole.png",
+   "x": 626,
+   "y": 112,
+   "w": 98,
+   "h": 560
+  },
+  {
+   "key": "saunaPier",
+   "fi": "Saunan laituri",
+   "en": "Sauna jetty",
+   "mask": "m/saunaPier.png",
+   "x": 1116,
+   "y": 420,
+   "w": 242,
+   "h": 96
+  },
+  {
+   "key": "sauna",
+   "fi": "Rantasauna",
+   "en": "Lakeside sauna",
+   "mask": "m/sauna.png",
+   "x": 1176,
+   "y": 216,
+   "w": 272,
+   "h": 250
+  },
+  {
+   "key": "rocks",
+   "fi": "Rantakivet",
+   "en": "Shore rocks",
+   "mask": "m/rocks.png",
+   "x": 1142,
+   "y": 432,
+   "w": 306,
+   "h": 80
+  },
+  {
+   "key": "chimney",
+   "fi": "Savupiippu",
+   "en": "Chimney",
+   "mask": "m/chimney.png",
+   "x": 382,
+   "y": 154,
+   "w": 84,
+   "h": 92
+  },
+  {
+   "key": "windows",
+   "fi": "Ikkunat",
+   "en": "Windows",
+   "mask": "m/windows.png",
+   "x": 186,
+   "y": 254,
+   "w": 426,
+   "h": 272
+  },
+  {
+   "key": "flowerbox",
+   "fi": "Kukkalaatikot",
+   "en": "Flower boxes",
+   "mask": "m/flowerbox.png",
+   "x": 168,
+   "y": 386,
+   "w": 452,
+   "h": 198
+  },
+  {
+   "key": "roof",
+   "fi": "Katto",
+   "en": "Roof",
+   "mask": "m/roof.png",
+   "x": 298,
+   "y": 172,
+   "w": 380,
+   "h": 218
+  },
+  {
+   "key": "walls",
+   "fi": "Mökin seinät",
+   "en": "Cottage walls",
+   "mask": "m/walls.png",
+   "x": 192,
+   "y": 206,
+   "w": 490,
+   "h": 424
+  },
+  {
+   "key": "stones",
+   "fi": "Kivijalka",
+   "en": "Stone base",
+   "mask": "m/stones.png",
+   "x": 270,
+   "y": 588,
+   "w": 272,
+   "h": 76
+  },
+  {
+   "key": "steps",
+   "fi": "Portaat",
+   "en": "Steps",
+   "mask": "m/steps.png",
+   "x": 494,
+   "y": 504,
+   "w": 252,
+   "h": 200
+  },
+  {
+   "key": "boat",
+   "fi": "Soutuvene",
+   "en": "Rowboat",
+   "mask": "m/boat.png",
+   "x": 1016,
+   "y": 560,
+   "w": 196,
+   "h": 132
+  },
+  {
+   "key": "jetty",
+   "fi": "Laituri",
+   "en": "Jetty",
+   "mask": "m/jetty.png",
+   "x": 726,
+   "y": 550,
+   "w": 316,
+   "h": 172
+  },
+  {
+   "key": "ducks",
+   "fi": "Sorsat",
+   "en": "Ducks",
+   "mask": "m/ducks.png",
+   "x": 1256,
+   "y": 604,
+   "w": 166,
+   "h": 90
+  },
+  {
+   "key": "leaves",
+   "fi": "Koivun lehdet",
+   "en": "Birch leaves",
+   "mask": "m/leaves.png",
+   "x": 0,
+   "y": 0,
+   "w": 598,
+   "h": 202
+  },
+  {
+   "key": "forest",
+   "fi": "Kuusimetsä",
+   "en": "Spruce forest",
+   "mask": "m/forest.png",
+   "x": 530,
+   "y": 222,
+   "w": 910,
+   "h": 196
+  },
+  {
+   "key": "lake",
+   "fi": "Järvi",
+   "en": "Lake",
+   "mask": "m/lake.png",
+   "x": 674,
+   "y": 372,
+   "w": 774,
+   "h": 360
+  },
+  {
+   "key": "bushes",
+   "fi": "Pensaat",
+   "en": "Bushes",
+   "mask": "m/bushes.png",
+   "x": 148,
+   "y": 540,
+   "w": 70,
+   "h": 50
+  },
+  {
+   "key": "birches",
+   "fi": "Koivut",
+   "en": "Birches",
+   "mask": "m/birches.png",
+   "x": 0,
+   "y": 78,
+   "w": 236,
+   "h": 948
+  },
+  {
+   "key": "lupinesL",
+   "fi": "Lupiinit",
+   "en": "Lupines",
+   "mask": "m/lupinesL.png",
+   "x": 0,
+   "y": 670,
+   "w": 278,
+   "h": 416
+  },
+  {
+   "key": "flowersL",
+   "fi": "Kukkaniitty",
+   "en": "Flower meadow",
+   "mask": "m/flowersL.png",
+   "x": 226,
+   "y": 752,
+   "w": 458,
+   "h": 334
+  },
+  {
+   "key": "lupinesR",
+   "fi": "Lupiinit rannalla",
+   "en": "Lupines by the shore",
+   "mask": "m/lupinesR.png",
+   "x": 1108,
+   "y": 708,
+   "w": 340,
+   "h": 378
+  },
+  {
+   "key": "flowersR",
+   "fi": "Päivänkakkarat",
+   "en": "Daisies",
+   "mask": "m/flowersR.png",
+   "x": 904,
+   "y": 806,
+   "w": 290,
+   "h": 280
+  },
+  {
+   "key": "path",
+   "fi": "Hiekkapolku",
+   "en": "Sandy path",
+   "mask": "m/path.png",
+   "x": 658,
+   "y": 684,
+   "w": 340,
+   "h": 402
+  },
+  {
+   "key": "meadow",
+   "fi": "Nurmikko",
+   "en": "Lawn",
+   "mask": "m/meadow.png",
+   "x": 176,
+   "y": 554,
+   "w": 1272,
+   "h": 510
+  },
+  {
+   "key": "sky",
+   "fi": "Taivas",
+   "en": "Sky",
+   "mask": "m/sky.png",
+   "x": 208,
+   "y": 0,
+   "w": 1240,
+   "h": 420
+  }
+ ]
+}

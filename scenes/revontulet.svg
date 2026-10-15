@@ -1,0 +1,389 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" data-scene="revontulet" data-title="Revontulet" data-title-en="Northern Lights">
+<defs>
+<linearGradient id="rv-sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#121735"/><stop offset=".5" stop-color="#253369"/><stop offset="1" stop-color="#4a5fa0"/></linearGradient>
+  <linearGradient id="rv-a1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dffc8" stop-opacity="0"/><stop offset=".55" stop-color="#5ff0b0" stop-opacity=".85"/><stop offset="1" stop-color="#2fd18f" stop-opacity=".15"/></linearGradient>
+  <linearGradient id="rv-a2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fe8ff" stop-opacity="0"/><stop offset=".6" stop-color="#52d6e8" stop-opacity=".75"/><stop offset="1" stop-color="#3aa8d8" stop-opacity=".1"/></linearGradient>
+  <linearGradient id="rv-a3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9ee6" stop-opacity="0"/><stop offset=".6" stop-color="#c88cff" stop-opacity=".7"/><stop offset="1" stop-color="#8f7cff" stop-opacity=".1"/></linearGradient>
+  <radialGradient id="rv-moonGlow"><stop offset="0" stop-color="#fffbe0" stop-opacity=".6"/><stop offset="1" stop-color="#fffbe0" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rv-fellBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3cff0"/><stop offset="1" stop-color="#8e9fd2"/></linearGradient>
+  <linearGradient id="rv-fell" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3eafb"/><stop offset="1" stop-color="#aebde6"/></linearGradient>
+  <linearGradient id="rv-ice" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa6dc"/><stop offset="1" stop-color="#c3d3f2"/></linearGradient>
+  <linearGradient id="rv-snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f7ff"/><stop offset="1" stop-color="#c9d6f2"/></linearGradient>
+  <linearGradient id="rv-snow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe4f8"/></linearGradient>
+  <radialGradient id="rv-window" cx=".5" cy=".6"><stop offset="0" stop-color="#fff2b8"/><stop offset="1" stop-color="#ffb347"/></radialGradient>
+  <radialGradient id="rv-lantern"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".8"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+</defs>
+<g data-group="sky" data-fi="Yötaivas" data-en="Night sky">
+<path d="M0 0H800V380H0Z" fill="url(#rv-sky)" data-region="0" />
+<circle cx="0" cy="197.3" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.9s"/>
+<circle cx="531.1" cy="28.4" r="1.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.2s"/>
+<circle cx="317.2" cy="202" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.8s"/>
+<circle cx="123.9" cy="51.9" r="1.2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.9s"/>
+<circle cx="284.6" cy="11.5" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1s"/>
+<circle cx="69.9" cy="130.2" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2s"/>
+<circle cx="184.7" cy="190.4" r="1.4" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.8s"/>
+<circle cx="64" cy="151.8" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.4s"/>
+<circle cx="249.8" cy="71.2" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.9s"/>
+<circle cx="130.6" cy="234.6" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.5s"/>
+<circle cx="188.2" cy="273.8" r="1.7" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.3s"/>
+<circle cx="206.1" cy="109" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.3s"/>
+<circle cx="290.8" cy="54.6" r="2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.2s"/>
+<circle cx="151.1" cy="112.4" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.5s"/>
+<circle cx="346.1" cy="146.5" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.9s"/>
+<circle cx="418.6" cy="156.8" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.8s"/>
+<circle cx="746.6" cy="141" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.4s"/>
+<circle cx="591.1" cy="110.6" r="1.5" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.8s"/>
+<circle cx="308.3" cy="170.7" r="1.7" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1s"/>
+<circle cx="563.9" cy="75.1" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.6s"/>
+<circle cx="111.3" cy="188" r="0.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.3s"/>
+<circle cx="273" cy="44.3" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.9s"/>
+<circle cx="797.8" cy="132.9" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.6s"/>
+<circle cx="604.1" cy="169.9" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.7s"/>
+<circle cx="48.3" cy="62.3" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.2s"/>
+<circle cx="549.2" cy="101.9" r="1.4" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.7s"/>
+<circle cx="614.9" cy="257.5" r="0.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.5s"/>
+<circle cx="537.8" cy="147.7" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.2s"/>
+<circle cx="618.3" cy="136.1" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.6s"/>
+<circle cx="639.1" cy="19.1" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2s"/>
+<circle cx="364" cy="111.9" r="0.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.2s"/>
+<circle cx="107.5" cy="164.7" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.6s"/>
+<circle cx="723.6" cy="176.3" r="1.4" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.8s"/>
+<circle cx="601.3" cy="122" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.8s"/>
+<circle cx="399" cy="221.3" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.7s"/>
+<circle cx="760.4" cy="233.1" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.2s"/>
+<circle cx="733.2" cy="13.2" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.5s"/>
+<circle cx="208.5" cy="132.8" r="1.2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.4s"/>
+<circle cx="504.1" cy="299.6" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.4s"/>
+<circle cx="506.8" cy="76.9" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0s"/>
+<circle cx="191.4" cy="114.6" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0s"/>
+<circle cx="113.5" cy="152.5" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.1s"/>
+<circle cx="589.9" cy="15.5" r="1.7" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.3s"/>
+<circle cx="368.7" cy="243.3" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.5s"/>
+<circle cx="212.2" cy="202.7" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.8s"/>
+<circle cx="598.1" cy="78.5" r="0.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2s"/>
+<circle cx="206.6" cy="22.9" r="1.4" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.6s"/>
+<circle cx="200.5" cy="91.3" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.6s"/>
+<circle cx="1.6" cy="26.3" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.9s"/>
+<circle cx="605.5" cy="49.1" r="1.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.4s"/>
+<circle cx="355.9" cy="153.3" r="2.1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.3s"/>
+<circle cx="205.1" cy="134" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.7s"/>
+<circle cx="413.7" cy="21" r="2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.1s"/>
+<circle cx="160.2" cy="194.6" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.7s"/>
+<circle cx="2.9" cy="159.8" r="1.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.3s"/>
+<circle cx="344.1" cy="187.5" r="1.2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1s"/>
+<circle cx="453.7" cy="133.4" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.2s"/>
+<circle cx="798.2" cy="175" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.4s"/>
+<circle cx="575.8" cy="208.8" r="1.2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.8s"/>
+<circle cx="62.1" cy="69" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.7s"/>
+<circle cx="326" cy="59.6" r="1.3" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.1s"/>
+<circle cx="660.6" cy="17.3" r="2.2" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.3s"/>
+<circle cx="122" cy="24.5" r="0.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0s"/>
+<circle cx="693.4" cy="191" r="1.6" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.3s"/>
+<circle cx="330" cy="120.8" r="0.8" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.5s"/>
+<circle cx="435.7" cy="43.1" r="1.5" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.2s"/>
+<circle cx="656" cy="44.4" r="0.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-0.2s"/>
+<circle cx="324.2" cy="283.2" r="1.9" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-2.2s"/>
+<circle cx="759.4" cy="103.8" r="1.4" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.3s"/>
+<circle cx="707.5" cy="275.8" r="1" fill="#fffbe6" data-anim="twinkle" style="animation-delay:-1.2s"/>
+</g>
+<g data-group="stars" data-fi="Isot tähdet" data-en="Bright stars">
+<path d="M90 51L92.4 57.6L99 60L92.4 62.4L90 69L87.6 62.4L81 60L87.6 57.6Z" fill="#fff6c8" data-region="1" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-0.3s"/>
+<path d="M300 32.8L301.92 38.08L307.2 40L301.92 41.92L300 47.2L298.08 41.92L292.8 40L298.08 38.08Z" fill="#fff6c8" data-region="2" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-1s"/>
+<path d="M520 81.9L522.16 87.84L528.1 90L522.16 92.16L520 98.1L517.84 92.16L511.9 90L517.84 87.84Z" fill="#fff6c8" data-region="3" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-1.7s"/>
+<path d="M700 40.1L702.64 47.36L709.9 50L702.64 52.64L700 59.9L697.36 52.64L690.1 50L697.36 47.36Z" fill="#fff6c8" data-region="4" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-2.3s"/>
+<path d="M180 163.7L181.68 168.32L186.3 170L181.68 171.68L180 176.3L178.32 171.68L173.7 170L178.32 168.32Z" fill="#fff6c8" data-region="5" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-0.6s"/>
+<path d="M610 193.7L611.68 198.32L616.3 200L611.68 201.68L610 206.3L608.32 201.68L603.7 200L608.32 198.32Z" fill="#fff6c8" data-region="6" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" data-anim="twinkle" style="animation-delay:-2s"/>
+</g>
+<g data-group="moon" data-fi="Kuu" data-en="Moon">
+<circle cx="660" cy="110" r="70" fill="url(#rv-moonGlow)" data-anim="glow"/>
+<path d="M672 78A34 34 0 1 0 690 140A28 28 0 1 1 672 78Z" fill="#fff4c4" data-region="7" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="aurora0" data-fi="Vihreät revontulet" data-en="Green aurora">
+<path d="M-20 64.3Q10 64.8 40 81.3Q70 80.7 100 96.2Q130 93.3 160 106.4Q190 100.2 220 110Q250 100.2 280 106.4Q310 93.3 340 96.2Q370 80.7 400 81.2Q430 64.7 460 64.3Q490 48.3 520 48.3Q550 34.3 580 36.3Q610 25.4 640 30.4Q670 23 700 31.6Q730 27.7 760 39.8Q790 38.6 820 53.5L820 176.6L760 168.1L700 161.6L640 157.8L580 157.9L520 163.5L460 175L400 191.6L340 210.2L280 226.7L220 236.4L160 236.2L100 225.2L40 205.6L-20 182.1Z" fill="url(#rv-a1)" data-region="8" stroke="#b8ffe0" stroke-opacity=".5" stroke-width="1.5" data-anim="aurora"/>
+</g>
+<g data-group="aurora1" data-fi="Turkoosit revontulet" data-en="Teal aurora">
+<path d="M-20 158.8Q10 147.7 40 152.7Q70 139.5 100 142.4Q130 128.2 160 130Q190 115.7 220 117.5Q250 104.4 280 107.3Q310 96.2 340 101.2Q370 92.8 400 100.3Q430 94.6 460 104.8Q490 101.3 520 113.8Q550 111.8 580 125.8Q610 124.2 640 138.5Q670 136.1 700 149.7Q730 145.5 760 157.3Q790 150.7 820 160L820 240.1L760 238.8L700 236.3L640 231.6L580 224.1L520 213.8L460 202.2L400 191.9L340 186.4L280 188.1L220 197.9L160 214L100 232.7L40 249.1L-20 258.6Z" fill="url(#rv-a2)" data-region="9" stroke="#bff3ff" stroke-opacity=".45" stroke-width="1.5" data-anim="aurora" style="animation-delay:-3s"/>
+</g>
+<g data-group="aurora2" data-fi="Violetit revontulet" data-en="Violet aurora">
+<path d="M-20 13.6Q10 2.4 40 7.2Q70 -1.9 100 5Q130 -1.9 160 7.3Q190 2.5 220 13.7Q250 10.3 280 23Q310 20.3 340 33.6Q370 30.6 400 43.6Q430 39.3 460 51.1Q490 44.9 520 54.8Q550 46.4 580 54Q610 43.4 640 48.8Q670 36.6 700 40.3Q730 27.1 760 29.9Q790 16.7 820 19.5L820 94.7L760 98.7L700 103.2L640 108.9L580 115.4L520 121.3L460 124.2L400 121.9L340 113.6L280 100.4L220 85.3L160 72.4L100 65.8L40 67.6L-20 77.7Z" fill="url(#rv-a3)" data-region="10" stroke="#f2d4ff" stroke-opacity=".45" stroke-width="1.5" data-anim="aurora" style="animation-delay:-6s"/>
+</g>
+<g data-group="fellBack" data-fi="Kaukainen tunturi" data-en="Distant fell">
+<path d="M-10 360C80 320 160 250 250 230C310 218 350 230 400 260C460 296 520 330 600 350L600 384H-10Z" fill="url(#rv-fellBack)" data-region="11" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="fell" data-fi="Luminen tunturi" data-en="Snowy fell">
+<path d="M380 384C450 330 520 280 610 262C660 252 700 258 740 276C770 290 790 300 810 310V384Z" fill="url(#rv-fell)" data-region="12" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M610 262C630 290 600 320 620 350M700 262C690 300 720 330 700 370" fill="none" stroke="#8e9fd2" stroke-opacity=".6" stroke-width="2"/>
+</g>
+<g data-group="forest" data-fi="Luminen metsä" data-en="Snowy forest">
+<path d="M0 388L1.3 383.1L2.8 383.1L3.8 378.5L4.8 378.5L6.3 374L7.8 378.5L8.8 378.5L9.8 383.1L11.3 383.1L12.6 388L13.9 380.4L15.6 380.4L16.7 373.3L17.8 373.3L19.4 366.4L21.1 373.3L22.2 373.3L23.3 380.4L24.9 380.4L26.3 388L28.2 379.9L30.4 379.9L31.9 372.2L33.4 372.2L35.6 364.7L37.8 372.2L39.3 372.2L40.8 379.9L43.1 379.9L44.9 388L46.1 380.2L47.6 380.2L48.6 372.9L49.6 372.9L51.1 365.7L52.5 372.9L53.5 372.9L54.5 380.2L56 380.2L57.2 388L59.2 382.7L61.6 382.7L63.2 377.8L64.9 377.8L67.3 373L69.7 377.8L71.3 377.8L72.9 382.7L75.4 382.7L77.4 388L78.7 377.5L80.2 377.5L81.2 367.6L82.2 367.6L83.8 358L85.3 367.6L86.3 367.6L87.3 377.5L88.9 377.5L90.1 388L91.4 378.3L92.9 378.3L93.9 369.2L94.9 369.2L96.4 360.3L97.9 369.2L98.9 369.2L99.9 378.3L101.4 378.3L102.7 388L104.2 379L106.1 379L107.3 370.4L108.5 370.4L110.4 362.2L112.3 370.4L113.5 370.4L114.7 379L116.6 379L118.1 388L119.5 378L121.2 378L122.3 368.6L123.4 368.6L125.1 359.5L126.8 368.6L127.9 368.6L129 378L130.7 378L132.1 388L133.3 377.5L134.8 377.5L135.8 367.6L136.8 367.6L138.3 358.1L139.8 367.6L140.8 367.6L141.8 377.5L143.3 377.5L144.6 388L146 377.2L147.7 377.2L148.9 366.9L150 366.9L151.8 357L153.5 366.9L154.6 366.9L155.8 377.2L157.5 377.2L158.9 388L160.8 381.5L163.1 381.5L164.7 375.3L166.2 375.3L168.5 369.4L170.8 375.3L172.3 375.3L173.8 381.5L176.1 381.5L178 388L179.5 381.6L181.3 381.6L182.4 375.7L183.6 375.7L185.4 369.8L187.2 375.7L188.3 375.7L189.5 381.6L191.3 381.6L192.8 388L194.2 377.7L195.9 377.7L197 368.1L198.2 368.1L199.9 358.7L201.6 368.1L202.7 368.1L203.8 377.7L205.5 377.7L207 388L208.8 377.5L211 377.5L212.4 367.5L213.9 367.5L216 357.9L218.2 367.5L219.7 367.5L221.1 377.5L223.3 377.5L225.1 388L226.9 381.7L228.9 381.7L230.3 375.8L231.7 375.8L233.7 370L235.8 375.8L237.2 375.8L238.6 381.7L240.6 381.7L242.4 388L244 382.2L245.9 382.2L247.1 376.8L248.4 376.8L250.3 371.6L252.2 376.8L253.5 376.8L254.8 382.2L256.7 382.2L258.3 388L259.6 377.9L261.2 377.9L262.3 368.5L263.4 368.5L265 359.3L266.6 368.5L267.6 368.5L268.7 377.9L270.3 377.9L271.7 388L273.2 379.2L275.1 379.2L276.4 371L277.6 371L279.5 363L281.4 371L282.7 371L283.9 379.2L285.8 379.2L287.4 388L288.8 378.6L290.6 378.6L291.8 369.6L293 369.6L294.7 361L296.5 369.6L297.6 369.6L298.8 378.6L300.6 378.6L302 388L303.6 379L305.5 379L306.8 370.4L308 370.4L309.9 362.2L311.8 370.4L313.1 370.4L314.4 379L316.3 379L317.8 388L319.3 380.6L321.1 380.6L322.3 373.6L323.5 373.6L325.3 366.8L327.1 373.6L328.3 373.6L329.5 380.6L331.3 380.6L332.8 388L334.2 381.9L335.8 381.9L337 376.1L338.1 376.1L339.8 370.5L341.5 376.1L342.6 376.1L343.7 381.9L345.4 381.9L346.8 388L348.4 379.4L350.2 379.4L351.5 371.4L352.7 371.4L354.6 363.5L356.4 371.4L357.7 371.4L358.9 379.4L360.8 379.4L362.3 388L364 380.2L365.9 380.2L367.2 372.9L368.6 372.9L370.5 365.8L372.5 372.9L373.8 372.9L375.1 380.2L377.1 380.2L378.7 388L380.6 378.3L382.9 378.3L384.4 369.2L385.9 369.2L388.1 360.3L390.4 369.2L391.9 369.2L393.4 378.3L395.6 378.3L397.5 388L399.1 380.8L401.1 380.8L402.4 373.9L403.7 373.9L405.7 367.3L407.6 373.9L408.9 373.9L410.2 380.8L412.2 380.8L413.8 388L415.2 382.2L416.8 382.2L417.8 376.8L418.9 376.8L420.5 371.5L422.1 376.8L423.1 376.8L424.2 382.2L425.8 382.2L427.1 388L429 382.6L431.3 382.6L432.8 377.5L434.3 377.5L436.6 372.5L438.9 377.5L440.4 377.5L441.9 382.6L444.2 382.6L446.1 388L448 381.9L450.3 381.9L451.9 376.2L453.4 376.2L455.7 370.7L458.1 376.2L459.6 376.2L461.2 381.9L463.5 381.9L465.4 388L467.1 382.8L469.2 382.8L470.6 377.9L472 377.9L474.1 373.2L476.2 377.9L477.5 377.9L478.9 382.8L481 382.8L482.8 388L484.7 383.1L487 383.1L488.6 378.4L490.1 378.4L492.5 373.9L494.8 378.4L496.4 378.4L497.9 383.1L500.3 383.1L502.2 388L503.7 379.4L505.4 379.4L506.6 371.3L507.8 371.3L509.5 363.5L511.2 371.3L512.4 371.3L513.6 379.4L515.3 379.4L516.8 388L518.7 381.5L520.9 381.5L522.4 375.4L523.9 375.4L526.2 369.5L528.4 375.4L529.9 375.4L531.4 381.5L533.7 381.5L535.6 388L537 380.7L538.7 380.7L539.9 373.8L541 373.8L542.8 367.1L544.5 373.8L545.6 373.8L546.8 380.7L548.5 380.7L549.9 388L551.9 379.8L554.2 379.8L555.8 372.1L557.4 372.1L559.7 364.6L562.1 372.1L563.7 372.1L565.2 379.8L567.6 379.8L569.5 388L571 379.4L572.8 379.4L573.9 371.3L575.1 371.3L576.9 363.4L578.6 371.3L579.8 371.3L581 379.4L582.8 379.4L584.2 388L585.8 380.4L587.6 380.4L588.8 373.3L590 373.3L591.9 366.4L593.7 373.3L594.9 373.3L596.2 380.4L598 380.4L599.5 388L601.2 382L603.2 382L604.5 376.4L605.8 376.4L607.8 370.9L609.8 376.4L611.1 376.4L612.5 382L614.5 382L616.1 388L618 379.3L620.4 379.3L621.9 371.1L623.5 371.1L625.8 363.1L628.1 371.1L629.7 371.1L631.2 379.3L633.5 379.3L635.5 388L637.4 378.9L639.7 378.9L641.3 370.4L642.8 370.4L645.2 362.1L647.5 370.4L649.1 370.4L650.6 378.9L653 378.9L654.9 388L656.4 380L658.2 380L659.3 372.5L660.5 372.5L662.3 365.1L664.1 372.5L665.3 372.5L666.4 380L668.2 380L669.7 388L671.3 377.3L673.3 377.3L674.6 367.3L675.9 367.3L677.8 357.5L679.8 367.3L681.1 367.3L682.4 377.3L684.4 377.3L686 388L687.6 377.9L689.5 377.9L690.8 368.4L692.1 368.4L694 359.2L695.9 368.4L697.2 368.4L698.5 377.9L700.4 377.9L702 388L703.7 376.9L705.7 376.9L707 366.4L708.3 366.4L710.3 356.3L712.3 366.4L713.6 366.4L714.9 376.9L716.9 376.9L718.6 388L720.2 381.7L722.1 381.7L723.4 375.7L724.7 375.7L726.6 369.9L728.6 375.7L729.9 375.7L731.1 381.7L733.1 381.7L734.7 388L736.7 377.5L739 377.5L740.6 367.7L742.2 367.7L744.5 358.1L746.9 367.7L748.4 367.7L750 377.5L752.4 377.5L754.3 388L755.7 381.1L757.4 381.1L758.5 374.5L759.6 374.5L761.2 368.2L762.9 374.5L764 374.5L765.1 381.1L766.8 381.1L768.2 388L769.4 378.2L770.9 378.2L771.9 369L773 369L774.5 360.1L776 369L777 369L778 378.2L779.5 378.2L780.8 388L782.7 380.9L785 380.9L786.6 374.2L788.1 374.2L790.5 367.7L792.8 374.2L794.3 374.2L795.9 380.9L798.2 380.9L800.1 388L800 388Z" fill="#2d4a5e" data-region="13" stroke="#3b2f4a" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="ice" data-fi="Jäätynyt järvi" data-en="Frozen lake">
+<path d="M0 386H800V460C640 470 520 462 400 466C260 470 120 466 0 470Z" fill="url(#rv-ice)" data-region="14" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M120 410C200 404 280 412 360 406M460 424C540 418 600 426 700 418M60 444C140 440 220 446 300 440" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+<path d="M120 398C260 392 420 400 640 394" fill="none" stroke="#5ff0b0" stroke-opacity=".25" stroke-width="10" stroke-linecap="round" data-anim="shimmer"/>
+</g>
+<g data-group="cabinWalls" data-fi="Hirsimökki" data-en="Log cabin">
+<path d="M120 360H272V446H120Z" fill="#8a5a3c" data-region="15" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path data-ink="1" d="M122 372H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 383H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 394H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 405H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 416H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 427H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<path data-ink="1" d="M122 438H270" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5"/>
+<circle data-ink="1" cx="118" cy="366" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="366" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="377" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="377" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="388" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="388" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="399" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="399" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="410" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="410" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="421" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="421" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="432" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="432" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="118" cy="443" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+<circle data-ink="1" cx="274" cy="443" r="4.5" fill="none" stroke="#3b2f4a" stroke-opacity=".45" stroke-width="1.4"/>
+</g>
+<g data-group="cabinRoof" data-fi="Lumikatto" data-en="Snowy roof">
+<path d="M100 366L196 300L292 366Z" fill="#5a3a2c" data-region="16" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M92 368C100 356 120 340 140 330L196 292L252 330C272 340 292 356 300 368C290 376 280 366 270 372C258 364 246 376 232 368C220 376 208 366 196 372C184 366 172 376 160 368C148 376 136 366 124 372C112 366 102 376 92 368Z" fill="#f8faff" data-region="17" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="chimney" data-fi="Savupiippu" data-en="Chimney">
+<path d="M226 300h18v28h-18Z" fill="#7a6a72" data-region="18" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M222 292C226 286 244 286 248 292L248 300H222Z" fill="#f8faff" data-region="19" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="238" cy="276" r="8" fill="#dfe6f8" opacity=".55" data-anim="smoke" style="animation-delay:-0s"/>
+<circle cx="248" cy="254" r="11" fill="#dfe6f8" opacity=".55" data-anim="smoke" style="animation-delay:-1.4s"/>
+<circle cx="262" cy="230" r="14" fill="#dfe6f8" opacity=".55" data-anim="smoke" style="animation-delay:-2.8s"/>
+</g>
+<g data-group="cabinWindows" data-fi="Lämpimät ikkunat" data-en="Warm windows">
+<circle cx="152" cy="396" r="34" fill="url(#rv-lantern)" opacity=".7" data-anim="flicker"/>
+<path d="M136 380h32v30h-32Z" fill="url(#rv-window)" data-region="20" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" data-anim="flicker"/>
+<path data-ink="1" d="M152 380v30M136 395h32" stroke="#3b2f4a" stroke-width="2.5"/>
+<circle cx="242" cy="396" r="34" fill="url(#rv-lantern)" opacity=".7" data-anim="flicker"/>
+<path d="M226 380h32v30h-32Z" fill="url(#rv-window)" data-region="21" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" data-anim="flicker"/>
+<path data-ink="1" d="M242 380v30M226 395h32" stroke="#3b2f4a" stroke-width="2.5"/>
+</g>
+<g data-group="cabinDoor" data-fi="Ovi" data-en="Door">
+<path d="M184 392h26v54h-26Z" fill="#3f6fa8" data-region="22" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle data-ink="1" cx="205" cy="420" r="2" fill="#3b2f4a"/>
+<path d="M178 446h38v6h-38Z" fill="#a99a8f" data-region="23" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="lantern" data-fi="Lyhty" data-en="Lantern">
+<path d="M318 380h4v76h-4Z" fill="#5a3a2c" data-region="24" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="320" cy="372" r="30" fill="url(#rv-lantern)" data-anim="glow"/>
+<path d="M311 362h18v20h-18Z" fill="url(#rv-window)" data-region="25" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" data-anim="flicker"/>
+<path d="M308 356L320 348L332 356Z" fill="#2f2b44" data-region="26" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="snowBack" data-fi="Lumikinos" data-en="Snowdrift">
+<path d="M0 452C100 440 220 446 330 456C440 466 560 456 680 450C740 447 780 448 800 450V520H0Z" fill="url(#rv-snow)" data-region="27" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="spruce0" data-fi="Luminen kuusi" data-en="Snowy spruce">
+<path d="M40 350L60 388.3L49 386.3L67.3 426.5L52.3 424.5L74.7 464.8L55.6 462.8L82 503L45.9 503L45.9 520L34.1 520L34.1 503L-2 503L24.4 462.8L5.4 464.8L27.7 424.5L12.7 426.5L31 386.3L20.1 388.3Z" fill="#2a5546" data-region="28" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M21 387.3C30 379.3 50 379.3 59 387.3C48 384.3 32 384.3 21 387.3Z" fill="#f8faff" data-region="29" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M14.1 425.5C26.4 417.5 53.7 417.5 65.9 425.5C50.9 422.5 29.1 422.5 14.1 425.5Z" fill="#f8faff" data-region="30" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M7.1 463.8C22.7 455.8 57.3 455.8 72.9 463.8C53.9 460.8 26.1 460.8 7.1 463.8Z" fill="#f8faff" data-region="31" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M0.1 502C19 494 61 494 79.9 502C56.8 499 23.2 499 0.1 502Z" fill="#f8faff" data-region="32" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M33 348C36 340 44 340 47 348Z" fill="#f8faff" data-region="33" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="spruce1" data-fi="Luminen kuusi" data-en="Snowy spruce">
+<path d="M92 380L106.3 407L98.4 405L111.5 434L100.8 432L116.8 461L103.1 459L122 488L96.2 488L96.2 500L87.8 500L87.8 488L62 488L80.9 459L67.3 461L83.2 432L72.5 434L85.6 405L77.8 407Z" fill="#2a5546" data-region="34" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M78.5 406C84.9 398 99.1 398 105.5 406C97.7 403 86.3 403 78.5 406Z" fill="#f8faff" data-region="35" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M73.5 433C82.3 425 101.8 425 110.5 433C99.8 430 84.2 430 73.5 433Z" fill="#f8faff" data-region="36" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M68.5 460C79.6 452 104.4 452 115.5 460C101.9 457 82.1 457 68.5 460Z" fill="#f8faff" data-region="37" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M63.5 487C77 479 107 479 120.5 487C104 484 80 484 63.5 487Z" fill="#f8faff" data-region="38" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M85 378C88 370 96 370 99 378Z" fill="#f8faff" data-region="39" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="spruce2" data-fi="Luminen kuusi" data-en="Snowy spruce">
+<path d="M720 355L739 391L728.6 389L746 427L731.7 425L753 463L734.9 461L760 499L725.6 499L725.6 515L714.4 515L714.4 499L680 499L705.2 461L687 463L708.3 425L694 427L711.5 389L701 391Z" fill="#2a5546" data-region="40" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M702 390C710.5 382 729.5 382 738.1 390C727.6 387 712.4 387 702 390Z" fill="#f8faff" data-region="41" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M695.3 426C707 418 733 418 744.7 426C730.4 423 709.6 423 695.3 426Z" fill="#f8faff" data-region="42" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M688.7 462C703.5 454 736.5 454 751.4 462C733.2 459 706.8 459 688.7 462Z" fill="#f8faff" data-region="43" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M682 498C700 490 740 490 758 498C736 495 704 495 682 498Z" fill="#f8faff" data-region="44" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M713 353C716 345 724 345 727 353Z" fill="#f8faff" data-region="45" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="spruce3" data-fi="Luminen kuusi" data-en="Snowy spruce">
+<path d="M668 392L680.4 414.5L673.6 412.5L684.9 437L675.6 435L689.5 459.5L677.7 457.5L694 482L671.6 482L671.6 492L664.4 492L664.4 482L642 482L658.3 457.5L646.6 459.5L660.4 435L651.1 437L662.4 412.5L655.7 414.5Z" fill="#2a5546" data-region="46" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M656.3 413.5C661.8 405.5 674.2 405.5 679.7 413.5C672.9 410.5 663.1 410.5 656.3 413.5Z" fill="#f8faff" data-region="47" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M651.9 436C659.6 428 676.5 428 684.1 436C674.8 433 661.2 433 651.9 436Z" fill="#f8faff" data-region="48" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M647.6 458.5C657.3 450.5 678.7 450.5 688.4 458.5C676.6 455.5 659.4 455.5 647.6 458.5Z" fill="#f8faff" data-region="49" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M643.3 481C655 473 681 473 692.7 481C678.4 478 657.6 478 643.3 481Z" fill="#f8faff" data-region="50" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M661 390C664 382 672 382 675 390Z" fill="#f8faff" data-region="51" stroke="#3b2f4a" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="reindeer0" data-fi="Poro" data-en="Reindeer">
+<g transform="translate(410 450) scale(1 1)">
+<ellipse cx="0" cy="44" rx="40" ry="5" fill="#3b2f4a" opacity=".12"/>
+<path d="M-30 6C-34 -8 -20 -16 0 -16C18 -16 30 -10 32 2C34 12 26 18 10 18C-10 18 -28 18 -30 6Z" fill="#8a6248" data-region="52" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-24 12L-26 44H-20L-16 16Z" fill="#7a5440" data-region="53" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-10 14L-12 44H-6L-2 16Z" fill="#6e4a38" data-region="54" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M14 14L14 44H20L22 14Z" fill="#7a5440" data-region="55" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M24 10L28 44H34L32 8Z" fill="#6e4a38" data-region="56" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M22 -10C28 -20 30 -30 34 -36L46 -30C42 -22 40 -10 34 0Z" fill="#8a6248" data-region="57" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M26 -8C30 -4 34 4 30 10C24 6 22 0 22 -6Z" fill="#f3ece4" data-region="58" stroke="#3b2f4a" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M34 -38C40 -46 54 -46 58 -38C60 -32 52 -28 44 -28C38 -28 32 -32 34 -38Z" fill="#8a6248" data-region="59" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle data-ink="1" cx="44" cy="-38" r="2" fill="#3b2f4a"/>
+<circle data-ink="1" cx="58" cy="-37" r="2.6" fill="#e0302a"/>
+<path d="M-30 4C-38 2 -40 -6 -34 -8C-32 -2 -30 0 -30 4Z" fill="#f3ece4" data-region="60" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="antlers0" data-fi="Sarvet" data-en="Antlers">
+<g transform="translate(410 450) scale(1 1)">
+<path d="M38 -44C34 -56 30 -66 22 -74C26 -74 30 -70 32 -66C32 -74 30 -80 26 -86C32 -84 36 -76 36 -68C38 -62 40 -54 42 -46Z" fill="#d9c39a" data-region="61" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M46 -44C48 -56 52 -66 60 -74C56 -74 52 -70 50 -66C50 -74 54 -80 58 -86C52 -84 48 -76 48 -68C46 -62 44 -54 42 -46Z" fill="#d9c39a" data-region="62" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="reindeer1" data-fi="Poro" data-en="Reindeer">
+<g transform="translate(540 444) scale(-0.8 0.8)">
+<ellipse cx="0" cy="44" rx="40" ry="5" fill="#3b2f4a" opacity=".12"/>
+<path d="M-30 6C-34 -8 -20 -16 0 -16C18 -16 30 -10 32 2C34 12 26 18 10 18C-10 18 -28 18 -30 6Z" fill="#8a6248" data-region="63" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-24 12L-26 44H-20L-16 16Z" fill="#7a5440" data-region="64" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-10 14L-12 44H-6L-2 16Z" fill="#6e4a38" data-region="65" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M14 14L14 44H20L22 14Z" fill="#7a5440" data-region="66" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M24 10L28 44H34L32 8Z" fill="#6e4a38" data-region="67" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M22 -10C28 -20 30 -30 34 -36L46 -30C42 -22 40 -10 34 0Z" fill="#8a6248" data-region="68" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M26 -8C30 -4 34 4 30 10C24 6 22 0 22 -6Z" fill="#f3ece4" data-region="69" stroke="#3b2f4a" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M34 -38C40 -46 54 -46 58 -38C60 -32 52 -28 44 -28C38 -28 32 -32 34 -38Z" fill="#8a6248" data-region="70" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle data-ink="1" cx="44" cy="-38" r="2" fill="#3b2f4a"/>
+<circle data-ink="1" cx="58" cy="-37" r="2.6" fill="#e0302a"/>
+<path d="M-30 4C-38 2 -40 -6 -34 -8C-32 -2 -30 0 -30 4Z" fill="#f3ece4" data-region="71" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="antlers1" data-fi="Sarvet" data-en="Antlers">
+<g transform="translate(540 444) scale(-0.8 0.8)">
+<path d="M38 -44C34 -56 30 -66 22 -74C26 -74 30 -70 32 -66C32 -74 30 -80 26 -86C32 -84 36 -76 36 -68C38 -62 40 -54 42 -46Z" fill="#d9c39a" data-region="72" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M46 -44C48 -56 52 -66 60 -74C56 -74 52 -70 50 -66C50 -74 54 -80 58 -86C52 -84 48 -76 48 -68C46 -62 44 -54 42 -46Z" fill="#d9c39a" data-region="73" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="sled" data-fi="Pulkka" data-en="Sled">
+<path d="M330 520C330 506 340 500 356 500H410C420 500 426 506 424 514C422 522 414 526 404 526H344C336 526 330 524 330 520Z" fill="#e0302a" data-region="74" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path data-ink="1" d="M352 508H404" stroke="#3b2f4a" stroke-opacity=".4" stroke-width="2"/>
+<path data-ink="1" d="M424 512C440 500 452 496 470 500" fill="none" stroke="#3b2f4a" stroke-width="2"/>
+</g>
+<g data-group="snowman" data-fi="Lumiukko" data-en="Snowman">
+<g transform="translate(56 0)">
+<circle cx="560" cy="540" r="34" fill="#ffffff" data-region="75" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="560" cy="488" r="25" fill="#ffffff" data-region="76" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="560" cy="448" r="19" fill="#ffffff" data-region="77" stroke="#3b2f4a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle data-ink="1" cx="560" cy="478" r="2.6" fill="#3b2f4a"/>
+<circle data-ink="1" cx="560" cy="492" r="2.6" fill="#3b2f4a"/>
+<circle data-ink="1" cx="560" cy="506" r="2.6" fill="#3b2f4a"/>
+<circle data-ink="1" cx="553" cy="444" r="2.4" fill="#3b2f4a"/><circle cx="567" cy="444" r="2.4" fill="#3b2f4a"/>
+<path data-ink="1" d="M552 457q8 5 16 0" fill="none" stroke="#3b2f4a" stroke-width="2" stroke-linecap="round"/>
+<path data-ink="1" d="M536 486L510 470M584 486L610 466M512 471l-6-8M608 467l4-9" fill="none" stroke="#5a3a2c" stroke-width="3" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="carrot" data-fi="Porkkananenä" data-en="Carrot nose">
+<path d="M616 449L638 453L616 455Z" fill="#ff8c2e" data-region="78" stroke="#3b2f4a" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g data-group="scarf" data-fi="Kaulaliina" data-en="Scarf">
+<g transform="translate(56 0)">
+<path d="M541 462C552 470 568 470 579 462L582 470C568 480 552 480 538 470Z" fill="#e86fa8" data-region="79" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M568 472L576 496L566 498L560 474Z" fill="#e86fa8" data-region="80" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="hat" data-fi="Pipo" data-en="Beanie">
+<g transform="translate(56 0)">
+<path d="M543 438C542 420 578 420 577 438Z" fill="#5b8fd4" data-region="81" stroke="#3b2f4a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M540 436H580V442H540Z" fill="#fffaf2" data-region="82" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="560" cy="418" r="5.5" fill="#fffaf2" data-region="83" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+</g>
+<g data-group="snowFront" data-fi="Pehmeä lumi" data-en="Soft snow">
+<path d="M0 520C120 506 240 512 360 526C480 540 620 530 800 514V600H0Z" fill="url(#rv-snow2)" data-region="84" stroke="#3b2f4a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="180" cy="560" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 180 560)"/>
+<ellipse cx="214" cy="566.7" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 214 566.7)"/>
+<ellipse cx="248" cy="567.3" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 248 567.3)"/>
+<ellipse cx="282" cy="561.1" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 282 561.1)"/>
+<ellipse cx="316" cy="553.9" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 316 553.9)"/>
+<ellipse cx="350" cy="552.3" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 350 552.3)"/>
+<ellipse cx="384" cy="557.8" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 384 557.8)"/>
+<ellipse cx="418" cy="565.3" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 418 565.3)"/>
+<ellipse cx="452" cy="567.9" rx="4" ry="6" fill="#b9c7ea" opacity=".7" transform="rotate(-60 452 567.9)"/>
+<g data-anim="snow">
+<circle cx="0.3" cy="560.7" r="1.2" fill="#fff" opacity="0.8"/>
+<circle cx="779.6" cy="520.4" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="454.7" cy="37.3" r="1.7" fill="#fff" opacity="0.7"/>
+<circle cx="314.8" cy="339" r="1.9" fill="#fff" opacity="0.9"/>
+<circle cx="161.4" cy="211.3" r="1.7" fill="#fff" opacity="0.5"/>
+<circle cx="629.5" cy="551.9" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="62" cy="434.2" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="576" cy="337.7" r="2.9" fill="#fff" opacity="0.6"/>
+<circle cx="648.3" cy="82.9" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="375" cy="23.5" r="2.3" fill="#fff" opacity="0.7"/>
+<circle cx="93.4" cy="131" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="254.7" cy="165.2" r="2" fill="#fff" opacity="0.9"/>
+<circle cx="217.6" cy="389.5" r="2.1" fill="#fff" opacity="0.7"/>
+<circle cx="559.9" cy="226.2" r="1.5" fill="#fff" opacity="0.7"/>
+<circle cx="714.6" cy="240.7" r="2.8" fill="#fff" opacity="0.8"/>
+<circle cx="567.5" cy="429.2" r="1.6" fill="#fff" opacity="0.7"/>
+<circle cx="319.1" cy="139.7" r="3" fill="#fff" opacity="0.5"/>
+<circle cx="519.5" cy="194.4" r="2.2" fill="#fff" opacity="0.6"/>
+<circle cx="374.9" cy="74.3" r="2.7" fill="#fff" opacity="0.9"/>
+<circle cx="275.3" cy="154.8" r="1.7" fill="#fff" opacity="0.8"/>
+<circle cx="201.4" cy="391.3" r="2.5" fill="#fff" opacity="0.9"/>
+<circle cx="56.9" cy="201" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="780.5" cy="601.3" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="636.5" cy="59.4" r="2.3" fill="#fff" opacity="0.5"/>
+<circle cx="434.9" cy="529.5" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="142.9" cy="34.3" r="2.9" fill="#fff" opacity="0.5"/>
+<circle cx="733.9" cy="441.9" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="40.2" cy="263.3" r="3" fill="#fff" opacity="0.8"/>
+<circle cx="765" cy="50.7" r="1.4" fill="#fff" opacity="0.9"/>
+<circle cx="151.6" cy="350" r="1.5" fill="#fff" opacity="0.9"/>
+<circle cx="75.7" cy="217.4" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="167.5" cy="574.5" r="1.6" fill="#fff" opacity="0.9"/>
+<circle cx="112.3" cy="176.5" r="2.8" fill="#fff" opacity="0.7"/>
+<circle cx="612.1" cy="403" r="1.9" fill="#fff" opacity="0.7"/>
+<circle cx="390.7" cy="389.8" r="2" fill="#fff" opacity="0.5"/>
+<circle cx="443.9" cy="606" r="1.2" fill="#fff" opacity="0.8"/>
+<circle cx="199" cy="240.6" r="1.9" fill="#fff" opacity="0.7"/>
+<circle cx="276.6" cy="599.7" r="2.8" fill="#fff" opacity="0.6"/>
+<circle cx="537.1" cy="603.3" r="1.9" fill="#fff" opacity="0.6"/>
+<circle cx="561.6" cy="186.9" r="3" fill="#fff" opacity="0.6"/>
+<circle cx="0.3" cy="1170.7" r="1.2" fill="#fff" opacity="0.8"/>
+<circle cx="779.6" cy="1130.4" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="454.7" cy="647.3" r="1.7" fill="#fff" opacity="0.7"/>
+<circle cx="314.8" cy="949" r="1.9" fill="#fff" opacity="0.9"/>
+<circle cx="161.4" cy="821.3" r="1.7" fill="#fff" opacity="0.5"/>
+<circle cx="629.5" cy="1161.9" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="62" cy="1044.2" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="576" cy="947.7" r="2.9" fill="#fff" opacity="0.6"/>
+<circle cx="648.3" cy="692.9" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="375" cy="633.5" r="2.3" fill="#fff" opacity="0.7"/>
+<circle cx="93.4" cy="741" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="254.7" cy="775.2" r="2" fill="#fff" opacity="0.9"/>
+<circle cx="217.6" cy="999.5" r="2.1" fill="#fff" opacity="0.7"/>
+<circle cx="559.9" cy="836.2" r="1.5" fill="#fff" opacity="0.7"/>
+<circle cx="714.6" cy="850.7" r="2.8" fill="#fff" opacity="0.8"/>
+<circle cx="567.5" cy="1039.2" r="1.6" fill="#fff" opacity="0.7"/>
+<circle cx="319.1" cy="749.7" r="3" fill="#fff" opacity="0.5"/>
+<circle cx="519.5" cy="804.4" r="2.2" fill="#fff" opacity="0.6"/>
+<circle cx="374.9" cy="684.3" r="2.7" fill="#fff" opacity="0.9"/>
+<circle cx="275.3" cy="764.8" r="1.7" fill="#fff" opacity="0.8"/>
+<circle cx="201.4" cy="1001.3" r="2.5" fill="#fff" opacity="0.9"/>
+<circle cx="56.9" cy="811" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="780.5" cy="1211.3" r="2.1" fill="#fff" opacity="0.9"/>
+<circle cx="636.5" cy="669.4" r="2.3" fill="#fff" opacity="0.5"/>
+<circle cx="434.9" cy="1139.5" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="142.9" cy="644.3" r="2.9" fill="#fff" opacity="0.5"/>
+<circle cx="733.9" cy="1051.9" r="1.4" fill="#fff" opacity="0.7"/>
+<circle cx="40.2" cy="873.3" r="3" fill="#fff" opacity="0.8"/>
+<circle cx="765" cy="660.7" r="1.4" fill="#fff" opacity="0.9"/>
+<circle cx="151.6" cy="960" r="1.5" fill="#fff" opacity="0.9"/>
+<circle cx="75.7" cy="827.4" r="1.4" fill="#fff" opacity="0.8"/>
+<circle cx="167.5" cy="1184.5" r="1.6" fill="#fff" opacity="0.9"/>
+<circle cx="112.3" cy="786.5" r="2.8" fill="#fff" opacity="0.7"/>
+<circle cx="612.1" cy="1013" r="1.9" fill="#fff" opacity="0.7"/>
+<circle cx="390.7" cy="999.8" r="2" fill="#fff" opacity="0.5"/>
+<circle cx="443.9" cy="1216" r="1.2" fill="#fff" opacity="0.8"/>
+<circle cx="199" cy="850.6" r="1.9" fill="#fff" opacity="0.7"/>
+<circle cx="276.6" cy="1209.7" r="2.8" fill="#fff" opacity="0.6"/>
+<circle cx="537.1" cy="1213.3" r="1.9" fill="#fff" opacity="0.6"/>
+<circle cx="561.6" cy="796.9" r="3" fill="#fff" opacity="0.6"/>
+</g>
+</g>
+</svg>

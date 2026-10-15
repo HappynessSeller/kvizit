@@ -1,0 +1,13 @@
+{
+  "name": "kvizit",
+  "private": true,
+  "type": "module",
+  "description": "Kvizit — cozy math & colouring game (static site, no build step for the game itself).",
+  "scripts": {
+    "art": "node art/gen-mokki.mjs && node art/gen-ruska.mjs && node art/gen-revontulet.mjs && node art/gen-kesailta.mjs && node art/icons.mjs",
+    "serve": "npx -y http-server@14.1.1 -p 5173 -c-1"
+  },
+  "devDependencies": {
+    "sharp": "0.33.5"
+  }
+}

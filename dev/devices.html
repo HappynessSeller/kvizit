@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Kvizit devices</title>
+<!-- Dev helper: shows the game in phone frames. ?l = landscape only, ?p = portrait only, ?d = desktop 1280×800 -->
+<style>
+  body { margin: 0; background: #2b2533; display: flex; gap: 16px; padding: 12px; align-items: flex-start; flex-wrap: wrap; font: 12px system-ui; color: #ccc; }
+  figure { margin: 0; }
+  iframe { border: 0; border-radius: 18px; background: #fff; display: block; }
+</style>
+<figure id="fa"><iframe id="a" src="../index.html" width="375" height="740"></iframe><figcaption>375×740</figcaption></figure>
+<figure id="fb"><iframe id="b" src="../index.html" width="740" height="375"></iframe><figcaption>740×375</figcaption></figure>
+<figure id="fd" style="width:768px;height:480px"><iframe id="d" src="../index.html" width="1280" height="800" style="transform:scale(.6);transform-origin:0 0"></iframe></figure>
+<script>
+  if (!location.search.includes('d')) document.getElementById('fd').remove();
+  else { document.getElementById('fa').remove(); document.getElementById('fb').remove(); }
+  if (location.search.includes('l')) document.getElementById('fa').remove();
+  if (location.search.includes('p')) document.getElementById('fb').remove();
+</script>

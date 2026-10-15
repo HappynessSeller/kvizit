@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kvizit — laske ja maalaa</title>
+  <meta name="description" content="Kodikas matikkapeli: laske tehtäviä, ansaitse värejä ja maalaa suomalaisia maisemia.">
+  <meta name="theme-color" content="#f6ead8">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Kvizit">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <!-- icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-drop" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ff9cc9"/><stop offset=".55" stop-color="#b47be0"/><stop offset="1" stop-color="#6f7fe0"/>
+      </linearGradient>
+      <linearGradient id="g-star" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#ffb347"/>
+      </linearGradient>
+      <symbol id="i-drop" viewBox="0 0 24 24">
+        <path d="M12 1.8C12 1.8 4.2 10.6 4.2 15.4a7.8 7.8 0 0 0 15.6 0C19.8 10.6 12 1.8 12 1.8Z" fill="url(#g-drop)" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round"/>
+        <ellipse cx="9.3" cy="14.2" rx="1.9" ry="3" fill="#fff" opacity=".75" transform="rotate(20 9.3 14.2)"/>
+      </symbol>
+      <symbol id="i-star" viewBox="0 0 24 24">
+        <path d="M12 2.5l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.1l-5.8 3.2 1.2-6.5L2.6 9.3l6.5-.8Z" fill="url(#g-star)" stroke="#3b2f4a" stroke-width="1.5" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-star-empty" viewBox="0 0 24 24">
+        <path d="M12 2.5l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.1l-5.8 3.2 1.2-6.5L2.6 9.3l6.5-.8Z" fill="#efe4d4" stroke="#3b2f4a" stroke-opacity=".35" stroke-width="1.5" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8 3.4-.1-1.2 2-1.6-2-3.4-2.4.9a7.7 7.7 0 0 0-2-1.2L15.1 3h-4l-.4 2.5a7.7 7.7 0 0 0-2 1.2l-2.4-.9-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-.9a7.7 7.7 0 0 0 2 1.2l.4 2.5h4l.4-2.5a7.7 7.7 0 0 0 2-1.2l2.4.9 2-3.4-2-1.6c.1-.4.1-.8.1-1.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-brush" viewBox="0 0 24 24"><path d="M14.5 3.5l6 6-8.2 8.2-6-6Z" fill="#ffd166" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.3 11.7l6 6-1.6 1.6c-1.7 1.7-4.6 1.9-7.4 1.2.9-1.6.3-3.6 1.4-5.2Z" fill="#e86fa8" stroke="#3b2f4a" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+      <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5" fill="#fff4e2" stroke="#3b2f4a" stroke-width="1.6"/><path d="M5.5 17l4.5-5 3 3 2-2 3.5 4Z" fill="#8fbf6a" stroke="#3b2f4a" stroke-width="1.3" stroke-linejoin="round"/><circle cx="15.5" cy="8.5" r="1.8" fill="#ffd166" stroke="#3b2f4a" stroke-width="1.2"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2.5c1 3.5 5.5 5.6 5.5 11a5.5 5.5 0 0 1-11 0c0-2.4 1.1-3.8 2.2-4.8.2 1.6.9 2.6 1.8 3 0-3.5.5-6.2 1.5-9.2Z" fill="#ffb347" stroke="#3b2f4a" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 13.5c1.2 1.2 2.3 2.2 2.3 3.7a2.3 2.3 0 0 1-4.6 0c0-1.5 1.1-2.5 2.3-3.7Z" fill="#ffe08a"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="#fff4e2" stroke="#3b2f4a" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="#3b2f4a" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.5" fill="#3b2f4a"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="#fff4e2" stroke="currentColor" stroke-width="2.2"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M8 8.5a3 3 0 0 1 2.5-1.5" fill="none" stroke="#ffd166" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-backspace" viewBox="0 0 24 24"><path d="M9 5h11a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 20 19H9l-6.5-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5l5 5M17 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+
+      <!-- Huhu the owl -->
+      <symbol id="owl" viewBox="0 0 120 130">
+        <ellipse cx="60" cy="124" rx="30" ry="4.5" fill="#3b2f4a" opacity=".12"/>
+        <g class="owl-body">
+          <path d="M34 36L27 10L50 27Z" fill="#8a6a9e" stroke="#3b2f4a" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M86 36L93 10L70 27Z" fill="#8a6a9e" stroke="#3b2f4a" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M60 20C92 20 102 46 100 72C98 102 82 116 60 116S22 102 20 72C18 46 28 20 60 20Z" fill="#a785b8" stroke="#3b2f4a" stroke-width="3"/>
+          <path d="M60 52C80 52 86 70 84 88C82 104 72 110 60 110S38 104 36 88C34 70 40 52 60 52Z" fill="#f6e3cf"/>
+          <path d="M52 76q3 3 6 0M62 76q3 3 6 0M47 88q3 3 6 0M57 88q3 3 6 0M67 88q3 3 6 0M52 99q3 3 6 0M62 99q3 3 6 0" fill="none" stroke="#c9a88f" stroke-width="2" stroke-linecap="round"/>
+          <g class="owl-wing-l"><path d="M24 64C12 72 12 92 26 102C30 90 31 76 24 64Z" fill="#8a6a9e" stroke="#3b2f4a" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="owl-wing-r"><path d="M96 64C108 72 108 92 94 102C90 90 89 76 96 64Z" fill="#8a6a9e" stroke="#3b2f4a" stroke-width="3" stroke-linejoin="round"/></g>
+          <circle cx="43" cy="50" r="16" fill="#fffaf2" stroke="#3b2f4a" stroke-width="3"/>
+          <circle cx="77" cy="50" r="16" fill="#fffaf2" stroke="#3b2f4a" stroke-width="3"/>
+          <g class="owl-pupils">
+            <circle cx="45" cy="52" r="7.5" fill="#3b2f4a"/><circle cx="79" cy="52" r="7.5" fill="#3b2f4a"/>
+            <circle cx="47.5" cy="49" r="2.6" fill="#fff"/><circle cx="81.5" cy="49" r="2.6" fill="#fff"/>
+          </g>
+          <g class="owl-lids">
+            <path d="M27 50a16 16 0 0 1 32 0Z" fill="#a785b8" stroke="#3b2f4a" stroke-width="3"/>
+            <path d="M61 50a16 16 0 0 1 32 0Z" fill="#a785b8" stroke="#3b2f4a" stroke-width="3"/>
+          </g>
+          <g class="owl-happy-eyes"><path d="M34 52q9-10 18 0M68 52q9-10 18 0" fill="none" stroke="#3b2f4a" stroke-width="3.5" stroke-linecap="round"/></g>
+          <path d="M55 62L65 62L60 71Z" fill="#ffb347" stroke="#3b2f4a" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="31" cy="68" r="5" fill="#ff8fa3" opacity=".45"/><circle cx="89" cy="68" r="5" fill="#ff8fa3" opacity=".45"/>
+          <!-- blue & white knitted scarf -->
+          <path d="M32 74C46 82 74 82 88 74L90 82C74 92 46 92 30 82Z" fill="#fffaf2" stroke="#3b2f4a" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M44 80.5l-1.5 8M58 82.5v8.5M72 81l1 8.5" stroke="#2f5fb3" stroke-width="4"/>
+          <path d="M74 84L82 108L72 108L66 86Z" fill="#2f5fb3" stroke="#3b2f4a" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M70 99h9" stroke="#fffaf2" stroke-width="3"/>
+          <path d="M46 116v6M52 116v6M68 116v6M74 116v6" stroke="#ffb347" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <main id="app">
+    <!-- ============ HELLO ============ -->
+    <section class="screen" id="s-hello" hidden>
+      <div class="hello">
+        <svg class="owl big" data-mood="idle" viewBox="0 0 120 130" role="img" aria-label="Huhu-pöllö"><use href="#owl"/></svg>
+        <div class="bubble" data-t="helloBubble"></div>
+        <form class="hello-form" id="hello-form">
+          <label for="name-input" class="sr-only" data-t="nameLabel"></label>
+          <input id="name-input" class="text-input" maxlength="16" autocomplete="given-name" enterkeyhint="go" data-ph="namePh">
+          <button class="btn primary big" type="submit"><span data-t="start"></span></button>
+        </form>
+        <div class="lang-switch" role="group" aria-label="Kieli / Language">
+          <button type="button" data-lang="fi">Suomi</button>
+          <button type="button" data-lang="en">English</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOME ============ -->
+    <section class="screen" id="s-home" hidden>
+      <header class="topbar">
+        <div class="greet">
+          <h1 class="logo">Kvizit</h1>
+          <p id="greet-text"></p>
+        </div>
+        <div class="topbar-right">
+          <span class="chip streak" id="streak-chip" hidden><svg><use href="#i-flame"/></svg><b id="streak-n">1</b></span>
+          <button class="chip drops" data-drops><svg><use href="#i-drop"/></svg><b class="drops-n">0</b></button>
+          <button class="icon-btn" id="btn-settings" data-t-aria="settings"><svg><use href="#i-gear"/></svg></button>
+        </div>
+      </header>
+
+      <div class="home-grid">
+        <article class="easel" id="home-easel">
+          <div class="easel-frame"><div class="scene-host" id="home-scene"></div></div>
+          <div class="easel-info">
+            <div>
+              <h2 id="home-scene-title"></h2>
+              <div class="progress"><i id="home-progress-bar"></i></div>
+              <p class="muted" id="home-progress-text"></p>
+            </div>
+            <button class="btn paint" id="btn-home-paint"><svg><use href="#i-brush"/></svg><span data-t="paint"></span></button>
+          </div>
+        </article>
+
+        <div class="home-actions">
+          <button class="btn primary huge" id="btn-play">
+            <svg class="owl mini" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl"/></svg>
+            <span><b data-t="play"></b><small data-t="playSub"></small></span>
+          </button>
+          <button class="btn soft" id="btn-gallery"><svg><use href="#i-frame"/></svg><span data-t="gallery"></span></button>
+          <p class="daily" id="daily-hint" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOPICS ============ -->
+    <section class="screen" id="s-topics" hidden>
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" data-t-aria="back"><svg><use href="#i-back"/></svg></button>
+        <h1 class="title" data-t="chooseTopic"></h1>
+        <button class="chip drops" data-drops><svg><use href="#i-drop"/></svg><b class="drops-n">0</b></button>
+      </header>
+      <div class="topic-grid" id="topic-grid"></div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="screen" id="s-quiz" hidden>
+      <header class="topbar quiz-top">
+        <button class="icon-btn" id="btn-quit" data-t-aria="quit"><svg><use href="#i-close"/></svg></button>
+        <div class="dots" id="quiz-dots" aria-hidden="true"></div>
+        <span class="chip drops" id="quiz-drops"><svg><use href="#i-drop"/></svg><b id="quiz-drops-n">0</b></span>
+      </header>
+      <div class="quiz-body">
+        <div class="quiz-main">
+          <div class="coach">
+            <svg class="owl" id="quiz-owl" data-mood="idle" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl"/></svg>
+            <div class="bubble small" id="quiz-bubble" aria-live="polite"></div>
+          </div>
+          <div class="qcard" id="qcard">
+            <div class="qtopic" id="qtopic"></div>
+            <div class="qvisual" id="qvisual"></div>
+            <div class="qprompt" id="qprompt"></div>
+            <div class="qanswer" id="qanswer"></div>
+            <div class="qhint muted" id="qhint"></div>
+          </div>
+        </div>
+        <div class="quiz-input">
+          <div class="keypad" id="keypad">
+            <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+            <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+            <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+            <button data-k="," class="k-comma">,</button><button data-k="0">0</button>
+            <button data-k="back" class="k-back" data-t-aria="erase"><svg><use href="#i-backspace"/></svg></button>
+            <button data-k="ok" class="k-ok"><span data-t="check"></span></button>
+          </div>
+          <div class="choices" id="choices" hidden></div>
+        </div>
+      </div>
+      <div class="feedback" id="feedback" hidden>
+        <div class="feedback-card">
+          <p class="fb-title" id="fb-title"></p>
+          <p class="fb-explain" id="fb-explain"></p>
+          <button class="btn primary" id="fb-next"><span data-t="continue"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section class="screen" id="s-results" hidden>
+      <div class="results">
+        <svg class="owl big" id="res-owl" data-mood="happy" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl"/></svg>
+        <h1 class="title" id="res-title"></h1>
+        <div class="res-stars" id="res-stars"></div>
+        <div class="res-earned">
+          <svg><use href="#i-drop"/></svg>
+          <span>+<b id="res-drops">0</b></span>
+        </div>
+        <ul class="res-lines" id="res-lines"></ul>
+        <div class="res-actions">
+          <button class="btn paint big" id="btn-res-paint"><svg><use href="#i-brush"/></svg><span data-t="goPaint"></span></button>
+          <button class="btn soft" id="btn-res-again"><span data-t="again"></span></button>
+          <button class="btn ghost" data-go="home"><span data-t="home"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PAINT ============ -->
+    <section class="screen" id="s-paint" hidden>
+      <header class="topbar">
+        <button class="icon-btn" id="btn-paint-back" data-t-aria="back"><svg><use href="#i-back"/></svg></button>
+        <div class="paint-title">
+          <h1 class="title" id="paint-title"></h1>
+          <div class="progress slim"><i id="paint-progress-bar"></i></div>
+        </div>
+        <button class="chip drops" data-drops id="paint-drops"><svg><use href="#i-drop"/></svg><b class="drops-n">0</b></button>
+      </header>
+      <div class="stage" id="stage">
+        <div class="canvas-wrap" id="canvas-wrap"><div class="scene-host" id="paint-scene"></div></div>
+        <div class="paper-grain" aria-hidden="true"></div>
+        <div class="zoom-ctrls">
+          <button class="icon-btn" id="z-in" data-t-aria="zoomIn"><svg><use href="#i-plus"/></svg></button>
+          <button class="icon-btn" id="z-out" data-t-aria="zoomOut"><svg><use href="#i-minus"/></svg></button>
+          <button class="icon-btn" id="z-fit" data-t-aria="zoomFit"><svg><use href="#i-fit"/></svg></button>
+        </div>
+        <div class="tint-pop" id="tint-pop" hidden>
+          <p data-t="tintTitle"></p>
+          <div class="swatches" id="swatches"></div>
+        </div>
+        <div class="toast" id="paint-toast" aria-live="polite"></div>
+      </div>
+      <div class="tray" id="tray" aria-label="Alueet"></div>
+      <footer class="paint-bar">
+        <p class="paint-hint" id="paint-hint"></p>
+        <div class="paint-bar-btns">
+          <button class="btn soft small" id="btn-seek"><svg><use href="#i-search"/></svg><span data-t="seek"></span></button>
+          <button class="btn soft small" id="btn-save-img" hidden><svg><use href="#i-download"/></svg><span data-t="saveImg"></span></button>
+          <button class="btn primary small" id="btn-paint-play"><span data-t="earnMore"></span></button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="screen" id="s-gallery" hidden>
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" data-t-aria="back"><svg><use href="#i-back"/></svg></button>
+        <h1 class="title" data-t="gallery"></h1>
+        <span></span>
+      </header>
+      <div class="gallery" id="gallery"></div>
+    </section>
+  </main>
+
+  <!-- ============ DIALOGS ============ -->
+  <dialog id="dlg-settings" class="sheet">
+    <form method="dialog" class="sheet-inner">
+      <header><h2 data-t="settings"></h2><button class="icon-btn" value="close" data-t-aria="close"><svg><use href="#i-close"/></svg></button></header>
+      <label class="field"><span data-t="nameLabel"></span><input id="set-name" class="text-input" maxlength="16"></label>
+      <div class="field"><span data-t="language"></span>
+        <div class="lang-switch" role="group"><button type="button" data-lang="fi">Suomi</button><button type="button" data-lang="en">English</button></div>
+      </div>
+      <label class="field row"><span data-t="sound"></span><input type="checkbox" id="set-sound" class="switch"></label>
+      <details class="parents">
+        <summary data-t="parents"></summary>
+        <p class="muted" data-t="parentsInfo"></p>
+        <div id="level-editor"></div>
+        <p class="muted" id="stats-line"></p>
+        <button type="button" class="btn danger small" id="btn-reset"><span data-t="reset"></span></button>
+      </details>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-done" class="sheet center">
+    <form method="dialog" class="sheet-inner done">
+      <h2 id="done-title"></h2>
+      <div class="done-frame"><div class="scene-host" id="done-scene"></div></div>
+      <p id="done-text"></p>
+      <div class="res-actions">
+        <button class="btn primary" value="next" id="btn-done-next"></button>
+        <button class="btn soft" value="stay"><span data-t="admire"></span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-confirm" class="sheet center">
+    <form method="dialog" class="sheet-inner">
+      <p id="confirm-text"></p>
+      <div class="res-actions">
+        <button class="btn danger" value="yes" id="confirm-yes"></button>
+        <button class="btn soft" value="no" id="confirm-no"></button>
+      </div>
+    </form>
+  </dialog>
+
+  <noscript><p style="padding:2rem;font:600 1.2rem system-ui">Kvizit tarvitsee JavaScriptin. / Kvizit needs JavaScript.</p></noscript>
+</body>
+</html>

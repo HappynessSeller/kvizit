@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98bc0"/><stop offset=".55" stop-color="#f7b2a0"/><stop offset="1" stop-color="#ffd9a0"/></linearGradient>
+    <linearGradient id="d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9cc9"/><stop offset=".55" stop-color="#b47be0"/><stop offset="1" stop-color="#6f7fe0"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="370" cy="150" r="54" fill="#fff4c9" opacity=".9"/>
+  <path d="M0 380C90 350 170 360 256 352S420 330 512 350V512H0Z" fill="#7d76b3"/>
+  <path d="M0 420C110 400 230 430 330 440S460 430 512 432V512H0Z" fill="#8fbf6a"/>
+  <path d="M256 86C256 86 128 230 128 306a128 128 0 0 0 256 0C384 230 256 86 256 86Z" fill="url(#d)" stroke="#3b2f4a" stroke-width="20" stroke-linejoin="round"/>
+  <ellipse cx="212" cy="290" rx="26" ry="44" fill="#fff" opacity=".75" transform="rotate(20 212 290)"/>
+  <text x="256" y="372" font-family="Fredoka, Arial Rounded MT Bold, sans-serif" font-weight="700" font-size="96" text-anchor="middle" fill="#fff" stroke="#3b2f4a" stroke-width="8" paint-order="stroke">×÷</text>
+</svg>

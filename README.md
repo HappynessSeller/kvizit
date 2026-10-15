@@ -1,1 +1,53 @@
-# kvizit
+# Kvizit — laske ja maalaa
+
+A cozy maths game for a Finnish 4th grader. Correct answers earn **paint drops**, and drops
+colour in picture-book scenes of Finland. Painted parts of a picture come alive (clouds drift,
+smoke rises, the aurora waves). Finished paintings go into the art gallery and unlock the next one.
+
+Live: https://kvizit.troinich.fi (GitHub Pages, static, no build step).
+
+## Playing locally
+
+```bash
+npm run serve
+```
+
+Then open http://localhost:5173. Use `dev/devices.html` to see phone portrait / landscape
+frames side by side (`?p`, `?l`, `?d` for portrait, landscape, desktop).
+
+## What is in it
+
+- **Maths** (`js/math.js`): six topics from the Finnish curriculum for grades 3–6, each with five levels:
+  multiplication tables, division (with remainders), addition and subtraction up to 10 000, fractions and tenths,
+  units and clock times, perimeter and area, and word problems with euros. A round is 10 questions. A typed answer
+  gets a second try; after a miss Huhu the owl shows a short explanation and the question comes back later in the round.
+  Levels go up after a round with ≥80 % right on the first try and down below 45 %. Parents can set levels in
+  Settings → For parents.
+- **Rewards**: 1 drop per correct answer, +1 for every 3 in a row, +3 for a perfect round, +3 for the first round of the day.
+- **Painting** (`js/scene.js`): tap an area to spend a drop. It blooms in with a watercolour reveal. Tap a painted area to change its shade.
+  Chips under the picture (phone portrait) list the remaining areas. Pinch, scroll or use the buttons to zoom.
+  A finished picture can be saved as a PNG.
+- Works offline once loaded (service worker) and can be installed to a phone home screen. Finnish and English.
+  Progress is saved in the browser (localStorage).
+
+## Scenes
+
+Order and names live in `SCENES` in `js/store.js`.
+
+| Scene | Kind | Source |
+| --- | --- | --- |
+| Mökkikesä | vector | `art/gen-mokki.mjs` → `scenes/mokki.svg` |
+| Kesäilta | raster | `art/scene_1.png` + `art/scene_1_colored.png` → `scenes/kesailta/` via `art/gen-kesailta.mjs` |
+| Ruska | vector | `art/gen-ruska.mjs` |
+| Revontulet | vector | `art/gen-revontulet.mjs` |
+
+Rebuild every scene with `npm i && npm run art`.
+
+**Vector scenes**: each `<g data-group>` is one paintable area (see the notes at the top of `art/lib.mjs`).
+
+**Raster scenes**: you need a line-art PNG and a coloured PNG of the same picture. They don't need to line up exactly.
+The generator finds the enclosed regions in the line art and groups them into named areas using rough polygons
+(the `AREAS` list). It then writes one soft mask per area. Painting an area shows the coloured image through its mask.
+To add another picture, copy `gen-kesailta.mjs`, point it at the new PNGs and adjust `AREAS`. Running with
+`--debug` writes `art/<name>-debug.png` so you can check which region went to which area. Finally, add the
+scene to `SCENES`.

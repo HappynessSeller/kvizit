@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>Scene preview</title>
+<!-- art/preview.html?s=ruska — shows a generated scene in full colour -->
+<style>html,body{margin:0;background:#222}img{display:block;width:100vw;height:100vh;object-fit:contain}</style>
+<img id="i"><script>i.src='../scenes/'+(new URLSearchParams(location.search).get('s')||'mokki')+'.svg'</script>

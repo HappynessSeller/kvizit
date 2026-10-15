@@ -1,0 +1,18 @@
+{
+  "name": "Kvizit — laske ja maalaa",
+  "short_name": "Kvizit",
+  "description": "Kodikas matikkapeli: laske tehtäviä, ansaitse värejä ja maalaa suomalaisia maisemia.",
+  "lang": "fi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f6ead8",
+  "theme_color": "#f6ead8",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
