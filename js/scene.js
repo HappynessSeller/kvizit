@@ -115,10 +115,18 @@ function vectorColour(svg, g) {
   return fill;
 }
 
-async function buildVector(container, meta, n) {
-  let text = await fetchCached(meta.file, 'text');
+// A picture variant is grown in the browser by the same generator that wrote the SVG (art/gen-*.mjs).
+function generated(meta, v) {
+  const key = `gen:${meta.id}:${v}`;
+  if (!cache.has(key)) cache.set(key, import(new URL(`../art/gen-${meta.id}.mjs`, import.meta.url).href).then((m) => m.default(v)));
+  return cache.get(key);
+}
+
+async function buildVector(container, meta, n, variant = 0) {
+  let text = variant ? await generated(meta, variant) : await fetchCached(meta.file, 'text');
   // unique ids per mount so several copies (thumbnail + canvas) can coexist
-  text = text.replace(/\sid="([^"]+)"/g, ` id="$1_${n}"`).replace(/url\(#([^)]+)\)/g, `url(#$1_${n})`);
+  text = text.replace(/\sid="([^"]+)"/g, ` id="$1_${n}"`).replace(/url\(#([^)]+)\)/g, `url(#$1_${n})`)
+    .replace(/href="#([^"]+)"/g, `href="#$1_${n}"`);
   container.innerHTML = text;
   const svg = container.querySelector('svg');
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
@@ -245,7 +253,7 @@ async function buildRaster(container, meta, n) {
 // ---------------------------------------------------------------- shared controller
 export async function mountScene(container, meta, sstate) {
   const n = ++mountCount;
-  const S = meta.type === 'raster' ? await buildRaster(container, meta, n) : await buildVector(container, meta, n);
+  const S = meta.type === 'raster' ? await buildRaster(container, meta, n) : await buildVector(container, meta, n, sstate.variant || 0);
   const { svg, defs, groups } = S;
   const painted = new Set(sstate.painted.filter((k) => groups.has(k)));
 

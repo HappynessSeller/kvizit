@@ -425,6 +425,7 @@ dialog[open] .sheet-inner { animation: sheet-up .35s cubic-bezier(.2, .9, .3, 1.
 .parents { border-top: 2px dashed var(--line); padding-top: 12px; }
 .parents summary { font-weight: 800; cursor: pointer; }
 .parents > * + * { margin-top: 10px; }
+.variant-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .lv-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
 .lv-row span { font-weight: 800; }
 .lv-row small { display: block; font-weight: 700; color: var(--ink-2); }

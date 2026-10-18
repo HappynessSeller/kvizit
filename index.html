@@ -274,11 +274,17 @@
         <div class="lang-switch" role="group"><button type="button" data-lang="fi">Suomi</button><button type="button" data-lang="en">English</button></div>
       </div>
       <label class="field row"><span data-t="sound"></span><input type="checkbox" id="set-sound" class="switch"></label>
+      <button type="button" class="btn soft small" id="btn-reset-progress"><span data-t="resetProgress"></span></button>
       <details class="parents">
         <summary data-t="parents"></summary>
         <p class="muted" data-t="parentsInfo"></p>
         <div id="level-editor"></div>
         <p class="muted" id="stats-line"></p>
+        <p class="muted" id="variant-line"></p>
+        <div class="variant-row">
+          <button type="button" class="btn soft small" id="btn-regen"><span data-t="regen"></span></button>
+          <button type="button" class="btn soft small" id="btn-regen-orig"><span data-t="regenOrig"></span></button>
+        </div>
         <button type="button" class="btn danger small" id="btn-reset"><span data-t="reset"></span></button>
       </details>
     </form>

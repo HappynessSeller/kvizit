@@ -19,6 +19,9 @@ const STR = {
     language: 'Kieli', sound: 'Äänet', parents: 'Vanhemmille',
     parentsInfo: 'Taso nousee automaattisesti, kun kierros menee hyvin, ja laskee, jos tehtävät ovat liian vaikeita. Voit myös valita tason itse.',
     reset: 'Aloita alusta', resetQ: 'Poistetaanko kaikki värit, kuvat ja tasot? Tätä ei voi perua.', yes: 'Kyllä, poista', no: 'Peruuta',
+    cheat: '+10 väriä!', resetProgress: 'Nollaa edistyminen', resetProgressQ: 'Poistetaanko kaikki värit ja maalatut kuvat? Nimi ja laskutasot säilyvät.', resetProgressYes: 'Kyllä, nollaa',
+    refund: (n) => `Kuvat on piirretty uudelleen! Sait takaisin ${n} väriä, jotka olit jo käyttänyt.`, ok: 'Jes!',
+    regen: 'Uusi versio tästä kuvasta', regenOrig: 'Alkuperäinen kuva', variantNow: (v) => (v ? `Kuvan versio ${v} (testi)` : 'Alkuperäinen kuva'), regenNo: 'Tästä kuvasta ei voi tehdä uutta versiota.',
     quitQ: 'Lopetetaanko kierros? Ansaitut värit säilyvät.', quitYes: 'Lopeta', quitNo: 'Jatketaan',
     areas: (a, b) => `${a} / ${b} aluetta maalattu`, doneScene: 'Valmis taulu!',
     hintTap: 'Napauta tyhjää aluetta maalataksesi sen.', hintCost: 'Yksi alue = 1', hintEmpty: 'Värit loppuivat! Laske tehtäviä, niin saat lisää.',
@@ -50,6 +53,9 @@ const STR = {
     language: 'Language', sound: 'Sounds', parents: 'For parents',
     parentsInfo: 'Levels go up automatically after a good round and down if it gets too hard. You can also pick a level yourself.',
     reset: 'Start over', resetQ: 'Delete all paint, pictures and levels? This cannot be undone.', yes: 'Yes, delete', no: 'Cancel',
+    cheat: '+10 drops!', resetProgress: 'Reset progress', resetProgressQ: 'Remove all paint drops and painted pictures? Your name and maths levels are kept.', resetProgressYes: 'Yes, reset',
+    refund: (n) => `The pictures have been redrawn! You got back the ${n} drops you had used.`, ok: 'Yay!',
+    regen: 'New version of this picture', regenOrig: 'Original picture', variantNow: (v) => (v ? `Picture version ${v} (test)` : 'Original picture'), regenNo: 'This picture has no other versions.',
     quitQ: 'Stop this round? You keep the paint you earned.', quitYes: 'Stop', quitNo: 'Keep going',
     areas: (a, b) => `${a} / ${b} areas painted`, doneScene: 'Finished painting!',
     hintTap: 'Tap a blank area to paint it.', hintCost: 'One area = 1', hintEmpty: 'Out of paint! Solve some problems to earn more.',
@@ -112,8 +118,27 @@ function go(screen, opts) {
 document.addEventListener('click', (e) => {
   const g = e.target.closest('[data-go]');
   if (g) { sfx.tap(); go(g.dataset.go); }
-  if (e.target.closest('[data-drops]') && current !== 'paint') { sfx.tap(); go('paint'); }
+  if (e.target.closest('[data-drops]')) dropTap();
 });
+// secret: three quick taps on a drop counter give 10 drops. A single tap still opens the
+// paint screen, just a moment later so the next taps land on the same chip.
+let dropTaps = 0, dropTapAt = 0, dropGoT;
+function dropTap() {
+  const now = performance.now();
+  dropTaps = now - dropTapAt < 450 ? dropTaps + 1 : 1;
+  dropTapAt = now;
+  clearTimeout(dropGoT);
+  if (dropTaps >= 3) {
+    dropTaps = 0;
+    S.drops += 10;
+    store.save();
+    sfx.drop();
+    updateDrops(true);
+    if (current === 'paint') { toast(t('cheat')); paintHint(); }
+    return;
+  }
+  if (current !== 'paint') dropGoT = setTimeout(() => { sfx.tap(); go('paint'); }, 450);
+}
 
 // ------------------------------------------------------------------ hello
 function initHello() {
@@ -150,11 +175,12 @@ onShow.home = async () => {
   const ss = store.sceneState(meta.id);
   $('#home-scene-title').textContent = name(meta);
   const host = $('#home-scene');
-  if (host.dataset.scene !== meta.id || host.dataset.ver !== String(ss.painted.length) + JSON.stringify(ss.tints)) {
+  const ver = `${ss.painted.length}${JSON.stringify(ss.tints)}v${ss.variant || 0}`;
+  if (host.dataset.scene !== meta.id || host.dataset.ver !== ver) {
     try {
       homeMount = await mountScene(host, meta, ss);
       host.dataset.scene = meta.id;
-      host.dataset.ver = String(ss.painted.length) + JSON.stringify(ss.tints);
+      host.dataset.ver = ver;
     } catch (err) { console.error(err); }
   }
   const total = homeMount?.total || 1, done = ss.painted.length;
@@ -766,7 +792,8 @@ function confirmDlg(text, yes, no) {
   const d = $('#dlg-confirm');
   $('#confirm-text').textContent = text;
   $('#confirm-yes').textContent = yes;
-  $('#confirm-no').textContent = no;
+  $('#confirm-no').textContent = no || '';
+  $('#confirm-no').hidden = !no;
   d.showModal();
   return new Promise((res) => d.addEventListener('close', () => res(d.returnValue === 'yes'), { once: true }));
 }
@@ -779,6 +806,9 @@ function renderLevelEditor() {
       <select data-topic="${tp.id}" aria-label="${name(tp)}">${LEVEL_NAMES[tp.id].map((n, i) => `<option value="${i + 1}" ${S.levels[tp.id] === i + 1 ? 'selected' : ''}>${i + 1}: ${n[S.lang === 'en' ? 1 : 0]}</option>`).join('')}</select></div>`;
   }).join('');
   $('#stats-line').textContent = t('stats', S.rounds, S.totalCorrect, S.totalAnswered);
+  const meta = sceneMeta(S.current);
+  $('#variant-line').textContent = meta.type === 'vector' ? `${name(meta)}: ${t('variantNow', store.sceneState(meta.id).variant || 0)}` : `${name(meta)}: ${t('regenNo')}`;
+  $('#btn-regen').disabled = $('#btn-regen-orig').disabled = meta.type !== 'vector';
 }
 $('#level-editor').addEventListener('change', (e) => {
   const s = e.target.closest('select');
@@ -805,6 +835,15 @@ document.addEventListener('click', (e) => {
   renderLevelEditor();
   if (current === 'home') onShow.home();
 });
+$('#btn-reset-progress').addEventListener('click', async () => {
+  $('#dlg-settings').close();
+  if (await confirmDlg(t('resetProgressQ'), t('resetProgressYes'), t('no'))) {
+    store.resetProgress();
+    $('#home-scene').dataset.scene = '';
+    updateDrops(true);
+    go('home');
+  }
+});
 $('#btn-reset').addEventListener('click', async () => {
   $('#dlg-settings').close();
   if (await confirmDlg(t('resetQ'), t('yes'), t('no'))) {
@@ -817,6 +856,17 @@ $('#btn-reset').addEventListener('click', async () => {
     go('hello');
   }
 });
+// test tool: regrow the current picture from a new seed (same areas, so painting progress is kept)
+async function setPictureVariant(v) {
+  const meta = sceneMeta(S.current);
+  if (meta.type !== 'vector') return;
+  store.sceneState(meta.id).variant = v;
+  store.save();
+  renderLevelEditor();
+  if (current === 'paint') onShow.paint({ scene: meta.id });
+}
+$('#btn-regen').addEventListener('click', () => { sfx.tap(); setPictureVariant(1 + Math.floor(Math.random() * 9999)); });
+$('#btn-regen-orig').addEventListener('click', () => { sfx.tap(); setPictureVariant(0); });
 // close dialogs by tapping the backdrop
 $$('dialog').forEach((d) => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
@@ -831,6 +881,11 @@ setSound(S.sound);
 applyStrings();
 initHello();
 go(S.name || S.rounds ? 'home' : 'hello');
+if (S.refunded) {
+  confirmDlg(t('refund', S.refunded), t('ok')).then(() => updateDrops(true));
+  delete S.refunded;
+  store.save();
+}
 preload(sceneMeta(S.current));
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

@@ -1,7 +1,7 @@
 // Network-first service worker: always fresh when online, still playable offline.
 const CACHE = 'kvizit-v1';
 const CORE = ['./', 'index.html', 'css/app.css', 'js/main.js', 'js/store.js', 'js/math.js', 'js/scene.js', 'js/audio.js', 'js/fx.js',
-  'scenes/mokki.svg', 'scenes/ruska.svg', 'scenes/revontulet.svg', 'scenes/kesailta/scene.json',
+  'scenes/mokki.svg', 'scenes/ruska.svg', 'scenes/revontulet.svg', 'scenes/saaristo.svg', 'scenes/kesailta/scene.json',
   'scenes/kesailta/line.webp', 'scenes/kesailta/colour.webp', 'scenes/kesailta/labels.png', 'scenes/kesailta/thumb.webp',
   'manifest.webmanifest', 'icons/icon.svg'];
 
