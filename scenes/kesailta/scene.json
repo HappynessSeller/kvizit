@@ -34,40 +34,40 @@
    "fi": "Lipputanko",
    "en": "Flagpole",
    "mask": "m/pole.png",
-   "x": 626,
+   "x": 634,
    "y": 112,
-   "w": 98,
-   "h": 560
+   "w": 86,
+   "h": 536
   },
   {
    "key": "saunaPier",
    "fi": "Saunan laituri",
    "en": "Sauna jetty",
    "mask": "m/saunaPier.png",
-   "x": 1116,
-   "y": 420,
-   "w": 242,
-   "h": 96
+   "x": 1182,
+   "y": 438,
+   "w": 176,
+   "h": 78
   },
   {
    "key": "sauna",
    "fi": "Rantasauna",
    "en": "Lakeside sauna",
    "mask": "m/sauna.png",
-   "x": 1176,
-   "y": 216,
-   "w": 272,
-   "h": 250
+   "x": 1220,
+   "y": 294,
+   "w": 228,
+   "h": 172
   },
   {
    "key": "rocks",
    "fi": "Rantakivet",
    "en": "Shore rocks",
    "mask": "m/rocks.png",
-   "x": 1142,
-   "y": 432,
-   "w": 306,
-   "h": 80
+   "x": 1116,
+   "y": 420,
+   "w": 332,
+   "h": 92
   },
   {
    "key": "chimney",
@@ -86,7 +86,7 @@
    "mask": "m/windows.png",
    "x": 186,
    "y": 254,
-   "w": 426,
+   "w": 412,
    "h": 272
   },
   {
@@ -94,10 +94,10 @@
    "fi": "Kukkalaatikot",
    "en": "Flower boxes",
    "mask": "m/flowerbox.png",
-   "x": 168,
-   "y": 386,
-   "w": 452,
-   "h": 198
+   "x": 184,
+   "y": 480,
+   "w": 428,
+   "h": 84
   },
   {
    "key": "roof",
@@ -106,17 +106,17 @@
    "mask": "m/roof.png",
    "x": 298,
    "y": 172,
-   "w": 380,
-   "h": 218
+   "w": 382,
+   "h": 346
   },
   {
    "key": "walls",
    "fi": "Mökin seinät",
    "en": "Cottage walls",
    "mask": "m/walls.png",
-   "x": 192,
+   "x": 168,
    "y": 206,
-   "w": 490,
+   "w": 514,
    "h": 424
   },
   {
@@ -134,19 +134,19 @@
    "fi": "Portaat",
    "en": "Steps",
    "mask": "m/steps.png",
-   "x": 494,
-   "y": 504,
-   "w": 252,
-   "h": 200
+   "x": 626,
+   "y": 484,
+   "w": 120,
+   "h": 188
   },
   {
    "key": "boat",
    "fi": "Soutuvene",
    "en": "Rowboat",
    "mask": "m/boat.png",
-   "x": 1016,
+   "x": 1008,
    "y": 560,
-   "w": 196,
+   "w": 204,
    "h": 132
   },
   {
@@ -154,10 +154,10 @@
    "fi": "Laituri",
    "en": "Jetty",
    "mask": "m/jetty.png",
-   "x": 726,
-   "y": 550,
-   "w": 316,
-   "h": 172
+   "x": 730,
+   "y": 556,
+   "w": 312,
+   "h": 160
   },
   {
    "key": "ducks",
@@ -170,14 +170,24 @@
    "h": 90
   },
   {
+   "key": "bushes",
+   "fi": "Pensaat",
+   "en": "Bushes",
+   "mask": "m/bushes.png",
+   "x": 148,
+   "y": 554,
+   "w": 684,
+   "h": 170
+  },
+  {
    "key": "leaves",
    "fi": "Koivun lehdet",
    "en": "Birch leaves",
    "mask": "m/leaves.png",
    "x": 0,
    "y": 0,
-   "w": 598,
-   "h": 202
+   "w": 584,
+   "h": 190
   },
   {
    "key": "forest",
@@ -185,9 +195,9 @@
    "en": "Spruce forest",
    "mask": "m/forest.png",
    "x": 530,
-   "y": 222,
-   "w": 910,
-   "h": 196
+   "y": 216,
+   "w": 918,
+   "h": 234
   },
   {
    "key": "lake",
@@ -197,17 +207,7 @@
    "x": 674,
    "y": 372,
    "w": 774,
-   "h": 360
-  },
-  {
-   "key": "bushes",
-   "fi": "Pensaat",
-   "en": "Bushes",
-   "mask": "m/bushes.png",
-   "x": 148,
-   "y": 540,
-   "w": 70,
-   "h": 50
+   "h": 424
   },
   {
    "key": "birches",
@@ -215,9 +215,9 @@
    "en": "Birches",
    "mask": "m/birches.png",
    "x": 0,
-   "y": 78,
-   "w": 236,
-   "h": 948
+   "y": 0,
+   "w": 264,
+   "h": 730
   },
   {
    "key": "lupinesL",
@@ -225,9 +225,9 @@
    "en": "Lupines",
    "mask": "m/lupinesL.png",
    "x": 0,
-   "y": 670,
+   "y": 664,
    "w": 278,
-   "h": 416
+   "h": 422
   },
   {
    "key": "flowersL",
@@ -235,9 +235,9 @@
    "en": "Flower meadow",
    "mask": "m/flowersL.png",
    "x": 226,
-   "y": 752,
-   "w": 458,
-   "h": 334
+   "y": 720,
+   "w": 498,
+   "h": 366
   },
   {
    "key": "lupinesR",
@@ -245,9 +245,9 @@
    "en": "Lupines by the shore",
    "mask": "m/lupinesR.png",
    "x": 1108,
-   "y": 708,
+   "y": 720,
    "w": 340,
-   "h": 378
+   "h": 366
   },
   {
    "key": "flowersR",
@@ -255,39 +255,39 @@
    "en": "Daisies",
    "mask": "m/flowersR.png",
    "x": 904,
-   "y": 806,
+   "y": 804,
    "w": 290,
-   "h": 280
+   "h": 282
   },
   {
    "key": "path",
    "fi": "Hiekkapolku",
    "en": "Sandy path",
    "mask": "m/path.png",
-   "x": 658,
-   "y": 684,
-   "w": 340,
-   "h": 402
+   "x": 634,
+   "y": 646,
+   "w": 376,
+   "h": 440
   },
   {
    "key": "meadow",
    "fi": "Nurmikko",
    "en": "Lawn",
    "mask": "m/meadow.png",
-   "x": 176,
-   "y": 554,
-   "w": 1272,
-   "h": 510
+   "x": 208,
+   "y": 636,
+   "w": 998,
+   "h": 424
   },
   {
    "key": "sky",
    "fi": "Taivas",
    "en": "Sky",
    "mask": "m/sky.png",
-   "x": 208,
+   "x": 182,
    "y": 0,
-   "w": 1240,
-   "h": 420
+   "w": 1266,
+   "h": 384
   }
  ]
 }

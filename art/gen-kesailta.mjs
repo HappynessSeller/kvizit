@@ -4,7 +4,7 @@
 // polygons, and export one soft mask per area. In the game, painting an area reveals
 // the coloured painting through that mask.
 //
-//   node art/gen-kesailta.mjs [--debug]
+//   node art/gen-kesailta.mjs [--debug [--polys]]
 import sharp from 'sharp';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
@@ -12,37 +12,39 @@ const SRC_LINE = new URL('./scene_1.png', import.meta.url).pathname.replace(/^\/
 const SRC_COLOUR = new URL('./scene_1_colored.png', import.meta.url).pathname.replace(/^\/(\w:)/, '$1');
 const OUT = new URL('../scenes/kesailta/', import.meta.url).pathname.replace(/^\/(\w:)/, '$1');
 const DEBUG = process.argv.includes('--debug');
+const DEBUG_POLYS = process.argv.includes('--polys'); // with --debug: draw the AREAS polygons too
 const MASK_SCALE = 2; // masks at half resolution
 const LABEL_SCALE = 4; // hit-test map at quarter resolution
 
-// Areas in priority order: a region belongs to the first area whose polygon holds it.
-// Small regions go by their centre point; big open regions (sky, lake, meadow) are
-// split pixel by pixel.
+// Areas in priority order: where polygons overlap, the earlier area wins.
+// Small regions go to the area covering most of their pixels. Big open regions (sky,
+// lake, meadow) are split along the polygons, but the seams snap to the nearest drawn
+// strokes: `seam` (default 40 px) is how far from its polygon edge an area may be pulled.
 const AREAS = [
   ['sun', 'Aurinko', 'Sun', ['M955 240H1100V337H955Z']],
   ['flag', 'Suomen lippu', 'Finnish flag', ['M676 128L848 140L848 292L680 262Z']],
-  ['pole', 'Lipputanko', 'Flagpole', ['M660 108H694V712H660Z']],
+  ['pole', 'Lipputanko', 'Flagpole', ['M662 112H692V712H662Z']],
   ['saunaPier', 'Saunan laituri', 'Sauna jetty', ['M1170 448H1330V512H1170Z']],
-  ['sauna', 'Rantasauna', 'Lakeside sauna', ['M1228 290H1428V463H1228Z']],
+  ['sauna', 'Rantasauna', 'Lakeside sauna', ['M1225 380L1290 296L1345 296L1430 378L1425 462L1230 462Z']],
   ['rocks', 'Rantakivet', 'Shore rocks', ['M1112 418L1228 410L1228 488L1112 492Z', 'M1300 395H1448V508H1300Z']],
   ['chimney', 'Savupiippu', 'Chimney', ['M383 158H464V236H383Z']],
   ['windows', 'Ikkunat', 'Windows', ['M262 262H352V358H262Z', 'M198 392H292V492H198Z', 'M343 392H442V492H343Z', 'M512 398H598V492H512Z']],
-  ['flowerbox', 'Kukkalaatikot', 'Flower boxes', ['M182 482H304V556H182Z', 'M332 482H452V560H332Z', 'M508 482H612V556H508Z']],
+  ['flowerbox', 'Kukkalaatikot', 'Flower boxes', ['M195 484H302V552H195Z', 'M336 484H448V556H336Z', 'M510 484H608V552H510Z']],
   ['roof', 'Katto', 'Roof', ['M300 176L392 186L660 360L672 388L494 388L300 202Z']],
-  ['walls', 'Mökin seinät', 'Cottage walls', ['M208 302L300 204L496 376L496 612L208 612Z', 'M494 374L642 390L642 612L494 612Z']],
+  ['walls', 'Mökin seinät', 'Cottage walls', ['M185 330L300 204L496 376L496 612L185 612Z', 'M494 374L642 390L642 612L494 612Z']],
   ['stones', 'Kivijalka', 'Stone base', ['M222 590H505V652H222Z']],
   ['steps', 'Portaat', 'Steps', ['M588 488H742V668H588Z']],
   ['boat', 'Soutuvene', 'Rowboat', ['M1026 568H1212V692H1026Z']],
   ['jetty', 'Laituri', 'Jetty', ['M733 672L900 556L1030 560L1036 600L960 712L930 712L733 694Z']],
   ['ducks', 'Sorsat', 'Ducks', ['M1250 600H1348V672H1250Z', 'M1356 638H1428V694H1356Z']],
+  ['bushes', 'Pensaat', 'Bushes', ['M150 560L235 555L305 600L305 660L250 695L150 695Z', 'M496 600L560 580L640 600L690 660L680 692L500 692Z', 'M700 588L760 574L822 606L822 650L700 655Z'], { seam: 20 }],
   ['leaves', 'Koivun lehdet', 'Birch leaves', ['M0 0H592V128L420 122L350 162L292 192L228 192L200 132L0 178Z']],
-  ['forest', 'Kuusimetsä', 'Spruce forest', ['M540 212H1448V298H1228V412H540Z']],
-  ['lake', 'Järvi', 'Lake', ['M640 380H1448V706L1100 704L1000 726L900 706L800 692L700 652L640 560Z']],
-  ['bushes', 'Pensaat', 'Bushes', ['M150 552H232V668H150Z', 'M496 572H700V700H496Z', 'M688 552H812V652H688Z']],
-  ['birches', 'Koivut', 'Birches', ['M0 100H238L218 250L192 560L152 1000L0 1000Z']],
+  ['forest', 'Kuusimetsä', 'Spruce forest', ['M540 212H1448V470H1180V412H540Z']],
+  ['lake', 'Järvi', 'Lake', ['M640 380H1448V745L1150 740L1100 704L1000 726L900 706L800 692L700 652L640 560Z']],
+  ['birches', 'Koivut', 'Birches', ['M0 0H205L238 140L218 250L192 560L180 690L0 690Z'], { seam: 30 }],
   ['lupinesL', 'Lupiinit', 'Lupines', ['M0 680H245V1086H0Z']],
-  ['flowersL', 'Kukkaniitty', 'Flower meadow', ['M245 765H665V1086H245Z']],
-  ['lupinesR', 'Lupiinit rannalla', 'Lupines by the shore', ['M1150 715H1448V1086H1150Z']],
+  ['flowersL', 'Kukkaniitty', 'Flower meadow', ['M245 760L320 728L385 740L400 790L450 760L505 760L520 825L575 825L610 885L650 890L680 960L640 1086L245 1086Z']],
+  ['lupinesR', 'Lupiinit rannalla', 'Lupines by the shore', ['M1150 745H1448V1086H1150Z']],
   ['flowersR', 'Päivänkakkarat', 'Daisies', ['M930 815H1150V1086H930Z']],
   ['path', 'Hiekkapolku', 'Sandy path', ['M720 690L860 700L1000 820L1040 900L960 1000L990 1086L640 1086L760 950L800 830L740 750Z']],
   ['meadow', 'Nurmikko', 'Lawn', ['M0 560H1448V1086H0Z']],
@@ -74,7 +76,7 @@ function inPoly(pts, x, y) {
 }
 const polys = AREAS.map(([, , , ds]) => ds.map(parsePoly));
 // big open regions (sky, water, grass) may only be split between these areas
-const OPEN = new Set(['sky', 'lake', 'meadow', 'path', 'flowersL', 'flowersR', 'lupinesL', 'lupinesR', 'birches', 'leaves', 'jetty']);
+const OPEN = new Set(['sky', 'lake', 'meadow', 'path', 'flowersL', 'flowersR', 'lupinesL', 'lupinesR', 'birches', 'bushes', 'jetty']);
 const areaAt = (x, y, openOnly = false) => {
   for (let a = 0; a < polys.length; a++) {
     if (openOnly && !OPEN.has(AREAS[a][0])) continue;
@@ -110,19 +112,123 @@ for (let s = 0; s < N; s++) {
   }
   comps.push({ n, cx: sx / n, cy: sy / n });
 }
-const BIG = 30000;
-const compArea = comps.map((c) => (c.n < BIG ? areaAt(c.cx, c.cy) : -1));
+// --- rasterise the polygons once: full priority order, and open areas only ---
+const polyAll = new Int16Array(N), polyOpen = new Int16Array(N);
+for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+  polyAll[y * W + x] = areaAt(x + 0.5, y + 0.5);
+  polyOpen[y * W + x] = areaAt(x + 0.5, y + 0.5, true);
+}
 
-// --- label every pixel; line pixels take the nearest region's label (BFS) ---
+// small regions go to the area that covers most of their pixels
+const BIG = 30000;
+const votes = comps.map(() => new Map());
+for (let p = 0; p < N; p++) {
+  const c = comp[p];
+  if (c < 0 || comps[c].n >= BIG) continue;
+  const m = votes[c];
+  m.set(polyAll[p], (m.get(polyAll[p]) || 0) + 1);
+}
+const compArea = comps.map((c, i) => (c.n < BIG ? [...votes[i]].sort((a, b) => b[1] - a[1])[0][0] : -1));
+
+// distance to the nearest line pixel (chamfer 3-4, ~3 per pixel)
+const dist = new Int32Array(N);
+for (let p = 0; p < N; p++) dist[p] = isLine[p] ? 0 : 1 << 20;
+for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+  const p = y * W + x;
+  let d = dist[p];
+  if (x > 0) d = Math.min(d, dist[p - 1] + 3);
+  if (y > 0) {
+    d = Math.min(d, dist[p - W] + 3);
+    if (x > 0) d = Math.min(d, dist[p - W - 1] + 4);
+    if (x < W - 1) d = Math.min(d, dist[p - W + 1] + 4);
+  }
+  dist[p] = d;
+}
+for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) {
+  const p = y * W + x;
+  let d = dist[p];
+  if (x < W - 1) d = Math.min(d, dist[p + 1] + 3);
+  if (y < H - 1) {
+    d = Math.min(d, dist[p + W] + 3);
+    if (x < W - 1) d = Math.min(d, dist[p + W + 1] + 4);
+    if (x > 0) d = Math.min(d, dist[p + W - 1] + 4);
+  }
+  dist[p] = d;
+}
+
+// how far each open area may reach past its polygon (up to its `seam`, in pixels)
+const SEAM = 40;
+const seamOf = AREAS.map((a) => a[4]?.seam ?? SEAM);
+// Two neighbours share the smaller of their seams, so a wide area (lake) can't swallow a
+// small one (bushes). canClaim(a, p): may area a take pixel p?
+const reach = new Map(); // area -> Uint8Array, distance past its polygon + 1 (0 = too far)
+{
+  const q = new Int32Array(N);
+  for (let a = 0; a < AREAS.length; a++) {
+    if (!OPEN.has(AREAS[a][0])) continue;
+    const r = new Uint8Array(N);
+    let h = 0, t = 0;
+    for (let p = 0; p < N; p++) if (polyOpen[p] === a) { r[p] = 1; q[t++] = p; }
+    while (h < t) {
+      const p = q[h++], x = p % W;
+      if (r[p] > seamOf[a]) continue;
+      for (const n of [x > 0 ? p - 1 : -1, x < W - 1 ? p + 1 : -1, p - W, p + W]) {
+        if (n >= 0 && n < N && !r[n]) { r[n] = r[p] + 1; q[t++] = n; }
+      }
+    }
+    reach.set(a, r);
+  }
+}
+const canClaim = (a, p) => {
+  const o = polyOpen[p];
+  if (o === a) return true;
+  const r = reach.get(a);
+  return !!r && r[p] > 0 && r[p] - 1 <= Math.min(seamOf[a], seamOf[o]);
+};
+// a pixel is contested when some other open area can claim it
+const contested = new Uint8Array(N);
+for (const a of reach.keys()) for (let p = 0; p < N; p++) if (polyOpen[p] !== a && canClaim(a, p)) contested[p] = 1;
+
+// --- label every pixel ---
+// Small regions are labelled whole. Inside big open regions, uncontested pixels are seeds;
+// contested pixels near polygon edges are flooded from the seeds, far-from-line pixels
+// first, so the fronts meet on the drawn strokes instead of a straight cut. An area only
+// floods pixels within its reach, so one seed can't take over a whole field.
 const label = new Int16Array(N).fill(-1);
 const queue = new Int32Array(N);
 let qh = 0, qt = 0;
+// Height is distance to the nearest line, capped: away from strokes all pixels are level and
+// the fronts advance evenly (meeting near the polygon edge); near strokes, lines are ridges.
+const MAXD = 36; // ~12 px
+const buckets = Array.from({ length: MAXD + 1 }, () => []);
+const bucketOf = (p) => MAXD - Math.min(MAXD, dist[p]);
 for (let p = 0; p < N; p++) {
   if (isLine[p]) continue;
   const c = comp[p];
-  label[p] = compArea[c] >= 0 ? compArea[c] : areaAt(p % W, (p / W) | 0, true);
-  queue[qt++] = p;
+  if (compArea[c] >= 0) label[p] = compArea[c];
+  else if (!contested[p]) label[p] = polyOpen[p];
+  else continue;
+  buckets[bucketOf(p)].push(p);
 }
+for (let b = 0; b <= MAXD; b++) {
+  const bucket = buckets[b];
+  for (let i = 0; i < bucket.length; i++) { // FIFO, so fronts on a level stretch move evenly
+    const p = bucket[i];
+    const x = p % W, l = label[p];
+    if (!reach.has(l)) continue;
+    for (const n of [x > 0 ? p - 1 : -1, x < W - 1 ? p + 1 : -1, p - W, p + W]) {
+      if (n < 0 || n >= N || isLine[n] || label[n] !== -1 || !canClaim(l, n)) continue;
+      label[n] = l;
+      // never flood "uphill" into an already-passed bucket
+      buckets[Math.max(b, bucketOf(n))].push(n);
+    }
+  }
+}
+// pixels no seed could reach (a pocket cut off by strokes) keep their polygon's label
+for (let p = 0; p < N; p++) if (!isLine[p] && label[p] === -1) label[p] = polyOpen[p];
+
+// line pixels take the nearest region's label (BFS)
+for (let p = 0; p < N; p++) if (label[p] !== -1) queue[qt++] = p;
 while (qh < qt) {
   const p = queue[qh++];
   const x = p % W, y = (p / W) | 0, l = label[p];
@@ -192,7 +298,9 @@ if (DEBUG) {
     const k = isLine[p] ? 0.25 : 1;
     rgb[p * 3] = c[0] * k; rgb[p * 3 + 1] = c[1] * k; rgb[p * 3 + 2] = c[2] * k;
   }
-  const svgLabels = Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${areasOut.map((o) =>
+  const outlines = DEBUG_POLYS ? AREAS.map(([, , , ds]) => ds.map((d) =>
+    `<path d="${d}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6 4"/>`).join('')).join('') : '';
+  const svgLabels = Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${outlines}${areasOut.map((o) =>
     `<text x="${o.x + o.w / 2}" y="${o.y + o.h / 2}" font-size="26" font-family="sans-serif" font-weight="bold" fill="#fff" stroke="#000" stroke-width="1" text-anchor="middle">${o.key}</text>`).join('')}</svg>`);
   await sharp(rgb, { raw: { width: W, height: H, channels: 3 } }).composite([{ input: svgLabels }]).png().toFile(new URL('./kesailta-debug.png', import.meta.url).pathname.replace(/^\/(\w:)/, '$1'));
 }

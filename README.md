@@ -53,7 +53,9 @@ browser (Settings → For parents → New version of this picture) with the same
 
 **Raster scenes**: you need a line-art PNG and a coloured PNG of the same picture. They don't need to line up exactly.
 The generator finds the enclosed regions in the line art and groups them into named areas using rough polygons
-(the `AREAS` list). It then writes one soft mask per area. Painting an area shows the coloured image through its mask.
+(the `AREAS` list). Where a big open region (sky, lake, grass) is split between areas, the seam snaps to the
+nearest drawn strokes, so the polygons only need to be roughly right. It then writes one soft mask per area. Painting an area shows the coloured image through its mask.
 To add another picture, copy `gen-kesailta.mjs`, point it at the new PNGs and adjust `AREAS`. Running with
-`--debug` writes `art/<name>-debug.png` so you can check which region went to which area. Finally, add the
+`--debug` writes `art/<name>-debug.png` so you can check which region went to which area
+(add `--polys` to draw the polygons on it too). Finally, add the
 scene to `SCENES`.
