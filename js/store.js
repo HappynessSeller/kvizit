@@ -11,8 +11,8 @@ export const SCENES = [
 
 // Bump when vector scenes are redrawn with new areas. Old progress in REDRAWN scenes is cleared,
 // the drops spent on it are refunded, and pictures that were finished stay unlocked.
-const ART_VERSION = 2;
-const REDRAWN = { 2: ['mokki', 'ruska', 'revontulet'] };
+const ART_VERSION = 3;
+const REDRAWN = { 2: ['mokki', 'ruska', 'revontulet'], 3: ['ruska', 'revontulet', 'saaristo'] };
 
 const fresh = () => ({
   v: 1,

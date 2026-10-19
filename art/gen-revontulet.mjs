@@ -65,12 +65,6 @@ export default function generate(variant = 0) {
     }
     add(`<path d="${faint}" fill="#e8ecff" opacity=".7"/>`);
   });
-  group('stars', 'Isot tähdet', 'Bright stars', () => {
-    for (const [x, y, s] of [[70, 50, 1], [300, 30, .8], [470, 120, .75], [560, 40, 1.05], [190, 170, .7], [760, 190, .7]]) {
-      add(`<circle cx="${x}" cy="${y}" r="${f(18 * s)}" fill="url(#rv-starGlow)" data-anim="twinkle" style="animation-delay:-${f(x / 300)}s"/>`);
-      R(`M${x} ${y - 10 * s}Q${x + 1.5 * s} ${y - 1.5 * s} ${x + 10 * s} ${y}Q${x + 1.5 * s} ${y + 1.5 * s} ${x} ${y + 10 * s}Q${x - 1.5 * s} ${y + 1.5 * s} ${x - 10 * s} ${y}Q${x - 1.5 * s} ${y - 1.5 * s} ${x} ${y - 10 * s}Z`, '#fff6c8', `${line(1.2)} data-anim="twinkle" style="animation-delay:-${f(x / 300)}s"`);
-    }
-  });
 
   // aurora curtains: rays on a folding baseline (violet highest, green lowest)
   const curtain = (key, fi, en, opts, grad, edge, delay) => group(key, fi, en, () => {
@@ -87,6 +81,16 @@ export default function generate(variant = 0) {
   curtain('aurora2', 'Violetit revontulet', 'Violet aurora', { seed: 41, y: 92, sway: 26, height: 70, x0: 120, x1: 830, fold: 0.008 }, 'rv-a3', '#ffd6f3', 6);
   curtain('aurora1', 'Turkoosit revontulet', 'Teal aurora', { seed: 23, y: 168, sway: 34, height: 110, x0: -30, x1: 560, fold: 0.007 }, 'rv-a2', '#d9fbff', 3);
   curtain('aurora0', 'Vihreät revontulet', 'Green aurora', { seed: 7, y: 238, sway: 44, height: 165, fold: 0.0055 }, 'rv-a1', '#d4ffe9', 0);
+
+  // bright stars come after the curtains: they shine through the aurora, and in the line art the
+  // curtains are solid shapes that would otherwise swallow them
+  group('stars', 'Isot tähdet', 'Bright stars', () => {
+    for (const [x, y, s0] of [[70, 50, 1], [300, 30, .8], [470, 120, .75], [560, 40, 1.05], [190, 170, .7], [760, 190, .7]]) {
+      const s = s0 * 1.3;
+      add(`<circle cx="${x}" cy="${y}" r="${f(18 * s)}" fill="url(#rv-starGlow)" data-anim="twinkle" style="animation-delay:-${f(x / 300)}s"/>`);
+      R(`M${x} ${f(y - 10 * s)}Q${f(x + 1.8 * s)} ${f(y - 1.8 * s)} ${f(x + 10 * s)} ${y}Q${f(x + 1.8 * s)} ${f(y + 1.8 * s)} ${x} ${f(y + 10 * s)}Q${f(x - 1.8 * s)} ${f(y + 1.8 * s)} ${f(x - 10 * s)} ${y}Q${f(x - 1.8 * s)} ${f(y - 1.8 * s)} ${x} ${f(y - 10 * s)}Z`, '#fff6c8', `${line(1.2)} data-anim="twinkle" style="animation-delay:-${f(x / 300)}s"`);
+    }
+  });
 
   group('moon', 'Kuu', 'Moon', () => {
     add(`<circle cx="690" cy="74" r="90" fill="url(#rv-moonGlow)" data-anim="glow"/>`);
@@ -138,7 +142,7 @@ export default function generate(variant = 0) {
     add(`<path d="${poly(forestPts.map(([x, y]) => [x, y + 0.8]), false)}" fill="none" stroke="${AUR}" stroke-width="1.6" stroke-opacity=".55" stroke-dasharray="3 5"/>`);
   });
   group('ice', 'Jäätynyt järvi', 'Frozen lake', () => {
-    R(`M0 ${HY}H800V450H0Z`, 'url(#rv-ice)', st('#93abe0', 1.4));
+    R(`M0 ${HY}H800V490H0Z`, 'url(#rv-ice)', st('#93abe0', 1.4));
     add(`<ellipse cx="420" cy="${HY + 18}" rx="380" ry="24" fill="url(#rv-iceGlow)" data-anim="shimmer"/>`);
     reflection(`<path d="${forestD}" fill="#22424f"/><path d="${nearD}" fill="#8a9ad0"/>`, HY + 2, { depth: 40, amp: 1, seed: 4, opacity: 0.35 });
     const Rn = rng(77), N = noise1(78);
@@ -183,12 +187,14 @@ export default function generate(variant = 0) {
     for (let x = 452; x <= 800; x += 38) xs.push(x);
     R(`M440 452L800 446V454L440 460Z`, '#7a5a44', st('#7a5a44', 1.3));
     R(`M440 468L800 462V470L440 476Z`, '#7a5a44', st('#7a5a44', 1.3));
+    // all posts are one shape, so a post half-hidden behind a spruce or reindeer is never a sliver
+    let postD = '';
     for (const x of xs) {
       const y = ridgeY(yardPts, x) + 8;
-      const d = `M${x - 3} ${f(y)}V436l3 -4l3 4V${f(y)}Z`;
-      R(d, '#8a6a52', st('#8a6a52', 1.3));
+      postD += `M${x - 3} ${f(y)}V436l3 -4l3 4V${f(y)}Z`;
       posts += `M${x - 5} 434q5 -6 10 0Z`;
     }
+    R(postD, '#8a6a52', st('#8a6a52', 1.3));
     add(`<path d="${posts}" fill="#f4f9ff"/>`);
     add(`<path d="M440 451.5L800 445.5" stroke="#f4f9ff" stroke-width="3" stroke-linecap="round"/>`);
   });
@@ -288,7 +294,7 @@ export default function generate(variant = 0) {
     ],
     hooves: 'M-28 41h8v3h-8ZM-15 41h8v3h-8ZM10 41h8v3h-8ZM24 41h8v3h-8Z',
     neck: 'M22 -18C26 -28 31 -36 38 -42L52 -35C47 -25 43 -12 35 -2Z',
-    mane: 'M30 -10C38 -8 42 4 36 16C29 12 26 2 26 -6Z',
+    mane: 'M27 -16C35 -14 41 -4 39 8L36 5L35 11L32 6L30 11L28 5L26 8C24 0 24 -8 27 -16Z',
     head: 'M36 -44C42 -52 54 -52 60 -46C66 -42 70 -36 68 -31C66 -27 58 -27 52 -29C46 -29 38 -33 36 -40Z',
     ear: 'M40 -46L32 -52L42 -49Z',
     tail: 'M-36 2C-42 0 -44 -6 -39 -9C-37 -4 -35 -2 -36 2Z',
@@ -298,37 +304,34 @@ export default function generate(variant = 0) {
   const reindeer = (key, x, y, s, flip) => group(key, 'Poro', 'Reindeer', () => {
     ground(x, y + 44 * s, 76 * s, { h: 60 * s, colour: SHADE, op: 0.35 });
     add(`<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">`);
-    deer.legs.forEach((d, i) => R(d, i % 2 ? '#5a3a2c' : '#6e4a38', st('#5a3a2c', 1.5)));
+    // near legs and far legs as two shapes, so a leg half-hidden behind a tree is never a speck
+    R(deer.legs[0] + deer.legs[2], '#6e4a38', st('#5a3a2c', 1.5));
+    R(deer.legs[1] + deer.legs[3], '#5a3a2c', st('#5a3a2c', 1.5));
     add(`<path d="${deer.hooves}" fill="#2a1d22"/>`);
     add(`<path d="M-30 30l6 0M-16 31l6 0M10 30l7 0M25 29l7 0" stroke="#e6dccc" stroke-width="2.4" opacity=".8"/>`);
-    R(deer.body, 'url(#rv-deer)', st('#6e4a38', 1.8));
+    R(deer.body + deer.tail, 'url(#rv-deer)', st('#6e4a38', 1.8));
     shadow(deer.body, SHADE, 12, 0.4);
     rim(deer.body, AUR, 2, 0.85);
     add(`<path d="M-30 12C-14 16 8 16 30 10" fill="none" stroke="#e6dccc" stroke-width="3" opacity=".55"/>`);
     R(deer.neck, '#8a6248', st('#6e4a38', 1.8));
     R(deer.mane, '#f3ece4', st('#c9bcb0', 1.3));
-    R(deer.ear, '#7a5440', st('#5a3a2c', 1.1));
-    R(deer.head, '#8a6248', st('#6e4a38', 1.8));
+    // the ear is part of the head shape (on its own it would be a speck behind the antlers)
+    R(deer.ear + deer.head, '#8a6248', st('#6e4a38', 1.8));
+    add(`<path d="${deer.ear}" fill="#7a5440"/>`);
     rim(deer.head, AUR, 1.6, 0.85);
-    R(deer.tail, '#f3ece4', st('#c9bcb0', 1.2));
+    add(`<path d="${deer.tail}" fill="#f3ece4"/>`); // the white rump tuft, part of the body shape
     ink(`<circle cx="47" cy="-42" r="2" fill="${INK}"/>`);
     ink(`<ellipse cx="66" cy="-33" rx="2.4" ry="2" fill="#2a1d22"/>`);
-    add('</g>');
-  });
-  const antlers = (key, x, y, s, flip) => group(key, 'Poron sarvet', 'Antlers', () => {
-    add(`<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">`);
     R(deer.antL, '#cdb48a', st('#a8906a', 1.4));
     R(deer.antR, '#e6d2aa', st('#a8906a', 1.4));
     rim(deer.antR, AUR, 1.2, 0.8);
     add('</g>');
   });
   reindeer('reindeer1', 700, 470, 0.78, true);
-  antlers('antlers1', 700, 470, 0.78, true);
   reindeer('reindeer0', 520, 486, 1, false);
-  antlers('antlers0', 520, 486, 1, false);
 
   // ---------------------------------------------------------------- bird feeder + bullfinches
-  group('feeder', 'Lintulauta', 'Bird feeder', () => {
+  group('feeder', 'Lintulauta ja punatulkut', 'Bird feeder and bullfinches', () => {
     R('M452 540V446h6v94Z', '#7a5a44', st('#7a5a44', 1.3));
     ground(455, 540, 14, { h: 90, colour: SHADE });
     R('M432 446h46v6h-46Z', '#8a6a52', st('#7a5a44', 1.3));
@@ -337,14 +340,13 @@ export default function generate(variant = 0) {
     R(roof, '#dfe6fa', st('#9aa6d8', 1.4));
     rim(roof, AUR, 1.6, 0.8);
     add(`<path d="M440 445h30" stroke="#d9b870" stroke-width="2.4" stroke-dasharray="2 2"/>`);
-  });
-  group('bullfinches', 'Punatulkut', 'Bullfinches', () => {
+    // two bullfinches: one on the tray, one on the roof ridge
     const bird = (x, y, s, flip) => {
       add(`<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">`);
       R('M-9 0C-10 -8 -2 -12 4 -10C9 -8 10 -2 8 2C5 6 -6 6 -9 0Z', '#e2483a', st('#a83226', 1.2));
       R('M-6 -6C-4 -12 4 -14 8 -9C6 -5 -2 -4 -6 -6Z', '#6a6e80', st('#4a4e60', 1.1));
-      R('M4 -12C6 -16 12 -15 12 -10C11 -7 7 -7 5 -9Z', '#1f1d2a', st('#1f1d2a', 1));
-      R('M-9 -2L-16 -4L-14 1Z', '#1f1d2a', st('#1f1d2a', 1));
+      // black cap and tail in one ink-dark shape each side of the body
+      R('M4 -12C6 -16 12 -15 12 -10C11 -7 7 -7 5 -9ZM-9 -2L-17 -5L-15 2Z', '#1f1d2a', st('#1f1d2a', 1));
       ink(`<path d="M12 -11l3 1l-3 1" fill="${INK}"/>`);
       add('</g>');
     };
@@ -366,11 +368,14 @@ export default function generate(variant = 0) {
   group('kicksled', 'Potkukelkka', 'Kick-sled', () => {
     add('<g transform="translate(-80 -2)">');
     add(`<path d="M220 514H306" stroke="${SHADE}" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>`);
-    ink(`<path d="M214 506C206 506 206 512 214 512H306" fill="none" stroke="#5a6070" stroke-width="2.6" stroke-linecap="round"/>`);
-    ink(`<path d="M236 510V468M260 510V472M282 510V448M290 510V448M282 448H296" fill="none" stroke="#5a6070" stroke-width="2.4" stroke-linecap="round"/>`);
-    const seat = 'M228 470H268L264 480H232Z';
+    // runners curl up at the front (left) and run back under the rider's feet
+    ink(`<path d="M214 506C206 506 206 512 214 512H312" fill="none" stroke="#5a6070" stroke-width="2.6" stroke-linecap="round"/>`);
+    // seat legs, then the two backrest posts leaning back up to the handlebar
+    ink(`<path d="M236 511V479M258 511V479M262 511L272 444M268 511L278 444M270 444H286" fill="none" stroke="#5a6070" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`);
+    const seat = 'M226 470H268L264 480H230Z';
     R(seat, '#d9443a', st('#a83226', 1.4));
-    R('M230 470V454L238 452V470Z', '#d9443a', st('#a83226', 1.3));
+    // the backrest panel sits between the posts, at the back of the seat
+    R('M263 471L266 450L276 450L273 471Z', '#d9443a', st('#a83226', 1.3));
     rim(seat, AUR, 1.4, 0.7);
     crescent(seat, WARM, 2.5, 2, 0.8);
     add('</g>');
@@ -396,8 +401,9 @@ export default function generate(variant = 0) {
     add(`<path d="${tr}" fill="#b4c3ea" opacity=".8"/>`);
     S.seed(45);
     add('<g data-anim="snow">');
-    // two identical copies 610px apart so the falling loop is seamless
-    const flakes = Array.from({ length: 28 }, () => [r(0, 800), r(0, 610), r(2.4, 5.5), r(.55, .95)]);
+    // diamond dust: on a clear, very cold night the air itself freezes into glinting crystals that drift
+    // down under the stars (falling snowflakes would need clouds). Two copies 610px apart loop seamlessly.
+    const flakes = Array.from({ length: 34 }, () => [r(0, 800), r(0, 610), r(1.4, 3.2), r(.5, .95)]);
     for (const dy of [0, 610]) for (const [x, y, rr, o] of flakes) add(`<circle cx="${f(x)}" cy="${f(y + dy)}" r="${f(rr)}" fill="url(#rv-flake)" opacity="${f(o)}"/>`);
     add('</g>');
   });
@@ -409,12 +415,15 @@ export default function generate(variant = 0) {
     R(d, '#e0302a', st('#a01a1a', 2));
     rim(d, '#ffb0a0', 1.8, 0.8);
     ink(`<path d="M402 562H454" stroke="${INK}" stroke-opacity=".4" stroke-width="2"/>`);
-    ink(`<path d="M484 548C500 540 512 538 530 544" fill="none" stroke="${INK}" stroke-width="2"/>`);
+    ink(`<path d="M484 548C498 548 504 566 520 574C532 580 546 578 552 574C558 569 552 563 545 566C538 570 541 578 552 579" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`);
     add('</g>');
   });
   const SM = [300, 0];
+  // modelled at full size, drawn at 0.7× about its base: about 2 m tall for where it stands
+  const SMT = `translate(${SM[0]} 580) scale(0.7) translate(${-SM[0]} -580)`;
   group('snowman', 'Lumiukko', 'Snowman', () => {
-    ground(SM[0], 580, 70, { h: 140, colour: SHADE, op: 0.35 });
+    ground(SM[0], 580, 50, { h: 100, colour: SHADE, op: 0.35 });
+    add(`<g transform="${SMT}">`);
     for (const [cy, rr] of [[548, 32], [500, 23], [462, 17]]) {
       const d = `M${SM[0]} ${cy - rr}a${rr} ${rr} 0 1 1 0 ${rr * 2}a${rr} ${rr} 0 1 1 0 ${-rr * 2}Z`;
       R(d, 'url(#rv-snowman)', st('#c3d0f0', 2));
@@ -425,17 +434,18 @@ export default function generate(variant = 0) {
     ink(`<circle cx="${SM[0] - 6}" cy="458" r="2.2" fill="${INK}"/><circle cx="${SM[0] + 6}" cy="458" r="2.2" fill="${INK}"/>`);
     ink(`<path d="M${SM[0] - 7} 470q7 5 14 0" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`);
     ink(`<path d="M${SM[0] - 22} 498L${SM[0] - 48} 482M${SM[0] + 22} 498L${SM[0] + 48} 478M${SM[0] - 46} 483l-6-8M${SM[0] + 46} 479l4-9" fill="none" stroke="#5a3a2c" stroke-width="3" stroke-linecap="round"/>`);
+    R(`M${SM[0] + 2} 463L${SM[0] + 24} 467L${SM[0] + 2} 469Z`, '#ff8c2e', st('#d9661a', 1.3));
+    add('</g>');
   });
-  group('carrot', 'Porkkananenä', 'Carrot nose', () => R(`M${SM[0] + 2} 463L${SM[0] + 24} 467L${SM[0] + 2} 469Z`, '#ff8c2e', st('#d9661a', 1.3)));
-  group('scarf', 'Kaulaliina', 'Scarf', () => {
+  group('clothes', 'Pipo ja kaulaliina', 'Beanie and scarf', () => {
+    add(`<g transform="${SMT}">`);
     R(`M${SM[0] - 18} 476C${SM[0] - 8} 484 ${SM[0] + 8} 484 ${SM[0] + 18} 476L${SM[0] + 20} 484C${SM[0] + 8} 494 ${SM[0] - 8} 494 ${SM[0] - 21} 484Z`, '#e86fa8', st('#c04a88', 1.6));
     R(`M${SM[0] + 8} 486L${SM[0] + 16} 510L${SM[0] + 6} 512L${SM[0]} 488Z`, '#e86fa8', st('#c04a88', 1.6));
     add(`<path d="M${SM[0] - 14} 482l4 3M${SM[0] - 4} 486l4 1M${SM[0] + 6} 486l4 -1" stroke="#ffffff" stroke-width="2" opacity=".7"/>`);
-  });
-  group('hat', 'Pipo', 'Beanie', () => {
     R(`M${SM[0] - 16} 452C${SM[0] - 17} 432 ${SM[0] + 17} 432 ${SM[0] + 16} 452Z`, '#5b8fd4', st('#3f6fb4', 1.6));
     R(`M${SM[0] - 19} 450H${SM[0] + 19}V457H${SM[0] - 19}Z`, '#fffaf2', st('#c9c0b0', 1.4));
     C(SM[0], 432, 5.5, '#fffaf2', st('#c9c0b0', 1.3));
+    add('</g>');
   });
   group('hare', 'Metsäjänis', 'Snow hare', () => {
     ground(202, 590, 56, { h: 30, colour: SHADE, op: 0.35 });
@@ -463,8 +473,7 @@ export default function generate(variant = 0) {
     R(body, '#b9a48a', st('#8a7458', 1.5));
     shadow(body, SHADE, 6, 0.3);
     R('M-13 -8C-14 -20 14 -20 13 -8C10 -2 -10 -2 -13 -8Z', '#c9b49a', st('#8a7458', 1.4));
-    R('M-12 -18L-10 -24L-5 -18Z', '#8a7458', st('#6a5440', 1));
-    R('M12 -18L10 -24L5 -18Z', '#8a7458', st('#6a5440', 1));
+    R('M-12 -18L-10 -24L-5 -18ZM12 -18L10 -24L5 -18Z', '#8a7458', st('#6a5440', 1));
     C(-5, -10, 4.6, '#ffd84a', st('#c8a020', 1.1));
     C(5, -10, 4.6, '#ffd84a', st('#c8a020', 1.1));
     ink(`<circle cx="-5" cy="-10" r="2.2" fill="${INK}"/><circle cx="5" cy="-10" r="2.2" fill="${INK}"/>`);

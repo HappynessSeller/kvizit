@@ -2,10 +2,10 @@
 // (lean-to) with a campfire and a sooty coffee pot, a fox, mushrooms, berries and lichen.
 // Light: low morning sun from the left. Warm rims on left edges, long cool shade to the right,
 // and mist lying between the planes.
-import { createScene } from './lib.mjs';
+import { createScene, perspective } from './lib.mjs';
 import { lightKit } from './light.mjs';
 import {
-  ridge, ridgeY, smooth, closeDown, contourBand, treeline, poly, spruceForm, birchForm, crownBlobs, leafScatter,
+  ridge, ridgeY, smooth, closeDown, contourBand, treeline, poly, spruceForm, birchForm, treeCrown, leafScatter,
   cumulus, rock, ripples, grassTufts, clumped, blob, rng, noise1, lerp, mix,
   setVariant,
 } from './organic.mjs';
@@ -20,6 +20,9 @@ export default function generate(variant = 0) {
   const SUN = [86, 196];
   const SHADE = '#3a3a78';
   const GOLD = '#ffdf9a';
+  // scale: the laavu's 2 m front edge is 70 px tall standing at y 474
+  const P = perspective(HY, { y: 474, px: 70, m: 2 });
+  const STORY = 2.5; // picture-book exaggeration for creatures and small things, the same for all of them
 
   S.def(`<linearGradient id="rk-sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#9bb0d4"/><stop offset=".45" stop-color="#d6d6e4"/><stop offset=".8" stop-color="#f6dcc8"/><stop offset="1" stop-color="#ffe2bc"/></linearGradient>
@@ -236,9 +239,9 @@ export default function generate(variant = 0) {
     rim(d, GOLD, 1.6, 0.9);
     ink(`<path d="M614 470v10M630 470v10" stroke="${INK}" stroke-width="1.2" stroke-opacity=".6"/>`);
   });
-  group('campfire', 'Nuotio', 'Campfire', () => {
+  group('campfire', 'Nuotio ja nokipannu', 'Campfire and coffee pot', () => {
     add(`<circle cx="548" cy="500" r="48" fill="url(#rk-fireGlow)" data-anim="glow"/>`);
-    for (const [x, y] of [[524, 508], [534, 512], [548, 514], [562, 512], [572, 507]]) R(blob({ seed: x, cx: x, cy: y, r: 7, ry: 4.5, lobes: 4, scallop: 0.05, wobble: 0.12 }), '#9a96ae', st('#9a96ae', 1.1));
+    R([[524, 508], [534, 512], [548, 514], [562, 512], [572, 507]].map(([x, y]) => blob({ seed: x, cx: x, cy: y, r: 7, ry: 4.5, lobes: 4, scallop: 0.05, wobble: 0.12 })).join(''), '#9a96ae', st('#9a96ae', 1.1));
     R('M528 504L566 496L568 501L530 509Z', '#6e4a34', st('#6e4a34', 1.2));
     R('M532 496L568 506L564 510L528 501Z', '#7a5236', st('#7a5236', 1.2));
     add('<g data-anim="flicker">');
@@ -247,8 +250,7 @@ export default function generate(variant = 0) {
     add('</g>');
     smoke(548, 470, { h: 110, w: 6, lean: 30, colour: '#f2f0f8', seed: 5 });
     add(`<ellipse cx="548" cy="512" rx="70" ry="16" fill="#ffc870" opacity=".25" filter="url(#rk-soft8)" data-anim="flicker"/>`);
-  });
-  group('pot', 'Nokipannu', 'Coffee pot', () => {
+    // the sooty coffee pot on its tripod
     ink(`<path d="M512 512L540 452M584 512L556 452M540 452H556" fill="none" stroke="#5a3a2c" stroke-width="2.4" stroke-linecap="round"/>`);
     ink(`<path d="M548 452V462" stroke="${INK}" stroke-width="1.2"/>`);
     const d = 'M538 478C536 468 540 462 548 462C556 462 560 468 558 478Z';
@@ -268,13 +270,17 @@ export default function generate(variant = 0) {
   });
   group('reindeerLichen', 'Poronjäkälä', 'Reindeer lichen', () => {
     const Rn = rng(8);
-    for (const [cx, cy, n] of [[200, 528, 7], [312, 534, 6], [92, 560, 5], [714, 532, 6]]) {
+    for (const [cx, cy, n] of [[200, 528, 7], [128, 534, 6], [92, 560, 5], [714, 532, 6]]) {
+      // one cushion per clump (the paintable shape); the coral-like puffs are texture on top
+      const clump = blob({ seed: cx, cx, cy: cy - 2, r: 26, ry: 9, lobes: 9, scallop: 0.3, wobble: 0.1 });
+      R(clump, '#e6e6d4', st('#bdbfa8', 1.2));
+      let puffs = '';
       for (let i = 0; i < n; i++) {
-        const x = cx + (Rn() - 0.5) * 40, y = cy + (Rn() - 0.5) * 8, r = 6 + Rn() * 5;
-        const d = blob({ seed: Math.floor(x * 13 + y), cx: x, cy: y, r, ry: r * 0.7, lobes: 8, scallop: 0.35, wobble: 0.1, n: 48 });
-        R(d, '#e6e6d4', st('#bdbfa8', 1));
-        add(`<path d="${d}" fill="#ffffff" opacity=".5" transform="translate(-1.2 -1.2)"/>`);
+        const x = cx + (Rn() - 0.5) * 36, y = cy - 2 + (Rn() - 0.5) * 6, r = 4 + Rn() * 3;
+        puffs += blob({ seed: Math.floor(x * 13 + y), cx: x, cy: y, r, ry: r * 0.7, lobes: 8, scallop: 0.35, wobble: 0.1, n: 40 });
       }
+      add(`<path d="${puffs}" fill="#f4f4e6" stroke="#c9cbb4" stroke-width=".8"/>`);
+      add(`<path d="${puffs}" fill="#ffffff" opacity=".45" transform="translate(-1 -1)"/>`);
     }
   });
 
@@ -290,20 +296,22 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- golden birch (right) and rowan (left)
+  const birch = birchForm({ seed: 4, x: 768, top: 120, w: 13, lean: -18, ink: INK, base: 612 });
+  const birchCrown = treeCrown({ seed: 51, at: birch.at, t0: 0.58, branches: 7, reach: [50, 110], angle: [0.3, 0.95], size: [20, 32], hang: 44, sideReach: [1.2, 0.55], xMax: 812 });
   group('birchTrunk', 'Koivun runko', 'Birch trunk', () => {
-    const b = birchForm({ seed: 4, x: 768, top: 120, w: 13, lean: -18, ink: INK, base: 612 });
-    R(b.trunk, '#f7f2e8', st('#cfc6d8', 2.2));
-    shadow(b.trunk, '#8a86b8', 8, 0.4);
-    for (const m of [...b.marks, ...b.twigs]) ink(m);
+    R(birch.trunk, '#f7f2e8', st('#cfc6d8', 2.2));
+    shadow(birch.trunk, '#8a86b8', 8, 0.4);
+    for (const m of birch.marks) ink(m);
+    for (const d of birchCrown.branches) ink(`<path d="${d}" fill="${INK}"/>`);
   });
   group('birchCrown', 'Koivun kultalehdet', 'Golden birch leaves', () => {
     add('<g data-anim="sway-slow">');
-    for (const bl of crownBlobs({ seed: 51, cx: 740, cy: 150, rx: 110, ry: 110, n: 13, size: [20, 34], lobes: 9, hang: 60 })) {
+    for (const bl of birchCrown.blobs) {
       R(bl.d, 'url(#rk-gold)', st('#e3a12e', 1.8));
       shadow(bl.d, '#8a4a1e', bl.r * 0.5, 0.3);
       rim(bl.d, '#fff3b0', 2.2, 0.85);
     }
-    add(leafScatter({ seed: 52, cx: 740, cy: 160, rx: 120, ry: 130, n: 110, size: 4.5, colours: ['#ffd35e', '#f2b23a', '#ffe48a', '#e8962a'] }));
+    add(leafScatter({ seed: 52, cx: 730, cy: 190, rx: 110, ry: 130, n: 110, size: 4.5, colours: ['#ffd35e', '#f2b23a', '#ffe48a', '#e8962a'] }));
     add('</g>');
   });
   group('fallingLeaves', 'Putoavat lehdet', 'Falling leaves', () => {
@@ -313,37 +321,45 @@ export default function generate(variant = 0) {
       R(`M${f(x)} ${f(y)}c4 -6 10 -6 12 0c-2 6 -8 6 -12 0Z`, ['#f0a03c', '#e8c04a', '#e2733d'][i % 3], `${st('#c8701e', 1)} data-anim="fall" style="animation-delay:-${f(i * 0.7)}s"`);
     }
   });
+  const rN = noise1(5);
+  const rowanAt = (t) => [46 + rN(t * 2, 2) * 8 + t * 10, 604 - t * 250, 14 - t * 9];
+  const rowanCrown = treeCrown({ seed: 61, at: rowanAt, t0: 0.5, branches: 8, reach: [54, 116], angle: [0.3, 0.95], size: [22, 32], cap: 1.15, sideReach: [0.6, 1.3], xMin: -10, bw: 0.32 });
   group('rowanTrunk', 'Pihlajan runko', 'Rowan trunk', () => {
-    const N = noise1(5);
     const L = [], Rr = [];
     for (let i = 0; i <= 12; i++) {
-      const t = i / 12, y = 604 - t * 250, cx = 46 + N(t * 2, 2) * 8 + t * 10, w = 14 - t * 9;
+      const [cx, y, w] = rowanAt(i / 12);
       L.push([cx - w, y]); Rr.push([cx + w, y]);
     }
+    // all limbs are one shape drawn behind the trunk, so none is a sliver of its own in the line art
+    R(rowanCrown.branches.join(''), '#7a6052', st('#7a6052', 1.4));
     const d = smooth([...L, ...Rr.reverse()], true);
     R(d, '#7a6052', st('#7a6052', 2));
     rim(d, GOLD, 2, 0.8);
-    ink(`<path d="M54 470q-24 -30 -44 -40M60 420q26 -20 46 -56M52 520q-6 -10 -12 -14" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>`);
   });
   group('rowanCrown', 'Pihlajan lehdet', 'Rowan leaves', () => {
     add('<g data-anim="sway-slow">');
-    for (const bl of crownBlobs({ seed: 61, cx: 60, cy: 330, rx: 100, ry: 80, n: 11, size: [20, 32], lobes: 9, hang: 30 })) {
+    for (const bl of rowanCrown.blobs) {
       R(bl.d, 'url(#rk-rowan)', st('#c8442e', 1.8));
       shadow(bl.d, '#6a1d2a', bl.r * 0.5, 0.3);
       rim(bl.d, '#ffd8a0', 2.2, 0.85);
     }
-    add(leafScatter({ seed: 62, cx: 60, cy: 330, rx: 110, ry: 90, n: 80, size: 4.5, colours: ['#ff9b5e', '#e2573a', '#ffb070', '#c4472f'] }));
+    add(leafScatter({ seed: 62, cx: 60, cy: 360, rx: 110, ry: 100, n: 80, size: 4.5, colours: ['#ff9b5e', '#e2573a', '#ffb070', '#c4472f'] }));
     add('</g>');
   });
   group('rowanBerries', 'Pihlajanmarjat', 'Rowan berries', () => {
     const Rn = rng(62);
-    for (const [cx, cy] of [[22, 352], [86, 322], [74, 372], [124, 350], [40, 300]]) {
-      for (let i = 0; i < 8; i++) {
-        const a = Rn() * Math.PI * 2, d = Math.sqrt(Rn()) * 10;
-        const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d * 0.7;
-        C(x, y, 3.8, '#d42a2a', st('#a01a1a', 1));
-        add(`<circle cx="${f(x - 1.2)}" cy="${f(y - 1.2)}" r="1.2" fill="#ffd0b0" opacity=".9"/>`);
+    // bunches hang from the lower edge of real leaf clusters; each bunch is one shape, the berries are texture
+    const hosts = rowanCrown.blobs.filter((b) => b.x > 4 && b.x < 160).sort((a, b) => b.y - a.y).slice(0, 5);
+    for (const bl of hosts) {
+      const cx = bl.x + (Rn() - 0.5) * bl.r * 0.6, cy = bl.y + bl.r * 0.62;
+      const bunch = blob({ seed: Math.round(cx * 7), cx, cy: cy + 3, r: 9, ry: 7, lobes: 7, scallop: 0.32, wobble: 0.08, n: 56 });
+      R(bunch, '#d42a2a', st('#a01a1a', 1.2));
+      let hi = '';
+      for (let i = 0; i < 7; i++) {
+        const a = Rn() * Math.PI * 2, d = Math.sqrt(Rn()) * 6, x = cx + Math.cos(a) * d, y = cy + 3 + Math.sin(a) * d * 0.7;
+        hi += `M${f(x - 1.1)} ${f(y - 1.2)}a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0`;
       }
+      add(`<path d="${hi}" fill="#ffd0b0" opacity=".85"/>`);
     }
   });
 
@@ -357,15 +373,16 @@ export default function generate(variant = 0) {
     tail: 'M-16 30C-34 34 -34 52 -12 54C8 56 26 52 34 44C30 38 22 42 12 44C-2 46 -12 42 -10 32Z',
     tip: 'M34 44C30 38 22 42 16 43C20 48 28 50 36 48C38 46 37 44 34 44Z',
   };
-  const FX = 'translate(318 500) scale(1.05)';
+  // a 0.45 m sitting fox at picture-book scale, nearer the viewer, beside the boulder
+  const FOX = [300, 588], FS = P.px(FOX[1], 0.45 * STORY) / 110;
+  const FX = `translate(${FOX[0]} ${f(FOX[1] - 46 * FS)}) scale(${f(FS)})`;
   group('fox', 'Kettu', 'Fox', () => {
-    ground(318, 546, 70, { h: 60, colour: SHADE });
+    ground(FOX[0], FOX[1], 70 * FS, { h: 60 * FS, colour: SHADE });
     add(`<g transform="${FX}">`);
     R(fox.body, 'url(#rk-fox)', st('#e2702a', 1.8));
     shadow(fox.body, '#7a2a1e', 10, 0.35);
     R(fox.chest, '#fff7ee', st('#d9cfc0', 1.3));
-    R(fox.earA, '#e2702a', st('#b8521e', 1.4));
-    R(fox.earB, '#d8662a', st('#b8521e', 1.4));
+    R(fox.earA + fox.earB, '#e2702a', st('#b8521e', 1.4));
     R(fox.head, 'url(#rk-fox)', st('#e2702a', 1.8));
     R(fox.cheek, '#fff7ee', st('#d9cfc0', 1.2));
     rim(fox.body, GOLD, 2.2, 0.9);
@@ -375,11 +392,9 @@ export default function generate(variant = 0) {
     ink(`<circle cx="36" cy="-33" r="2.2" fill="${INK}"/>`);
     // front legs: orange above, dark socks tapering to small paws
     R('M7 18C6 28 6 36 5 44C8 46 12 46 14 44C13 36 14 28 15 20Z', '#e2702a', st('#b8521e', 1.2));
-    R('M5 36C5 40 4 43 4 45C8 47 12 47 14 45C14 42 13 39 13 36Z', '#4a2a22', st('#3a221c', 1));
-    add('</g>');
-  });
-  group('foxTail', 'Ketun häntä', 'Fox tail', () => {
-    add(`<g transform="${FX}"><g data-anim="sway-slow" style="transform-origin:10% 50%">`);
+    add('<path d="M5 36C5 40 4 43 4 45C8 47 12 47 14 45C14 42 13 39 13 36Z" fill="#4a2a22"/>');
+    // the bushy tail curls round in front of the paws
+    add('<g data-anim="sway-slow" style="transform-origin:10% 50%">');
     R(fox.tail, 'url(#rk-fox)', st('#e2702a', 1.8));
     R(fox.tip, '#fff7ee', st('#d9cfc0', 1.3));
     shadow(fox.tail, '#7a2a1e', 6, 0.35);
@@ -388,24 +403,31 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- mushrooms + berries
-  const moss = (x, y, w) => add(`<path d="${blob({ seed: Math.round(x * 3 + y), cx: x, cy: y, r: w, ry: w * 0.3, lobes: 13, scallop: 0.3, wobble: 0.1 })}" fill="#7a9a3e" stroke="#4f6a2a" stroke-width=".8"/>`);
+  // Sized from real heights at picture-book scale, like the fox. Each grows from a cushion of moss or
+  // a low shrub, which is the big paintable shape; berries are texture dots, never confetti regions.
+  const moss = (x, y, w, colour = '#7a9a3e') => R(blob({ seed: Math.round(x * 3 + y), cx: x, cy: y, r: w, ry: w * 0.3, lobes: 13, scallop: 0.3, wobble: 0.1 }), colour, st('#4f6a2a', 1));
   const fly = (x, y, s) => {
     ground(x, y, 34 * s, { h: 40 * s, colour: SHADE, op: 0.25 });
-    moss(x + 2, y + 1, 26 * s);
-    add(`<g transform="translate(${x} ${y}) scale(${s})">`);
+    add(`<g transform="translate(${x} ${y}) scale(${f(s)})">`);
     const stem = 'M-6 0C-7 -10 -5 -20 -4 -26H4C5 -20 7 -10 6 0Z', cap = 'M-24 -24C-22 -44 22 -44 24 -24C12 -20 -12 -20 -24 -24Z';
     R(stem, '#fbf3e4', st('#d9cfc0', 1.6));
-    R('M-8 -16C-4 -13 4 -13 8 -16L7 -12C3 -10 -3 -10 -7 -12Z', '#fbf3e4', st('#d9cfc0', 1.2));
+    add('<path d="M-8 -16C-4 -13 4 -13 8 -16L7 -12C3 -10 -3 -10 -7 -12Z" fill="#f4e8d4" stroke="#d9cfc0" stroke-width="1"/>');
     R(cap, '#e03a2f', st('#b8221f', 1.8));
     shadow(cap, '#6a1020', 8, 0.3);
     rim(cap, '#ffd0a0', 1.8, 0.9);
     for (const [dx, dy, rr] of [[-12, -32, 3.2], [2, -36, 3.6], [13, -29, 2.8], [-3, -27, 2.4], [16, -36, 2]]) add(`<circle cx="${dx}" cy="${dy}" r="${rr}" fill="#fffaf0"/>`);
     add('</g>');
   };
-  group('flyAgaric', 'Kärpässienet', 'Fly agarics', () => { fly(170, 566, 0.72); fly(196, 576, 0.5); });
+  group('flyAgaric', 'Kärpässienet', 'Fly agarics', () => {
+    const s = (y) => P.px(y, 0.2 * STORY) / 44;
+    moss(184, 572, 34);
+    fly(172, 568, s(568));
+    fly(198, 576, s(576) * 0.7);
+  });
   group('chanterelle', 'Kantarellit', 'Chanterelles', () => {
-    moss(644, 578, 34);
-    for (const [x, y, s] of [[640, 574, 0.7], [656, 580, 0.55], [626, 582, 0.5]]) {
+    moss(644, 580, 34);
+    for (const [x, y, k] of [[640, 576, 1], [656, 582, 0.8], [626, 583, 0.75]]) {
+      const s = P.px(y, 0.07 * STORY) / 24 * k;
       const d = `M${x - 4 * s} ${y}C${x - 3 * s} ${y - 8 * s} ${x - 14 * s} ${y - 14 * s} ${x - 16 * s} ${y - 20 * s}C${x - 6 * s} ${y - 24 * s} ${x + 6 * s} ${y - 24 * s} ${x + 16 * s} ${y - 20 * s}C${x + 14 * s} ${y - 14 * s} ${x + 3 * s} ${y - 8 * s} ${x + 4 * s} ${y}Z`;
       R(d, '#f4b23a', st('#c8801e', 1.4));
       rim(d, '#fff0b0', 1.4, 0.9);
@@ -413,37 +435,38 @@ export default function generate(variant = 0) {
   });
   group('porcini', 'Herkkutatti', 'Porcini', () => {
     ground(560, 590, 34, { h: 30, colour: SHADE });
-    moss(560, 590, 30);
+    moss(560, 590, 32);
+    // drawn at full detail, then scaled about its foot to a 15 cm mushroom at twice life
+    const s = P.px(590, 0.15 * STORY) / 38;
+    add(`<g transform="translate(560 590) scale(${f(s)}) translate(-560 -590)">`);
     const stem = 'M550 590C548 580 549 573 553 568H567C571 573 572 580 570 590Z', cap = 'M541 570C542 552 578 552 579 570C567 574 553 574 541 570Z';
     R(stem, '#f3e3c4', st('#d9c4a0', 1.6));
     R(cap, '#8a5a34', st('#6a4024', 1.8));
     shadow(cap, '#3a2010', 8, 0.3);
     rim(cap, GOLD, 2, 0.9);
+    add('</g>');
   });
-  group('blueberries', 'Mustikat', 'Blueberries', () => {
-    const Rn = rng(81);
-    for (let i = 0; i < 12; i++) {
-      const x = 470 + (Rn() - 0.5) * 100, y = 560 + (Rn() - 0.5) * 30;
-      add(`<path d="M${f(x)} ${f(y)}c6 -8 14 -8 16 0c-6 6 -12 6 -16 0Z" fill="${['#5f9a4e', '#c4472f', '#7fae5a'][i % 3]}" stroke="#2f5f34" stroke-width=".8"/>`);
+  // a low dwarf shrub: one cushion region, leaves and berries as texture on top
+  const shrub = (key, fi, en, { seed, cx, cy, r, colour, leafColours, berry, hi, n }) => group(key, fi, en, () => {
+    const Rn = rng(seed);
+    const d = blob({ seed, cx, cy, r, ry: r * 0.28, lobes: 14, scallop: 0.32, wobble: 0.1 });
+    R(d, colour, st(mix(colour, '#1f3a24', 0.4), 1.2));
+    rim(d, '#e8f0a0', 1.4, 0.7);
+    let lv = '', bs = '', hs = '';
+    for (let i = 0; i < n * 2; i++) {
+      const x = cx + (Rn() - 0.5) * r * 1.6, y = cy + (Rn() - 0.6) * r * 0.32;
+      lv += `<path d="M${f(x)} ${f(y)}c3 -4 7 -4 8 0c-3 3 -6 3 -8 0Z" fill="${leafColours[i % leafColours.length]}"/>`;
     }
-    for (let i = 0; i < 10; i++) {
-      const x = 470 + (Rn() - 0.5) * 84, y = 566 + (Rn() - 0.5) * 24;
-      C(x, y, 4.6, '#3b4f9a', st('#2a3a7a', 1.1));
-      add(`<circle cx="${f(x - 1.5)}" cy="${f(y - 1.5)}" r="1.4" fill="#c8d4ff" opacity=".8"/>`);
+    for (let i = 0; i < n; i++) {
+      const x = cx + (Rn() - 0.5) * r * 1.4, y = cy + (Rn() - 0.4) * r * 0.26, rr = 1.8 + Rn() * 0.8;
+      bs += `M${f(x - rr)} ${f(y)}a${f(rr)} ${f(rr)} 0 1 0 ${f(rr * 2)} 0a${f(rr)} ${f(rr)} 0 1 0 ${f(-rr * 2)} 0`;
+      hs += `M${f(x - 0.6 - 0.6)} ${f(y - 0.6)}a.6 .6 0 1 0 1.2 0a.6 .6 0 1 0 -1.2 0`;
     }
+    add(lv);
+    add(`<path d="${bs}" fill="${berry}" stroke="${mix(berry, '#1a1030', 0.4)}" stroke-width=".6"/><path d="${hs}" fill="${hi}" opacity=".9"/>`);
   });
-  group('lingonberries', 'Puolukat', 'Lingonberries', () => {
-    const Rn = rng(82);
-    for (let i = 0; i < 10; i++) {
-      const x = 96 + (Rn() - 0.5) * 70, y = 584 + (Rn() - 0.5) * 20;
-      add(`<path d="M${f(x)} ${f(y)}c5 -6 11 -6 13 0c-5 5 -9 5 -13 0Z" fill="#3f7a46" stroke="#2f5f34" stroke-width=".8"/>`);
-    }
-    for (let i = 0; i < 12; i++) {
-      const x = 96 + (Rn() - 0.5) * 60, y = 586 + (Rn() - 0.5) * 18;
-      C(x, y, 3.6, '#e0302a', st('#a01a1a', 1));
-      add(`<circle cx="${f(x - 1.2)}" cy="${f(y - 1.2)}" r="1.1" fill="#ffd0c0" opacity=".9"/>`);
-    }
-  });
+  shrub('blueberries', 'Mustikat', 'Blueberries', { seed: 81, cx: 474, cy: 566, r: 52, colour: '#5f9a4e', leafColours: ['#7fae5a', '#c4472f', '#4f8a3e'], berry: '#3b4f9a', hi: '#c8d4ff', n: 16 });
+  shrub('lingonberries', 'Puolukat', 'Lingonberries', { seed: 82, cx: 96, cy: 586, r: 44, colour: '#3f7a46', leafColours: ['#2f6a3a', '#4f8a4e'], berry: '#e0302a', hi: '#ffd0c0', n: 16 });
 
   return S.build();
 }

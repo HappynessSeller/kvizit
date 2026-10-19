@@ -2,11 +2,11 @@
 // a sauna and jetty, a rowboat, a duck family, a birch and a band of lupines.
 // Light: high sun from the upper left. Crisp cast shadows fall down-right, shade is cool blue.
 // First picture of the game, so ~20 big, friendly areas.
-import { createScene } from './lib.mjs';
+import { createScene, perspective } from './lib.mjs';
 import { lightKit } from './light.mjs';
 import {
   smooth, closeDown, poly, blob, rng, noise1, mix, cumulus, islandSilhouette, ripples, grassTufts, clumped,
-  birchForm, crownBlobs, leafScatter, ridgeY, simplify, lerp,
+  birchForm, treeCrown, leafScatter, ridgeY, simplify, lerp,
   setVariant,
 } from './organic.mjs';
 
@@ -20,6 +20,8 @@ export default function generate(variant = 0) {
   const SUN = [112, 74];
   const SHADE = '#2f3f7a';
   const LIT = '#fff6d8';
+  // scale: the 2 m cottage door is 48 px tall standing at y 420
+  const P = perspective(HY, { y: 420, px: 48, m: 2 });
 
   S.def(`<linearGradient id="mk-sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#3f86d6"/><stop offset=".6" stop-color="#7fb6ea"/><stop offset="1" stop-color="#cfe6f6"/></linearGradient>
@@ -82,7 +84,7 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- lake
-  const shore = [[-10, 410], [120, 418], [230, 430], [330, 450], [470, 492], [610, 508], [820, 498]];
+  const shore = [[-10, 404], [120, 407], [230, 410], [300, 418], [360, 440], [440, 458], [482, 494], [610, 508], [820, 498]];
   const shoreY = (x) => ridgeY(shore, x);
   group('lake', 'Järvi', 'Lake', () => {
     R(`M0 ${HY}H800V600H0Z`, 'url(#mk-lake)');
@@ -206,9 +208,14 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- sauna, jetty, boat
+  // drawn at 1.5× about its base: with a 1.8 m door it matches the cottage's scale on the bank
+  const SAUNA = 'translate(380 456) scale(1.5) translate(-369 -452)';
   group('sauna', 'Rantasauna', 'Lakeside sauna', () => {
-    const walls = 'M334 450V414H404V452Z';
-    ground(372, 452, 76, { h: 40 });
+    const walls = 'M334 452V414H404V452Z';
+    ground(380, 460, 120, { h: 60 });
+    add(`<g transform="${SAUNA}">`);
+    // stone footing sitting on the bank
+    R('M330 452H408V456C380 458 358 458 330 456Z', '#a8a4b4', st('#8a8698', 1.2));
     R(walls, 'url(#mk-logs)', st('#6e4a34', 1.8));
     for (let y = 420; y < 452; y += 6) ink(`<path d="M335 ${y}H403" stroke="${INK}" stroke-opacity=".3" stroke-width="1"/>`);
     for (let y = 418; y < 452; y += 6) add(`<circle cx="333" cy="${y}" r="2.6" fill="#c89a6a" stroke="${INK}" stroke-opacity=".4" stroke-width=".8"/>`);
@@ -217,17 +224,22 @@ export default function generate(variant = 0) {
     rim(r, '#d6def8', 1.8, 0.8);
     R('M350 452V428h14v24Z', '#4a3428', st('#4a3428', 1.2));
     R('M374 424h18v12h-18Z', '#ffe9a8', st('#c8a050', 1.2));
-    R('M388 402h8v-12h-8Z', '#6a5a6a', st('#6a5a6a', 1.2));
-    smoke(392, 386, { h: 70, w: 5, lean: 26, seed: 7 });
+    R('M388 404h8v-14h-8Z', '#6a5a6a', st('#6a5a6a', 1.2));
     rim(walls, LIT, 2, 0.5);
+    add('</g>');
+    smoke(414, 360, { h: 80, w: 6, lean: 30, seed: 7 });
   });
   group('jetty', 'Laituri', 'Jetty', () => {
-    reflection(`<path d="M404 450H566V458H404Z" fill="#7a5a40"/>${[430, 470, 510, 550].map((x) => `<path d="M${x - 3} 456h6v16h-6Z" fill="#4a3428"/>`).join('')}`, 468, { depth: 26, amp: 2, seed: 9, opacity: 0.45, x0: 400, x1: 580 });
-    for (const x of [430, 470, 510, 550]) R(`M${x - 3} 456h6v14h-6Z`, '#6e4a34', st('#6e4a34', 1.3));
-    const deck = 'M404 450H566L570 456H400Z';
+    reflection(`<path d="M470 450H566V458H470Z" fill="#7a5a40"/>${[480, 520, 560].map((x) => `<path d="M${x - 3} 456h6v16h-6Z" fill="#4a3428"/>`).join('')}`, 468, { depth: 26, amp: 2, seed: 9, opacity: 0.45, x0: 460, x1: 580 });
+    // land end: a sleeper and two stones bedded into the bank
+    R('M428 458H446V464H428Z', '#8a6040', st('#8a6040', 1.1));
+    for (const [x, y] of [[431, 465], [446, 466]]) add(`<path d="${blob({ seed: x, cx: x, cy: y, r: 7, ry: 3.4, lobes: 4, scallop: 0.05, wobble: 0.1 })}" fill="#a8a6b8" stroke="${edge('#a8a6b8')}" stroke-width="1"/>`);
+    // posts stand in the water, beyond the shoreline
+    for (const x of [480, 520, 560]) R(`M${x - 3.5} 456h7v${f(Math.max(10, 478 - 456))}h-7Z`, '#6e4a34', st('#6e4a34', 1.3));
+    const deck = 'M434 450H566L570 456H430Z';
     R(deck, 'url(#mk-boards)', st('#b98a58', 1.6));
-    for (let x = 414; x < 566; x += 10) ink(`<path d="M${x} 450.5l-.6 5" stroke="${INK}" stroke-opacity=".3" stroke-width="1"/>`);
-    R('M400 456H570V461H400Z', '#8a6040', st('#8a6040', 1.2));
+    for (let x = 444; x < 566; x += 10) ink(`<path d="M${x} 450.5l-.6 5" stroke="${INK}" stroke-opacity=".3" stroke-width="1"/>`);
+    R('M430 456H570V461H430Z', '#8a6040', st('#8a6040', 1.2));
     rim(deck, LIT, 1.6, 0.8);
   });
   const hull = 'M584 476C596 492 664 494 690 476L686 470H588Z';
@@ -251,18 +263,26 @@ export default function generate(variant = 0) {
       add(`<ellipse cx="0" cy="8" rx="17" ry="2.4" fill="${SHADE}" opacity=".25"/>`);
       const body = 'M-15 2C-15 -7 6 -9 12 -3C16 1 12 8 0 8C-10 8 -15 6 -15 2Z';
       const head = 'M6 -4C4 -15 15 -17 17 -10C18 -7 15 -5 12 -2Z';
-      R(body, mum ? '#a6825e' : '#d8b84a', st(mum ? '#a6825e' : '#d8b84a', 1.3));
-      R(head, mum ? '#3f7a5a' : '#e6c858', st(mum ? '#3f7a5a' : '#c8a83a', 1.3));
-      R('M17 -11L23 -9L17 -7Z', '#ff9f3a', st('#d97a1a', 1));
+      if (mum) {
+        R(body, '#a6825e', st('#a6825e', 1.3));
+        R(head, '#3f7a5a', st('#3f7a5a', 1.3));
+        add('<path d="M17 -11L23 -9L17 -7Z" fill="#ff9f3a" stroke="#d97a1a" stroke-width="1"/>');
+      } else {
+        // a duckling is one fluffy shape; a separate beak would be confetti at this size
+        R(`${body}${head}`, '#d8b84a', st('#c8a83a', 1.3));
+        add('<path d="M17 -11L23 -9L17 -7Z" fill="#ff9f3a"/>');
+      }
       ink(`<circle cx="13" cy="-11" r="1.1" fill="${INK}"/>`);
       rim(body, LIT, 1.5, 0.7);
       add(`<path d="M-17 7q8 3 16 0" fill="none" stroke="#ffffff" stroke-opacity=".7" stroke-width="1.3"/>`);
       add('</g></g>');
     };
-    duck(640, 410, 1.1, true);
-    duck(682, 416, 0.55, false);
-    duck(704, 420, 0.5, false);
-    duck(726, 418, 0.52, false);
+    // sized at about twice life (mallard 0.6 m, ducklings 0.25 m), like every creature in the series
+    const s = (y, m) => P.px(y, m * 2) / 32;
+    duck(600, 436, s(436, 0.6), true);
+    duck(634, 441, s(441, 0.25), false);
+    duck(654, 444, s(444, 0.24), false);
+    duck(674, 440, s(440, 0.25), false);
   });
 
   // ---------------------------------------------------------------- flag
@@ -297,19 +317,21 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- birch
+  const b = birchForm({ seed: 14, x: 728, top: 70, w: 17, lean: -26, ink: INK, base: 612 });
+  // near the right edge, so the crown spreads mostly into the picture
+  const crown = treeCrown({ seed: 15, at: b.at, t0: 0.6, branches: 8, reach: [60, 130], angle: [0.3, 0.95], size: [24, 38], hang: 40, sideReach: [1.25, 0.6], xMax: 812 });
   group('birchTrunk', 'Koivun runko', 'Birch trunk', () => {
-    const b = birchForm({ seed: 14, x: 728, top: 70, w: 17, lean: -26, ink: INK, base: 612 });
     ground(724, 604, 44, { h: 300 });
     R(b.trunk, '#f7f2e8', st('#cfc6d8', 2.4));
     shadow(b.trunk, '#7d86b0', 9, 0.4);
-    for (const m of [...b.marks, ...b.twigs]) ink(m);
+    for (const m of b.marks) ink(m);
+    for (const d of crown.branches) ink(`<path d="${d}" fill="${INK}"/>`);
   });
   group('birchLeaves', 'Koivun lehvästö', 'Birch leaves', () => {
     add('<g data-anim="sway-slow">');
-    const blobs = crownBlobs({ seed: 15, cx: 708, cy: 112, rx: 170, ry: 110, n: 14, size: [22, 38], lobes: 9, hang: 50 });
-    foliage(blobs, {
+    foliage(crown.blobs, {
       fill: 'url(#mk-leaf)', base: '#5f9a4e', dark: '#24503a', rimColour: '#e6f6a8',
-      scatter: leafScatter({ seed: 16, cx: 708, cy: 130, rx: 175, ry: 140, n: 90, size: 4.5, colours: ['#b6dc6e', '#8cc05a', '#d9f08a'] }),
+      scatter: leafScatter({ seed: 16, cx: 680, cy: 150, rx: 150, ry: 130, n: 90, size: 4.5, colours: ['#b6dc6e', '#8cc05a', '#d9f08a'] }),
     });
     add('</g>');
   });
@@ -336,7 +358,7 @@ export default function generate(variant = 0) {
     const plants = [];
     for (const [a, b, cnt] of [[-6, 150, 7], [392, 500, 5], [552, 648, 5]]) {
       for (let i = 0; i < cnt; i++) {
-        plants.push({ x: lerp(a, b, (i + 0.2 + Rn() * 0.6) / cnt), y: 600 + Rn() * 14, h: 84 + Rn() * 96, lean: (Rn() - 0.5) * 16, pal: pals[Math.floor(Rn() * 4)] });
+        plants.push({ x: lerp(a, b, (i + 0.2 + Rn() * 0.6) / cnt), y: 600 + Rn() * 14, h: 60 + Rn() * 50, lean: (Rn() - 0.5) * 16, pal: pals[Math.floor(Rn() * 4)] });
       }
     }
     plants.sort((p, q) => p.y - q.y);

@@ -9,6 +9,21 @@ import { variant } from './organic.mjs';
 
 export const INK = '#3b2f4a';
 
+/**
+ * Ground-plane perspective for props. A thing standing on the ground at screen height y shrinks
+ * linearly to nothing at the horizon HY. Calibrate once with a known object (e.g. a 2 m door that is
+ * doorPx tall standing at doorY) and size every prop from real-world metres:
+ *   const P = perspective(HY, { y: 420, px: 48, m: 2 });  P.px(y, 0.45) → height of a 45 cm fox at y
+ * Small creatures may be exaggerated a little for a picture book, but by the same factor everywhere.
+ */
+export function perspective(HY, ref) {
+  const k = ref.px / ref.m / (ref.y - HY); // px per metre per px below the horizon
+  return {
+    s: (y) => Math.max(0.02, (y - HY) / (ref.y - HY)),
+    px: (y, metres) => metres * k * Math.max(0.5, y - HY),
+  };
+}
+
 export function createScene({ id, title, titleEn, seed = 7 }) {
   let s = seed + variant() * 7919;
   const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);

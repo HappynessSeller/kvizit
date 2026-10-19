@@ -7,7 +7,7 @@ import { createScene } from './lib.mjs';
 import { lightKit } from './light.mjs';
 import {
   ridge, ridgeY, smooth, closeDown, poly, blob, rng, noise1, mix, simplify, grassTufts, cumulus, rock,
-  islandSilhouette, cloudStreak, glitter, pineForm, lerp,
+  islandSilhouette, cloudStreak, glitter, pineForm, dropHidden, lerp,
   setVariant,
 } from './organic.mjs';
 
@@ -34,7 +34,7 @@ export default function generate(variant = 0) {
     <linearGradient id="sa-sea" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffc88e"/><stop offset=".08" stop-color="#f0a084"/><stop offset=".3" stop-color="#9a7cb0"/>
       <stop offset=".62" stop-color="#3f4f8a"/><stop offset="1" stop-color="#1f3a6a"/></linearGradient>
-    <radialGradient id="sa-sunSea" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#fff0b8" stop-opacity=".9"/><stop offset=".4" stop-color="#ffc98a" stop-opacity=".35"/><stop offset="1" stop-color="#ffc98a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="sa-sunSea"><stop offset="0" stop-color="#fff0b8" stop-opacity=".9"/><stop offset=".4" stop-color="#ffc98a" stop-opacity=".35"/><stop offset="1" stop-color="#ffc98a" stop-opacity="0"/></radialGradient>
     <linearGradient id="sa-granite" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4e3a5e"/><stop offset=".55" stop-color="#7e5670"/><stop offset="1" stop-color="#c88a7e"/></linearGradient>
     <linearGradient id="sa-rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a87278"/><stop offset=".4" stop-color="#6e5274"/><stop offset="1" stop-color="#352a4c"/></linearGradient>
     <linearGradient id="sa-boulder" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a6a7a"/><stop offset="1" stop-color="#3a2c50"/></linearGradient>
@@ -97,24 +97,24 @@ export default function generate(variant = 0) {
     islandSilhouette({ seed: 4, xa: 350, xb: 452, y0: HY, h: 4, treeMin: 2, treeMax: 6 }),
     islandSilhouette({ seed: 5, xa: 596, xb: 712, y0: HY, h: 2, treeMin: 3, treeMax: 8 }),
   ];
-  const nearD = islandSilhouette({ seed: 6, xa: 640, xb: 840, y0: HY + 14, h: 9, treeMin: 10, treeMax: 30, kinds: { spruce: 4, pine: 3 } });
-  group('islandsFar', 'Kaukaiset saaret', 'Distant islands', () => {
+  const nearD = islandSilhouette({ seed: 6, xa: 640, xb: 840, y0: HY + 1, h: 9, treeMin: 10, treeMax: 30, kinds: { spruce: 4, pine: 3 } });
+  group('islands', 'Saaret ja kaukainen purje', 'Islands and a distant sail', () => {
     for (const d of farD) R(d, '#c08aa0', 'stroke="#a8789a" stroke-width=".8"');
-  });
-  group('islandNear', 'Metsäsaari', 'Wooded island', () => {
     R(nearD, '#45406e', st('#45406e', 'far'));
     rim(nearD, RIM, 1.4, 0.9);
-    add(`<rect x="742" y="${HY + 4}" width="8" height="6" fill="#45406e"/><rect x="744" y="${HY + 5.5}" width="4" height="3" fill="#ffd27a" data-anim="flicker"/>`);
-  });
-  group('sailboat2', 'Kaukainen purje', 'Distant sail', () => {
-    R(`M694 ${HY + 6}h18l-3 3h-12Z`, '#3a2f4f', st('#3a2f4f', 'far'));
-    R(`M703 ${HY - 16}V${HY + 5}H714Z`, '#fff0dc', st('#e8b49a', 'far'));
-    R(`M702 ${HY - 13}V${HY + 5}H693Z`, '#ffe6cc', st('#e8b49a', 'far'));
+    add(`<rect x="742" y="${HY - 6}" width="8" height="6" fill="#45406e"/><rect x="744" y="${HY - 4.5}" width="4" height="3" fill="#ffd27a" data-anim="flicker"/>`);
+    // a sailboat out by the island: hull on the waterline, both sails as one shape
+    R(`M690 ${HY - 3}h22l-3 3h-16Z`, '#3a2f4f', st('#3a2f4f', 'far'));
+    R(`M703 ${HY - 24}V${HY - 4}H715ZM702 ${HY - 20}V${HY - 4}H692Z`, '#fff0dc', st('#e8b49a', 'far'));
   });
 
   // ---------------------------------------------------------------- shared geometry
   const skerryPts = ridge({ seed: 9, base: 420, peaks: [{ x: 300, h: 50, w: 190, k: 1.15 }, { x: 178, h: 30, w: 92 }, { x: 440, h: 16, w: 64 }], amp: 3, x0: 96, x1: 510, step: 4 });
-  const skerryD = closeDown(smooth(skerryPts), skerryPts, 423);
+  const WN = noise1(19);
+  const wl = (x) => 421 + WN(x * 0.045, 3) * 2.6;
+  const wlBack = [];
+  for (let x = 510; x >= 96; x -= 6) wlBack.push([x, wl(x) + 2]);
+  const skerryD = smooth(skerryPts) + 'L' + wlBack.map(([x, y]) => `${f(x)} ${f(y)}`).join('L') + 'Z';
   const LX = 300, LB = 380, LT = 252;
   const thw = (y) => 11 + (y - LT) / (LB - LT) * 7.5;
   const towerD = `M${LX - thw(LB)} ${LB + 1}Q${f(LX - 15.5)} 316 ${LX - thw(LT)} ${LT}L${LX + thw(LT)} ${LT}Q${f(LX + 15.5)} 316 ${f(LX + thw(LB))} ${LB + 1}Z`;
@@ -138,9 +138,10 @@ export default function generate(variant = 0) {
   // ---------------------------------------------------------------- sea
   group('sea', 'Meri', 'Sea', () => {
     R(`M0 ${HY}H800V600H0Z`, 'url(#sa-sea)');
-    add(`<path d="M${SUN[0] - 280} ${HY}A280 130 0 0 0 ${SUN[0] + 280} ${HY}Z" fill="url(#sa-sunSea)"/>`);
+    S.def(`<clipPath id="sa-belowHY"><rect x="0" y="${HY}" width="800" height="${600 - HY}"/></clipPath>`);
+    add(`<ellipse cx="${SUN[0]}" cy="${HY}" rx="280" ry="130" fill="url(#sa-sunSea)" clip-path="url(#sa-belowHY)"/>`);
     add(`<g transform="translate(0 ${2 * HY}) scale(1 -1)" opacity=".35">${farD.map((d) => `<path d="${d}" fill="#a07090"/>`).join('')}</g>`);
-    reflection(`<path d="${nearD}" fill="#2f2c58"/>`, HY + 14, { depth: 34, amp: 2, seed: 3, opacity: 0.6, x0: 600 });
+    reflection(`<path d="${nearD}" fill="#2f2c58"/><path d="M690 ${HY - 3}h22l-3 3h-16Z" fill="#3a2f4f"/>`, HY + 1, { depth: 34, amp: 2, seed: 3, opacity: 0.6, x0: 600 });
     water({ seed: 21, y0: HY + 6, y1: 600, rows: 30, gate: 0.2, calm: 0.2, skip: (x) => Math.abs(x - SUN[0]) < 30 }, { lit: '#ffd9b8', dark: '#1f2a5a' });
     // the sun's glitter path: brightest and densest down the middle
     add('<g data-anim="shimmer">');
@@ -156,18 +157,20 @@ export default function generate(variant = 0) {
     reflection(`<path d="${mainD}" fill="#f7d7b8"/><path d="${jibD}" fill="#f7d7b8"/><path d="${hullD}" fill="#3a2f4f"/>`, BOAT[1] + 1, { depth: 60, amp: 2.5, seed: 7, opacity: 0.45, x0: 490, x1: 590 });
     const N = noise1(31);
     let foam = '';
-    for (let x = 104; x < 504; x += 10) { const w = 4 + 6 * (0.5 + 0.5 * N(x * 0.05, 2)); foam += `M${x} ${f(422 + N(x * 0.1, 2) * 1.5)}q${f(w / 2)} -1.6 ${f(w)} 0`; }
+    for (let x = 104; x < 504; x += 10) { const w = 4 + 6 * (0.5 + 0.5 * N(x * 0.05, 2)); foam += `M${x} ${f(wl(x) + 2 + N(x * 0.1, 2))}q${f(w / 2)} -1.6 ${f(w)} 0`; }
     add(`<path d="${foam}" fill="none" stroke="#fff4ea" stroke-opacity=".8" stroke-width="1.6" stroke-linecap="round" data-anim="shimmer"/>`);
   });
   group('buoy', 'Poiju', 'Buoy', () => {
     add('<g data-anim="rock">');
+    add(`<ellipse cx="690" cy="426" rx="18" ry="3.4" fill="${COOL}" opacity=".35"/>`);
+    add('<g transform="translate(690 424) scale(1.4) translate(-690 -424)">');
     const d = 'M682 424L690 396L698 424Z';
-    add(`<ellipse cx="690" cy="426" rx="14" ry="3" fill="${COOL}" opacity=".35"/>`);
     R(d, '#d0403a', st('#d0403a', 'mid'));
     R('M684 418h12v3h-12Z', '#f6eadc', st('#c9b8a8', 1));
+    ink(`<path d="M690 397V391" stroke="#2a2a3a" stroke-width="1.6"/>`); // the topmark stands on a short staff
     R('M686 392L690 384L694 392Z', '#2a2a3a', st('#2a2a3a', 1));
     rim(d, RIM, 1.4, 0.9);
-    add('</g>');
+    add('</g></g>');
   });
 
   // ---------------------------------------------------------------- sailboat
@@ -176,10 +179,6 @@ export default function generate(variant = 0) {
     R(hullD, '#2f2846', st('#2f2846', 'mid'));
     rim(hullD, RIM, 1.4, 1);
     ink(`<path d="M${BOAT[0]} ${BOAT[1] - 6}V${BOAT[1] - 62}" stroke="#3a2f4f" stroke-width="1.6"/>`);
-    add('</g>');
-  });
-  group('sails', 'Purjeet', 'Sails', () => {
-    add('<g data-anim="rock">');
     R(mainD, 'url(#sa-sail)', st('#e8b49a', 1.2));
     R(jibD, 'url(#sa-sail)', st('#e8b49a', 1.2));
     add(`<path d="${mainD}" fill="#ffd27a" opacity=".4"/>`);
@@ -199,16 +198,10 @@ export default function generate(variant = 0) {
     S.def(`<clipPath id="sa-skClip"><path d="${skerryD}"/></clipPath>`);
     const N = noise1(77);
     const top = [];
-    for (let x = 96; x <= 510; x += 6) top.push([x, 415 + N(x * 0.08, 2) * 3]);
-    const d = smooth(top) + 'L510 424L96 424Z';
+    for (let x = 96; x <= 510; x += 6) top.push([x, wl(x) - 6 + N(x * 0.08, 2) * 3]);
+    const d = smooth(top) + 'L' + wlBack.map(([x, y]) => `${f(x)} ${f(y + 1)}`).join('L') + 'Z';
     R(d, '#3e3424', `${st('#3e3424', 1)} clip-path="url(#sa-skClip)"`);
     add(`<path d="${smooth(top.map(([x, y]) => [x, y + 1]))}" fill="none" stroke="#8a7a3a" stroke-width="1.2" opacity=".7" clip-path="url(#sa-skClip)"/>`);
-  });
-  group('pineSmall', 'Pieni mänty', 'Little pine', () => {
-    const pm = pineForm({ seed: 31, x: 128, y: ridgeY(skerryPts, 128) + 6, h: 70, w: 5, lean: 0.3, branches: 4, padR: [12, 18], reach: 0.4 });
-    for (const b of pm.branches) R(b, 'url(#sa-trunk)', st('#7d4e42', 1));
-    R(pm.trunk, 'url(#sa-trunk)', st('#7d4e42', 1.2));
-    foliage(pm.pads.map((p) => ({ ...p })), { fill: 'url(#sa-pad)', base: '#3d5a3e', dark: '#1a2c24', rimColour: RIM, underK: 0.3 });
   });
   group('boathouse', 'Venevaja', 'Boathouse', () => {
     R(bhWalls, 'url(#sa-walls)', st('#9a3a30', 'mid'));
@@ -217,10 +210,18 @@ export default function generate(variant = 0) {
     shadow(bhWalls, COOL, 14, 0.45);
     rim(bhWalls, RIM, 1.8, 1);
     add(`<path d="M168 ${f(bhY + 1)}h60" stroke="#4a3a52" stroke-width="3" stroke-linecap="round"/>`);
-  });
-  group('boathouseRoof', 'Venevajan katto', 'Boathouse roof', () => {
     R(bhRoof, '#33294a', st('#33294a', 1.4));
     rim(bhRoof, RIM, 1.6, 1);
+  });
+  // the little pine stands in front of the boathouse
+  group('pineSmall', 'Pieni mänty', 'Little pine', () => {
+    const pm = pineForm({ seed: 31, x: 128, y: ridgeY(skerryPts, 128) + 6, h: 70, w: 5, lean: 0.3, branches: 4, padR: [12, 18], reach: 0.4 });
+    // all limbs are one shape behind the trunk, so none is ever a speck between the pads
+    R(pm.branches.join(''), 'url(#sa-trunk)', st('#7d4e42', 1));
+    R(pm.trunk, 'url(#sa-trunk)', st('#7d4e42', 1.2));
+    // its pads are one shape: the big pine often crosses in front, and single pads would peek out as specks
+    const pads = dropHidden([...pm.pads].sort((a, b) => a.y - b.y), 0.4);
+    foliage([{ x: pads[0].x, y: pads[0].y, r: Math.max(...pads.map((q) => q.r)), d: pads.map((q) => q.d).join('') }], { fill: 'url(#sa-pad)', base: '#3d5a3e', dark: '#1a2c24', rimColour: RIM, underK: 0.3 });
   });
   group('keeperHouse', 'Majakanvartijan talo', "Keeper's house", () => {
     ground(356, khY, 60, { h: 30, colour: COOL });
@@ -228,25 +229,19 @@ export default function generate(variant = 0) {
     for (let x = 336; x < 380; x += 5) ink(`<path d="M${x} ${f(khY - 1)}V${f(khY - 24 - Math.max(0, 16 - Math.abs(x - 356) * 16 / 26))}" stroke="${INK}" stroke-opacity=".18" stroke-width="1"/>`);
     shadow(khWalls, COOL, 14, 0.45);
     rim(khWalls, RIM, 1.8, 1);
-  });
-  group('keeperRoof', 'Talon katto', 'House roof', () => {
     R(khRoof, '#a83a34', st('#a83a34', 1.3));
     rim(khRoof, RIM, 1.6, 1);
     R(`M368 ${f(khY - 40)}h6v10h-6Z`, '#6a5a6a', st('#6a5a6a', 1));
-  });
-  group('keeperWindows', 'Lämpimät ikkunat', 'Lit windows', () => {
     for (const x of [335, 367]) {
       add(`<rect x="${x - 4}" y="${f(khY - 22)}" width="18" height="16" fill="#ffd27a" opacity=".35" filter="url(#sa-soft3)"/>`);
       R(`M${x} ${f(khY - 18)}h10v10h-10Z`, 'url(#sa-lamp)', `${st('#c89a3a', 1.1)} data-anim="flicker"`);
       ink(`<path d="M${x + 5} ${f(khY - 18)}v10M${x} ${f(khY - 13)}h10" stroke="${INK}" stroke-width="1"/>`);
     }
   });
-  group('flagpole', 'Lipputanko', 'Flagpole', () => {
+  group('flag', 'Siniristilippu', 'Finnish flag', () => {
     const gy = ridgeY(skerryPts, 404) + 4;
     R(`M402 ${f(gy)}V312h3V${f(gy)}Z`, '#e8dcd8', st('#b8a8b8', 1));
     C(403.5, 310, 2.6, '#ffd166', st('#d9a020', 1));
-  });
-  group('flag', 'Siniristilippu', 'Finnish flag', () => {
     add('<g data-anim="wave">');
     const d = 'M405 314C414 311 422 317 432 314V332C422 335 414 329 405 332Z';
     R(d, '#fff6ee', st('#c9c0d0', 1.1));
@@ -261,18 +256,13 @@ export default function generate(variant = 0) {
     rim(towerD, RIM, 2, 1);
     R(`M${LX - 16} ${LT + 5}H${LX + 16}V${LT}H${LX - 16}Z`, '#33294a', st('#33294a', 1.2));
     ink(`<path d="M${LX - 14} ${LT}V${LT - 8}H${LX + 14}V${LT}M${LX - 7} ${LT}V${LT - 8}M${LX} ${LT}V${LT - 8}M${LX + 7} ${LT}V${LT - 8}" fill="none" stroke="${INK}" stroke-width="1.2"/>`);
-  });
-  group('bands', 'Majakan punaiset raidat', 'Red stripes', () => {
-    for (const d of bandsD) { R(d, 'url(#sa-red)', st('#b83c3c', 1.4)); rim(d, RIM, 1.8, 0.9); }
-    R(roofD, 'url(#sa-red)', st('#b83c3c', 1.4));
-    ink(`<path d="M${LX} 222V212" stroke="${INK}" stroke-width="1.6"/>`);
-    ink(`<circle cx="${LX}" cy="211" r="2" fill="${INK}"/>`);
-  });
-  group('lighthouseDoor', 'Majakan ovi ja ikkunat', 'Door and windows', () => {
     R(`M${LX - 5} ${LB + 1}V${LB - 14}Q${LX} ${LB - 20} ${LX + 5} ${LB - 14}V${LB + 1}Z`, '#3f5a6c', st('#3f5a6c', 1.2));
     for (const y of [304, 354]) R(`M${LX - 2.5} ${y}h5v8h-5Z`, '#ffd27a', `${st('#c89a3a', 1)} data-anim="flicker"`);
   });
-  group('lantern', 'Majakan valo', 'Lighthouse lamp', () => {
+  group('bands', 'Majakan punaiset raidat', 'Red stripes', () => {
+    for (const d of bandsD) { R(d, 'url(#sa-red)', st('#b83c3c', 1.4)); rim(d, RIM, 1.8, 0.9); }
+  });
+  group('lantern', 'Majakan lyhty', 'Lamp room', () => {
     add(`<g data-anim="glow">`);
     add(`<path d="M${LX} 240L-40 186L-40 270Z" fill="url(#sa-beamL)"/>`);
     add(`<path d="M${LX} 240L840 216L840 252Z" fill="url(#sa-beamR)"/>`);
@@ -280,26 +270,26 @@ export default function generate(variant = 0) {
     add('</g>');
     R(`M${LX - 9} 252V234H${LX + 9}V252Z`, 'url(#sa-lamp)', `${st('#e0a040', 1.2)} data-anim="flicker"`);
     ink(`<path d="M${LX - 3} 234V252M${LX + 3} 234V252" stroke="${INK}" stroke-width="1" stroke-opacity=".7"/>`);
+    R(roofD, 'url(#sa-red)', st('#b83c3c', 1.4));
+    ink(`<path d="M${LX} 222V212" stroke="${INK}" stroke-width="1.6"/>`);
+    ink(`<circle cx="${LX}" cy="211" r="2" fill="${INK}"/>`);
   });
 
   // ---------------------------------------------------------------- jetty, fish boxes, lifebuoy, rowboat
-  group('jetty', 'Laituri', 'Jetty', () => {
+  group('jetty', 'Laituri ja kalalaatikot', 'Jetty and fish boxes', () => {
     for (const x of [480, 520, 560, 600]) R(`M${x - 3} ${JY + 6}h6v16h-6Z`, '#4a3440', st('#4a3440', 1.2));
     R(deckD, 'url(#sa-boards)', st('#9a7458', 'mid'));
     for (let x = 474; x < 612; x += 9) ink(`<path d="M${x} ${JY + 0.5}l-.5 5" stroke="${INK}" stroke-opacity=".3" stroke-width="1"/>`);
     R(`M462 ${JY + 6}H616V${JY + 10}H462Z`, '#5a4048', st('#5a4048', 1.1));
     R(`M610 ${JY + 8}V390h5V${JY + 8}Z`, '#5a4048', st('#5a4048', 1.1));
     rim(deckD, RIM, 1.4, 1);
-  });
-  group('fishBoxes', 'Kalalaatikot', 'Fish boxes', () => {
-    for (const [x, y, w, c] of [[478, JY - 12, 22, '#4a7aa8'], [500, JY - 10, 18, '#e0a03a'], [486, JY - 22, 18, '#d0503a']]) {
-      const d = `M${x} ${y}h${w}v${y === JY - 22 ? 10 : 12}h${-w}Z`;
+    // fish boxes stacked on the deck
+    for (const [x, y, w, c] of [[478, JY - 7, 13, '#4a7aa8'], [492, JY - 6.5, 11, '#e0a03a'], [482, JY - 13.5, 11, '#d0503a']]) {
+      const d = `M${x} ${y}h${w}v${y === JY - 13.5 ? 6.5 : y === JY - 6.5 ? 6.5 : 7}h${-w}Z`;
       R(d, c, st(c, 1.2));
-      shadow(d, COOL, 6, 0.4);
+      shadow(d, COOL, 4, 0.4);
       rim(d, RIM, 1.2, 1);
     }
-  });
-  group('lifebuoy', 'Pelastusrengas', 'Lifebuoy', () => {
     const ring = 'M612.5 392a9 9 0 1 1 0 18a9 9 0 1 1 0 -18Z M612.5 396.5a4.5 4.5 0 1 0 0 9a4.5 4.5 0 1 0 0 -9Z';
     R(ring, '#ff6a4a', `${st('#c8402f', 1.2)} fill-rule="evenodd"`);
     add(`<path d="M612.5 392v4.5M612.5 405.5v4.5M603.5 401h4.5M617 401h4.5" stroke="#ffffff" stroke-width="3"/>`);
@@ -318,15 +308,13 @@ export default function generate(variant = 0) {
 
   // ---------------------------------------------------------------- the kayak
   const KX = 694, KY = 480;
-  group('kayak', 'Kajakki', 'Kayak', () => {
+  group('kayak', 'Melojalapsi kajakissa', 'Kid in a kayak', () => {
     add(`<path d="M${KX - 60} ${KY + 4}q30 -3 60 0q30 3 60 0M${KX + 50} ${KY + 8}q20 6 40 14M${KX + 50} ${KY}q24 -2 46 4" fill="none" stroke="#fff0dc" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round" data-anim="shimmer"/>`);
     const d = `M${KX - 50} ${KY}C${KX - 30} ${KY - 6} ${KX + 30} ${KY - 6} ${KX + 50} ${KY}C${KX + 30} ${KY + 6} ${KX - 30} ${KY + 6} ${KX - 50} ${KY}Z`;
     R(d, '#e0443a', st('#e0443a', 'mid'));
-    R(`M${KX - 10} ${KY - 3}a12 3.4 0 1 0 24 0a12 3.4 0 1 0 -24 0Z`, '#2a2438', st('#2a2438', 1));
+    add(`<path d="M${KX - 10} ${KY - 3}a12 3.4 0 1 0 24 0a12 3.4 0 1 0 -24 0Z" fill="#2a2438"/>`);
     shadow(d, COOL, 5, 0.4);
     rim(d, RIM, 1.4, 1);
-  });
-  group('kayaker', 'Melojalapsi', 'Kid paddling', () => {
     add('<g data-anim="bob">');
     ink(`<path d="M${KX - 30} ${KY + 10}L${KX + 34} ${KY - 34}" stroke="#4a3a40" stroke-width="2.4" stroke-linecap="round"/>`);
     R(`M${KX - 36} ${KY + 12}l8 -10l6 4l-8 10Z`, '#f2c14e', st('#c89a2e', 1));
@@ -392,9 +380,9 @@ export default function generate(variant = 0) {
     lichen(44, 80, 540, 800, 520, 600, (x, y) => y > ridgeY(rockRPts, x) + 4, ['#e09a4a', '#b9c08a', '#e8d8c0'], 0.6);
   });
   group('pool', 'Kalliolammikko', 'Rock pool', () => {
-    const d = blob({ seed: 9, cx: 726, cy: 560, r: 34, ry: 7, lobes: 5, scallop: 0.05, wobble: 0.12 });
+    const d = blob({ seed: 9, cx: 724, cy: 562, r: 40, ry: 9, lobes: 5, scallop: 0.05, wobble: 0.12 });
     R(d, 'url(#sa-pool)', st('#6a4a86', 1.4));
-    add(`<path d="M704 558h18M730 562h12" stroke="#fff3cc" stroke-opacity=".8" stroke-width="1.6" stroke-linecap="round" data-anim="shimmer"/>`);
+    add(`<path d="M700 560h20M730 564h14" stroke="#fff3cc" stroke-opacity=".8" stroke-width="1.6" stroke-linecap="round" data-anim="shimmer"/>`);
   });
   group('seal', 'Hylje', 'Seal', () => {
     const gy = ridgeY(rockRPts, 600) + 10;
@@ -411,15 +399,15 @@ export default function generate(variant = 0) {
   });
   group('thrift', 'Laukkaneilikat', 'Sea thrift', () => {
     const Rn = rng(51);
-    for (const cx of [640, 700, 780]) {
+    for (const cx of [634, 708]) {
       const gy = ridgeY(rockRPts, cx) + 10;
-      let ros = '';
-      for (let k = 0; k < 12; k++) { const a = Math.PI * (1.1 + k / 11 * 0.8), l = 10 + Rn() * 6; ros += `M${cx} ${f(gy)}q${f(Math.cos(a) * l * 0.5)} ${f(Math.sin(a) * l * 0.8)} ${f(Math.cos(a) * l)} ${f(Math.sin(a) * l * 0.6)}`; }
-      add(`<path d="${ros}" fill="none" stroke="#6f8a3e" stroke-width="1.6" stroke-linecap="round"/>`);
-      const heads = 5 + Math.floor(Rn() * 3);
+      // the grassy cushion is the plant's big shape
+      const cushion = blob({ seed: cx, cx, cy: gy - 3, r: 15, ry: 6, lobes: 13, scallop: 0.35, wobble: 0.08 });
+      R(cushion, '#6f8a3e', st('#4f6a2e', 1));
+      const heads = 4 + Math.floor(Rn() * 2);
       for (let i = 0; i < heads; i++) {
-        const x = cx + (i - heads / 2) * 5 + (Rn() - 0.5) * 4, h = 18 + Rn() * 26;
-        const hx = x + (Rn() - 0.5) * 6, hy = gy - h, r = 4 + Rn() * 2;
+        const x = cx + (i - (heads - 1) / 2) * 9 + (Rn() - 0.5) * 2, h = 13 + (i % 2) * 6 + Rn() * 6;
+        const hx = x + (Rn() - 0.5) * 3, hy = gy - h, r = 3.8 + Rn() * 1.2;
         add(`<g data-anim="sway" style="animation-delay:-${f(Rn() * 3)}s">`);
         ink(`<path d="M${f(x)} ${f(gy)}Q${f(x + (hx - x) * 0.3)} ${f(gy - h * 0.6)} ${f(hx)} ${f(hy)}" fill="none" stroke="#5f7a3a" stroke-width="1.2"/>`);
         const d = blob({ seed: Math.round(hx * 10 + i), cx: hx, cy: hy, r, ry: r * 0.92, lobes: 9, scallop: 0.2, wobble: 0.06, n: 40 });
@@ -431,7 +419,7 @@ export default function generate(variant = 0) {
     }
   });
   group('gulls', 'Lokit', 'Gulls', () => {
-    for (const [x, y, s, dl] of [[420, 150, 1, 0], [450, 164, 0.8, 0.6], [640, 96, 0.9, 1.2], [372, 208, 0.65, 0.3]]) {
+    for (const [x, y, s, dl] of [[420, 150, 1.25, 0], [452, 166, 1, 0.6], [640, 96, 1.1, 1.2], [372, 208, 0.85, 0.3]]) {
       const d = `M${f(x - 16 * s)} ${f(y - 2 * s)}Q${f(x - 7 * s)} ${f(y - 11 * s)} ${x} ${f(y)}Q${f(x + 7 * s)} ${f(y - 11 * s)} ${f(x + 16 * s)} ${f(y - 2 * s)}Q${f(x + 7 * s)} ${f(y - 5 * s)} ${x} ${f(y + 2.5 * s)}Q${f(x - 7 * s)} ${f(y - 5 * s)} ${f(x - 16 * s)} ${f(y - 2 * s)}Z`;
       R(d, '#e8e0ec', `${st('#8a7a9a', 1)} data-anim="bob" style="animation-delay:-${dl}s"`);
     }
@@ -442,7 +430,7 @@ export default function generate(variant = 0) {
     R(body, '#f2ecf0', st('#a898b0', 1.2));
     R('M-8 -14C-4 -18 6 -18 12 -12C6 -10 -2 -10 -8 -14Z', '#9a94ac', st('#7a7490', 1));
     R('M-14 -10C-18 -20 -10 -26 -6 -22C-4 -20 -6 -16 -8 -14Z', '#f2ecf0', st('#a898b0', 1.1));
-    R('M-17 -20L-24 -19L-17 -18Z', '#f2c14e', st('#c89a2e', .8));
+    add('<path d="M-17 -20L-24 -19L-17 -18Z" fill="#f2c14e" stroke="#c89a2e" stroke-width=".8"/>');
     ink(`<circle cx="-12" cy="-21" r=".9" fill="${INK}"/><path d="M-2 -4v6M2 -4v6" stroke="#e0a03a" stroke-width="1.4"/>`);
     rim(body, RIM, 1.2, 1);
     add('</g>');
@@ -490,9 +478,9 @@ export default function generate(variant = 0) {
       add(`<path d="${sp}" fill="none" stroke="#5a6a3a" stroke-width="1.1" stroke-linecap="round"/><path d="${bl}" stroke="#f0a6dc" stroke-width="2.6" stroke-linecap="round"/>`);
     }
   });
-  group('grass', 'Rantaheinä', 'Shore grass', () => {
+  group('grass', 'Rantaheinä ja kissankellot', 'Shore grass and harebells', () => {
     const Rn = rng(91);
-    for (const [pts, x] of [[rockLPts, 30], [rockLPts, 176], [rockLPts, 338], [rockRPts, 676], [rockRPts, 740]]) {
+    for (const [pts, x] of [[rockLPts, 30], [rockLPts, 176], [rockLPts, 300], [rockRPts, 670], [rockRPts, 744]]) {
       const gy = ridgeY(pts, x) + 8;
       const tips = [];
       const n = 7;
@@ -507,14 +495,13 @@ export default function generate(variant = 0) {
       R(d, '#c8a85a', st('#a8884a', 1.1));
       rim(d, RIM, 1.2, 1);
     }
-  });
-  group('bluebells', 'Kissankellot', 'Harebells', () => {
-    const Rn = rng(81);
-    for (const [x, h] of [[14, 50], [30, 62], [52, 44], [74, 56], [118, 40]]) {
+    // harebells nodding among the grass
+    const Rb = rng(81);
+    for (const [x, h] of [[4, 50], [18, 62], [100, 44], [116, 56], [134, 40]]) {
       const y = ridgeY(rockLPts, x) + 14;
-      const bend = 10 + Rn() * 6;
+      const bend = 10 + Rb() * 6;
       const tx = x + bend, ty = y - h;
-      add(`<g data-anim="sway" style="animation-delay:-${f(Rn() * 3)}s">`);
+      add(`<g data-anim="sway" style="animation-delay:-${f(Rb() * 3)}s">`);
       // arched stem, the bell nodding at its tip
       ink(`<path d="M${x} ${y}Q${f(x - 4)} ${f(y - h * 1.1)} ${f(tx)} ${f(ty + 2)}" fill="none" stroke="#5f7a3a" stroke-width="1.2"/>`);
       const bell = (bx, by, s) => {
@@ -529,9 +516,16 @@ export default function generate(variant = 0) {
   });
 
   // ---------------------------------------------------------------- the pine
-  const pine = pineForm({ seed: 12, x: 56, y: ridgeY(rockLPts, 56) + 14, h: 400, w: 16, lean: 0.2, branches: 9, padR: [28, 56], reach: 0.55 });
+  const pineFits = (p) => {
+    const [tx] = p.spine[p.spine.length - 1];
+    if (tx < 110 || tx > 280) return false;
+    return p.pads.every((q) => q.y + q.r * 0.45 < 408 && q.x > 12 &&
+      !(Math.abs(q.x - LX) < q.r * 1.3 + 10 && q.y + q.r * 0.45 > 206 && q.y - q.r * 0.45 < 258));
+  };
+  const pine = pineForm({ seed: 12, x: 56, y: ridgeY(rockLPts, 56) + 14, h: 400, w: 16, lean: 0.2, branches: 9, padR: [28, 56], reach: 0.55, accept: pineFits });
   group('pineTrunk', 'Männyn runko', 'Pine trunk', () => {
-    for (const b of pine.branches) R(b, 'url(#sa-trunk)', st('#7d4e42', 1.3));
+    // all limbs are one shape behind the trunk, so no branch stub peeks out between the pads as a speck
+    R(pine.branches.join(''), 'url(#sa-trunk)', st('#7d4e42', 1.3));
     R(pine.trunk, 'url(#sa-trunk)', st('#7d4e42', 'near'));
     shadow(pine.trunk, COOL, 9, 0.45);
     rim(pine.trunk, '#ffc078', 2, 1);
@@ -549,10 +543,10 @@ export default function generate(variant = 0) {
       }
     });
     lobes.sort((a, b) => a.y - b.y);
-    foliage(lobes, { fill: 'url(#sa-pad)', base: '#3d5a3e', dark: '#1a2c24', rimColour: RIM, underK: 0.32 });
+    foliage(dropHidden(lobes, 0.42), { fill: 'url(#sa-pad)', base: '#3d5a3e', dark: '#1a2c24', rimColour: RIM, underK: 0.32 });
     // needle flicks along the sunlit tops only
     let nd = '';
-    for (const p of lobes) {
+    for (const p of dropHidden(lobes, 0.42)) {
       const Rn = rng(Math.round(p.x * 7 + p.y));
       for (let i = 0; i < p.r * 0.4; i++) {
         const a = Math.PI * (1.15 + 0.7 * Rn()), nx = p.x + Math.cos(a) * p.r * 0.85, ny = p.y + Math.sin(a) * p.r * 0.36;

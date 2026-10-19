@@ -155,8 +155,13 @@ export function treeline({ seed, y0, minH, maxH, gap = 9, x0 = -12, x1 = 812, ki
   const total = kindList.reduce((s, [, w]) => s + w, 0);
   const pickKind = () => { let u = R() * total; for (const [k, w] of kindList) if ((u -= w) <= 0) return k; return kindList[0][0]; };
   for (let x = x0; x < x1;) {
-    // clearings: stretches with only low scrub
-    if (G(x * 0.01, 2) < -clearings) { x += gap * (0.8 + R()); continue; }
+    // clearings: stretches with only low scrub, so the skyline never drops to a ruler-flat line
+    if (G(x * 0.01, 2) < -clearings) {
+      const sh = minH * (0.15 + 0.25 * (0.5 + 0.5 * N(x * 0.09, 2))) * (0.7 + 0.6 * R()), sw = sh * (1.2 + R());
+      for (let dx = -sw; dx <= sw; dx += 0.5) { const u = dx / sw; put(x + dx, sh * Math.pow(1 - u * u, 0.7)); }
+      x += gap * (0.5 + 0.6 * R());
+      continue;
+    }
     const stand = 0.5 + 0.5 * N(x * clump, 3);
     const h = lerp(minH, maxH, stand) * (0.72 + 0.5 * R());
     const kind = pickKind();
@@ -383,7 +388,50 @@ export function birchForm({ seed, x, base = 600, top, w, lean = 0, ink = '#3b2f4
     const len = (24 + 30 * R()) * (1.2 - t * 0.6);
     twigs.push(`<path d="M${f(mx + s * mw * 0.6)} ${f(my)}Q${f(mx + s * len * 0.35)} ${f(my - len * 0.2)} ${f(mx + s * len * 0.75)} ${f(my - len * 0.85)}" fill="none" stroke="${ink}" stroke-width="${f(Math.max(1.2, mw * 0.45))}" stroke-linecap="round"/>`);
   }
-  return { trunk, marks, twigs, top: at(1) };
+  return { trunk, marks, twigs, top: at(1), at };
+}
+
+/**
+ * A crown grown from its tree: branches leave the trunk (`at(t)` → [x, y, halfWidth], t = 0 base … 1 top),
+ * reach up and out, and carry leaf clusters at their ends; one cluster always caps the leader.
+ * Every blob therefore sits on wood, and no twig ends in open sky.
+ * Returns { blobs (back → front), branches: [tapered path d], tips: [[x, y]] }.
+ */
+export function treeCrown({ seed, at, t0 = 0.58, branches = 7, reach = [50, 110], angle = [0.35, 1.0], size = [22, 36], lobes = 9,
+  hang = 0, cap = 1.1, sideReach = [1, 1], xMin = -40, xMax = 840, squash = 0.8, bw = 0.26 }) {
+  const R = rng(seed);
+  const blobs = [], brs = [], tips = [];
+  const grow = (x, y, r, k) => blobs.push({ x, y, r, d: blob({ seed: seed * 31 + k, cx: x, cy: y, r, ry: r * (squash + 0.12 * R()), lobes, scallop: 0.16, wobble: 0.1 }) });
+  const [tx, ty] = at(1);
+  grow(tx, ty + size[1] * 0.2, size[1] * cap, 0);
+  let side = R() < 0.5 ? -1 : 1;
+  for (let k = 0; k < branches; k++) {
+    const u = (k + 0.25 + 0.5 * R()) / branches; // 0 = lowest branch
+    const [sx, sy, sw] = at(t0 + (1 - t0) * u * 0.94);
+    const len = lerp(reach[0], reach[1], R()) * (1.15 - 0.5 * u) * sideReach[side < 0 ? 0 : 1];
+    const a = lerp(angle[0], angle[1], R()) + u * 0.25; // upper branches climb more steeply
+    const ex = Math.min(xMax, Math.max(xMin, sx + side * Math.cos(a) * len)), ey = sy - Math.sin(a) * len;
+    // a gentle upward curve: the control point sits below the chord
+    const cx = sx + (ex - sx) * 0.55, cy = sy + (ey - sy) * 0.3;
+    const q = (v) => [(1 - v) ** 2 * sx + 2 * (1 - v) * v * cx + v * v * ex, (1 - v) ** 2 * sy + 2 * (1 - v) * v * cy + v * v * ey];
+    const w0 = Math.max(1.1, sw * bw), L = [], Rr = [];
+    for (let i = 0; i <= 8; i++) {
+      const v = i / 8, [px, py] = q(v), [nx, ny] = q(Math.min(1, v + 0.01)), [ox, oy] = q(Math.max(0, v - 0.01));
+      const dl = Math.hypot(nx - ox, ny - oy) || 1, w = lerp(w0, 0.45, Math.pow(v, 0.8));
+      L.push([px - (ny - oy) / dl * w, py + (nx - ox) / dl * w]);
+      Rr.push([px + (ny - oy) / dl * w, py - (nx - ox) / dl * w]);
+    }
+    brs.push(poly([...L, ...Rr.reverse()]));
+    tips.push([ex, ey]);
+    const r = lerp(size[0], size[1], R()) * (1 - 0.2 * u);
+    grow(ex, ey + r * 0.1, r, k + 1);
+    // longer limbs carry a second cluster part-way along
+    if (len > (reach[0] + reach[1]) / 2) { const [mx, my] = q(0.55); grow(mx, my - r * 0.15, r * 0.78, k + 101); }
+    // drooping sprays hang from the cluster, overlapping it so they never float free
+    if (hang) grow(ex + side * r * 0.25, ey + r * 0.55 + hang * R() * 0.5, r * 0.72, k + 201);
+    side = R() < 0.8 ? -side : side;
+  }
+  return { blobs: dropHidden(blobs.sort((p, q) => p.y - q.y), squash), branches: brs, tips };
 }
 
 /**
@@ -409,6 +457,22 @@ export function crownBlobs({ seed, cx, cy, rx, ry, n = 6, size = [26, 40], lobes
   }
   // back to front: upper blobs first so lower ones overlap them
   return out.sort((a, b) => a.y - b.y);
+}
+
+/**
+ * Drop blobs (sorted back → front, each { x, y, r }, ry = r·squash) that later ones hide almost
+ * entirely: in the line art they'd peek out as specks. The first (backmost) blob is always kept.
+ */
+export function dropHidden(blobs, squash = 0.8, minSeen = 0.08) {
+  const inside = (x, y, b) => Math.hypot(x - b.x, (y - b.y) / squash) < b.r * 0.92;
+  return blobs.filter((b, i) => {
+    let seen = 0, n = 0;
+    for (let ring = 0.2; ring <= 1; ring += 0.2) for (let k = 0; k < 16; k++, n++) {
+      const a = (k / 16) * TAU, x = b.x + Math.cos(a) * b.r * ring * 0.9, y = b.y + Math.sin(a) * b.r * ring * 0.9 * squash;
+      if (!blobs.some((o, j) => j > i && inside(x, y, o))) seen++;
+    }
+    return i === 0 || seen / n > minSeen;
+  });
 }
 
 /** a loose scatter of small leaves inside an ellipse; clumped by noise */
@@ -622,7 +686,17 @@ export function glitter({ seed, cx, y0, y1, w0, w1, n = 240 }) {
  * Wind-bent Scots pine: a crooked tapering spine, a few long branches and flat
  * cloud-like foliage pads at their ends. Returns { trunk, branches[], pads[], bark[] }.
  */
-export function pineForm({ seed, x, y, h, w = 16, lean = 0.35, branches = 6, padR = [36, 58], reach = 1 }) {
+export function pineForm(opts) {
+  // a wind-bent tree is a random walk; regrow it (seed + k) until it fits the picture
+  const { accept = null, tries = 40 } = opts;
+  let p;
+  for (let k = 0; k < tries; k++) {
+    p = pineOnce({ ...opts, seed: opts.seed + k * 1009 });
+    if (!accept || accept(p)) return p;
+  }
+  return p;
+}
+function pineOnce({ seed, x, y, h, w = 16, lean = 0.35, branches = 6, padR = [36, 58], reach = 1, bend = [-0.35, 0.75] }) {
   const R = rng(seed), N = noise1(seed + 1);
   const n = 16, spine = [];
   let px = x, py = y, a = -Math.PI / 2;
@@ -631,6 +705,7 @@ export function pineForm({ seed, x, y, h, w = 16, lean = 0.35, branches = 6, pad
     const t = i / n;
     // crooked: a couple of real kinks where the wind broke the leader long ago
     a += N(t * 3.1, 2) * 0.34 + lean * 0.09 * smoothstep(0.15, 0.6, t) - lean * 0.07 * smoothstep(0.65, 1, t);
+    a = Math.min(-Math.PI / 2 + bend[1], Math.max(-Math.PI / 2 + bend[0], a)); // never droops sideways or folds back
     px += Math.cos(a) * h / n;
     py += Math.sin(a) * h / n;
   }
