@@ -498,7 +498,16 @@ const view = { s: 1, x: 0, y: 0 };
 const wrap = $('#canvas-wrap');
 const stage = $('#stage');
 
+// decorative animations pause while the picture moves, so zoom and pan only redraw once per frame
+let stillT;
+function holdStill() {
+  stage.classList.add('moving');
+  clearTimeout(stillT);
+  stillT = setTimeout(() => stage.classList.remove('moving'), 450);
+}
+
 function applyView(animate = false) {
+  holdStill();
   const r = stage.getBoundingClientRect();
   const maxS = 5;
   view.s = Math.min(maxS, Math.max(1, view.s));
@@ -524,7 +533,7 @@ const resetView = (animate) => { view.s = 1; view.x = 0; view.y = 0; applyView(a
   const pts = new Map();
   let start = null, pinch = null, moved = false;
   stage.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('.zoom-ctrls, .tint-pop')) return;
+    if (e.target.closest('.tint-pop')) return;
     stage.setPointerCapture(e.pointerId);
     pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pts.size === 1) { start = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y }; moved = false; }
@@ -534,9 +543,13 @@ const resetView = (animate) => { view.s = 1; view.x = 0; view.y = 0; applyView(a
       moved = true;
     }
   });
+  let hoverAt = null;
   stage.addEventListener('pointermove', (e) => {
     if (!pts.has(e.pointerId)) {
-      if (e.pointerType === 'mouse' && P?.ctrl) P.ctrl.hover(P.ctrl.hit(e.clientX, e.clientY));
+      // hit-testing a big SVG is slow: at most once per frame
+      if (e.pointerType !== 'mouse' || !P?.ctrl) return;
+      if (!hoverAt) requestAnimationFrame(() => { if (P?.ctrl) P.ctrl.hover(P.ctrl.hit(hoverAt.x, hoverAt.y)); hoverAt = null; });
+      hoverAt = { x: e.clientX, y: e.clientY };
       return;
     }
     pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -598,7 +611,7 @@ function toast(txt) {
   el.textContent = txt;
   el.classList.add('show');
   clearTimeout(toastT);
-  toastT = setTimeout(() => el.classList.remove('show'), 1600);
+  toastT = setTimeout(() => el.classList.remove('show'), 1100);
 }
 
 onShow.paint = async (opts = {}) => {

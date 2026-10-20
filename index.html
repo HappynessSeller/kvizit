@@ -232,11 +232,6 @@
       <div class="stage" id="stage">
         <div class="canvas-wrap" id="canvas-wrap"><div class="scene-host" id="paint-scene"></div></div>
         <div class="paper-grain" aria-hidden="true"></div>
-        <div class="zoom-ctrls">
-          <button class="icon-btn" id="z-in" data-t-aria="zoomIn"><svg><use href="#i-plus"/></svg></button>
-          <button class="icon-btn" id="z-out" data-t-aria="zoomOut"><svg><use href="#i-minus"/></svg></button>
-          <button class="icon-btn" id="z-fit" data-t-aria="zoomFit"><svg><use href="#i-fit"/></svg></button>
-        </div>
         <div class="tint-pop" id="tint-pop" hidden>
           <p data-t="tintTitle"></p>
           <div class="swatches" id="swatches"></div>
@@ -247,6 +242,11 @@
       <footer class="paint-bar">
         <p class="paint-hint" id="paint-hint"></p>
         <div class="paint-bar-btns">
+          <div class="zoom-ctrls">
+            <button class="icon-btn" id="z-out" data-t-aria="zoomOut"><svg><use href="#i-minus"/></svg></button>
+            <button class="icon-btn" id="z-fit" data-t-aria="zoomFit"><svg><use href="#i-fit"/></svg></button>
+            <button class="icon-btn" id="z-in" data-t-aria="zoomIn"><svg><use href="#i-plus"/></svg></button>
+          </div>
           <button class="btn soft small" id="btn-seek"><svg><use href="#i-search"/></svg><span data-t="seek"></span></button>
           <button class="btn soft small" id="btn-save-img" hidden><svg><use href="#i-download"/></svg><span data-t="saveImg"></span></button>
           <button class="btn primary small" id="btn-paint-play"><span data-t="earnMore"></span></button>

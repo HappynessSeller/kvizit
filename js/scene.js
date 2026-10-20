@@ -122,6 +122,65 @@ function generated(meta, v) {
   return cache.get(key);
 }
 
+// Blurred shapes (feGaussianBlur) are re-filtered on every repaint, and any animated area repaints
+// what lies under it each frame — so each blurred shape is drawn once into a bitmap and swapped in.
+const PAINT_PROPS = ['fill', 'fill-opacity', 'fill-rule', 'stroke', 'stroke-opacity', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'];
+const KEEP_ATTRS = /^(transform|opacity|class|style|data-.*)$/;
+
+function refsOf(svg, node, out = new Map()) {
+  for (const [, id] of node.outerHTML.matchAll(/(?:url\(#|href="#)([^)"]+)/g)) {
+    if (out.has(id)) continue;
+    const d = svg.querySelector(`[id="${CSS.escape(id)}"]`);
+    if (!d) continue;
+    out.set(id, d);
+    refsOf(svg, d, out);
+  }
+  return out;
+}
+
+async function bakeOne(svg, node, filter) {
+  const bb = node.getBBox();
+  if (!bb.width || !bb.height) return null;
+  const frac = (a, d) => { const v = filter.getAttribute(a); return v == null ? d : v.endsWith('%') ? parseFloat(v) / 100 : parseFloat(v); };
+  const x = bb.x + bb.width * frac('x', -0.1), y = bb.y + bb.height * frac('y', -0.1);
+  const w = bb.width * frac('width', 1.2), h = bb.height * frac('height', 1.2);
+  const std = parseFloat(filter.querySelector('feGaussianBlur')?.getAttribute('stdDeviation')) || 3;
+  // blurry pixels upscale well, so ~8 pixels per blur radius is plenty even at full zoom
+  const scale = Math.min(3, 8 / std, 2048 / Math.max(w, h));
+  const cs = getComputedStyle(node);
+  const clone = node.cloneNode(false);
+  for (const a of ['transform', 'opacity', 'class', 'style']) clone.removeAttribute(a);
+  for (const p of PAINT_PROPS) clone.style.setProperty(p, cs.getPropertyValue(p));
+  const defs = [...refsOf(svg, node).values()].map((d) => d.outerHTML).join('');
+  const doc = `<svg xmlns="${NS}" width="${Math.ceil(w * scale)}" height="${Math.ceil(h * scale)}" viewBox="${x} ${y} ${w} ${h}"><defs>${defs}</defs>${clone.outerHTML}</svg>`;
+  const img = new Image();
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(doc)}`;
+  await img.decode();
+  const cv = document.createElement('canvas');
+  cv.width = Math.ceil(w * scale);
+  cv.height = Math.ceil(h * scale);
+  cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  // a data URL (not blob:) so the PNG export, which loads the SVG as an image, still sees it
+  return { x, y, w, h, href: cv.toDataURL('image/webp', 0.92) };
+}
+
+async function bakeBlurs(svg, cacheKey) {
+  const nodes = [...svg.querySelectorAll('[filter]')].filter((e) => LEAF.has(e.tagName) && !e.closest('.lineart'));
+  for (const [i, node] of nodes.entries()) {
+    const filter = svg.querySelector(`[id="${CSS.escape(node.getAttribute('filter').slice(5, -1))}"]`);
+    if (!filter?.querySelector('feGaussianBlur')) continue;
+    const key = `bake:${cacheKey}:${i}`;
+    if (!cache.has(key)) cache.set(key, bakeOne(svg, node, filter).catch(() => null));
+    const b = await cache.get(key);
+    if (!b) cache.delete(key); // e.g. measured while hidden — try again next mount
+    if (!b || !node.isConnected) continue;
+    const g = el('g');
+    for (const a of [...node.attributes]) if (KEEP_ATTRS.test(a.name)) g.setAttribute(a.name, a.value);
+    g.append(el('image', { href: b.href, x: b.x, y: b.y, width: b.w, height: b.h, preserveAspectRatio: 'none' }));
+    node.replaceWith(g);
+  }
+}
+
 async function buildVector(container, meta, n, variant = 0) {
   let text = variant ? await generated(meta, variant) : await fetchCached(meta.file, 'text');
   // unique ids per mount so several copies (thumbnail + canvas) can coexist
@@ -144,6 +203,8 @@ async function buildVector(container, meta, n, variant = 0) {
     g.dataset.key = key;
     groups.set(key, { key, g, line, fi: g.dataset.fi, en: g.dataset.en, colour: vectorColour(svg, g), bbox: null });
   }
+  // paused thumbnails paint once, so the blur costs nothing there
+  if (!container.closest('.still')) bakeBlurs(svg, `${meta.id}:${variant}`);
   return {
     svg, defs, groups, W: 800, H: 600,
     hit(cx, cy) {
