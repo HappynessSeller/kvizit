@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Englannin harjoituskoe</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -98,6 +102,23 @@ textarea{font:inherit;width:100%;box-sizing:border-box;min-height:130px;padding:
 .result h2{font-family:var(--display);margin:0 0 6px;font-size:26px;color:var(--pink)}
 .result ul{margin:6px 0 0;padding-left:20px}
 .stars{font-size:28px;letter-spacing:4px;color:var(--lilac)}
+.progress{margin:0;font-size:16px;color:var(--muted)}
+.progress b{color:var(--pink);font-family:var(--display)}
+#home,#testview{display:flex;flex-direction:column;gap:22px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tcard{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:22px;border:2px solid var(--line);
+  background:var(--card);color:var(--ink);padding:14px 16px;box-shadow:var(--shadow);font-family:var(--body);font-weight:400;min-width:0}
+.tcard:hover{border-color:var(--pink)}
+.tcard .tno{font-family:var(--display);font-weight:700;font-size:20px;color:var(--pink)}
+.tcard .ttop{font-size:14px;color:var(--lilac);font-weight:700}
+.tcard .tmeta{font-size:13px;color:var(--muted)}
+.tcard .tstar{margin-top:6px;font-family:var(--display);font-weight:600;color:var(--pink);font-size:16px}
+.tcard .tstar small{color:var(--muted);font-weight:400;font-size:13px}
+.tcard.done{background:var(--pink-soft)}
+.tcard.final{border:3px solid var(--lilac);background:var(--lilac-soft);max-width:420px}
+.tcard.final .tno{font-size:24px;color:var(--lilac)}
+.tvhead h2{font-family:var(--display);font-weight:700;font-size:28px;margin:0;color:var(--pink)}
+.resbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
 details.parent{background:var(--card);border:2px dashed var(--line);border-radius:20px;padding:12px 16px}
 details.parent summary{cursor:pointer;font-weight:700}
 details.parent li{margin-bottom:4px}
@@ -105,9 +126,13 @@ details.parent li{margin-bottom:4px}
   .result:not([hidden]) .stars{animation:pop .6s ease-out}
   @keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}}
 </style>
+</head>
+<body>
 
-<div class="bar"><div class="bar-in">
-  <div class="score" id="score">— / 118<small>Pisteet</small></div>
+
+<div class="bar" id="bar" hidden><div class="bar-in">
+  <button id="back" type="button" aria-label="Takaisin testeihin">← Testit</button>
+  <div class="score" id="score">—<small>Pisteet</small></div>
   <button class="primary" id="check" type="button">Tarkista</button>
   <button id="reset" type="button">Tyhjennä</button>
 </div></div>
@@ -115,18 +140,30 @@ details.parent li{margin-bottom:4px}
 <main class="wrap">
   <header class="top">
     <div class="titlerow"><span class="badge" aria-hidden="true">♥</span><h1>Englannin harjoituskoe</h1></div>
-    <p class="sub">Tekstikirja s. 6–22 ja työkirja: kappaleet 1–3, Magic Rules (olla-verbi, kestopreesens, kellonajat) ja Remember? 1–3. Kirjoita vastaukset ja paina lopuksi <b>Tarkista</b>.</p>
+    <p class="sub">Tekstikirja s. 6–22 ja työkirja: kappaleet 1–3, Magic Rules (olla-verbi, kestopreesens, kellonajat) ja Remember? 1–3. Valitse testi. Jokaisessa on noin 10 kysymystä. Kirjoita vastaukset ja paina <b>Tarkista</b>.</p>
     <div class="who">
       <label for="nimi">Nimi<input type="text" id="nimi"></label>
     </div>
   </header>
-  <div id="test"></div>
-  <div class="result" id="result" hidden></div>
+  <div id="home">
+    <p class="progress" id="progress"></p>
+    <div id="menu"></div>
+  </div>
+  <div id="testview" hidden>
+    <div class="tvhead"><h2 id="tv-title"></h2><p class="sub" id="tv-sub"></p></div>
+    <div id="test"></div>
+    <div class="result" id="result" hidden></div>
+    <div class="resbtns" id="resbtns" hidden>
+      <button id="retry" type="button">Yritä uudelleen</button>
+      <button id="home2" type="button">Kaikki testit</button>
+      <button class="primary" id="next" type="button">Seuraava testi →</button>
+    </div>
+  </div>
 
   <details class="parent">
     <summary>Для родителя: где чаще всего ошибаются</summary>
     <ul>
-      <li>Нажмите «Tarkista» — неверные ответы подсветятся красным, под ними появится правильный вариант. Регистр букв не проверяется, но в тетради нужно писать Finnish, English, Monday, PE, RE с заглавной.</li>
+      <li>Тест разбит на короткие тесты примерно по 10 вопросов. Лучший результат и звёзды каждого теста запоминаются в этом браузере. В конце есть Lopputesti: 15 случайных вопросов из всех частей A–I (минимум по одному из каждой), при каждом открытии — новый набор. Нажмите «Tarkista» — неверные ответы подсветятся красным, под ними появится правильный вариант. Регистр букв не проверяется, но в тетради нужно писать Finnish, English, Monday, PE, RE с заглавной.</li>
       <li>-ing: ride → riding, hide → hiding (e выпадает), swim → swimming (m удваивается).</li>
       <li>Краткий ответ повторяет местоимение: Yes, he is / No, she isn't.</li>
       <li>Время: quarter past = 15 минут после, quarter to = без 15, half past = половина. Финны пишут 9.30 с точкой.</li>
@@ -296,100 +333,155 @@ function clockSVG(h,m){
 const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let total = 0;
 
-function render(){
-  const root = document.getElementById("test");
-  DATA.forEach(part=>{
-    const sec = document.createElement("section"); sec.className="part";
-    sec.innerHTML = `<h2>${esc(part.title)}<span class="pg">${esc(part.pg)}</span></h2>`;
-    part.tasks.forEach(t=>{
-      const per = t.pts||1, n=(t.items||[]).length;
-      if(t.type!=="write") total += per*n;
-      const box = document.createElement("div"); box.className="task";
-      let h = `<h3><span class="tid">${t.id}</span>${esc(t.title)}<span class="pts">${t.ptsLabel||per*n+" p."}</span></h3>`;
-      if(t.note) h += `<p class="note">${esc(t.note)}</p>`;
-      if(t.bank) h += `<ul class="bank">${t.bank.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`;
-      if(t.reading) h += `<p class="reading">${esc(t.reading)}</p>`;
-      if(t.table) h += `<div class="scroll"><table class="tt">${t.table.map((r,i)=>`<tr>${r.map(c=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table></div>`;
-      if(t.type==="write"){
-        h += `<textarea id="${t.id}-text" aria-label="${esc(t.title)}"></textarea>`;
-      } else {
-        h += `<div class="items${t.wide?" wide":""}">`;
-        t.items.forEach((it,i)=>{
-          const id = `${t.id}-${i}`;
-          let ctl;
-          if(t.type==="select") ctl = `<select id="${id}"><option value="">valitse…</option>${t.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
-          else if(t.type==="tf") ctl = `<div class="tf" role="radiogroup">${["T","F"].map(v=>`<label><input type="radio" name="${id}" id="${id}-${v}" value="${v}"><span>${v}</span></label>`).join("")}</div>`;
-          else ctl = `<input type="text" id="${id}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
-          const lab = t.type==="clock"?`<label class="q clkq" for="${id}">${clockSVG(...it.clk)}<span>${esc(it.q)}</span></label>`:t.type==="tf"?`<span class="q">${esc(it.q)}</span>`:`<label class="q" for="${id}">${esc(it.q)}</label>`;
-          h += `<div class="item" data-task="${t.id}" data-i="${i}">${lab}${ctl}<span class="fix" hidden></span></div>`;
-        });
-        h += `</div>`;
-      }
-      box.innerHTML = h; sec.appendChild(box);
+// ---- split every part into mini-tests of about 10 questions ----
+const TESTS = [];
+DATA.forEach((part,pi)=>{
+  const flat=[]; let writeTask=null;
+  part.tasks.forEach(t=>{ if(t.type==="write") writeTask=t; else t.items.forEach((_,i)=>flat.push({t,i})); });
+  const k=Math.max(1,Math.round(flat.length/10)), size=Math.ceil(flat.length/k);
+  for(let c=0;c<k;c++){
+    const chunk=flat.slice(c*size,(c+1)*size); const segs=[];
+    chunk.forEach(({t,i})=>{ const last=segs[segs.length-1]; if(last&&last.t===t) last.idx.push(i); else segs.push({t,idx:[i]}); });
+    if(writeTask && c===k-1) segs.push({t:writeTask,idx:[]});
+    const max=chunk.reduce((s,{t})=>s+(t.pts||1),0);
+    TESTS.push({part, pi, n:c+1, of:k, segs, max, count:chunk.length});
+  }
+});
+TESTS.forEach((t,i)=>t.no=i+1);
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function buildFinal(){
+  const pool=DATA.map(part=>shuffle(part.tasks.filter(t=>t.type!=="write").flatMap(t=>t.items.map((_,i)=>({t,i})))));
+  const picked=pool.map(p=>p.pop());               // one from every part A–I
+  const rest=shuffle(pool.flat()); while(picked.length<15) picked.push(rest.pop());
+  const order=new Map(); DATA.forEach(p=>p.tasks.forEach(t=>order.set(t,order.size)));
+  picked.sort((a,b)=>order.get(a.t)-order.get(b.t)||a.i-b.i);
+  const segs=[]; picked.forEach(({t,i})=>{const l=segs[segs.length-1]; if(l&&l.t===t) l.idx.push(i); else segs.push({t,idx:[i]});});
+  return {final:true,no:"final",segs,max:picked.reduce((s,{t})=>s+(t.pts||1),0),count:15,part:{title:"Lopputesti — kysymyksiä kaikista osista A–I"},n:1,of:1};
+}
+
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let best=store.get("koe-best",{}), draft=store.get("koe-draft",{}), cur=null;
+const $=id=>document.getElementById(id);
+const starsFor=(g,m)=>{const p=g/m;return p>=.9?3:p>=.75?2:p>=.5?1:0};
+const starStr=n=>"★".repeat(n)+"☆".repeat(3-n);
+
+function showHome(){
+  cur=null; $("home").hidden=false; $("testview").hidden=true; $("bar").hidden=true;
+  const done=TESTS.filter(t=>best[t.no]!=null).length, stars=TESTS.reduce((s,t)=>s+(best[t.no]!=null?starsFor(best[t.no],t.max):0),0);
+  $("progress").innerHTML=`<b>${done} / ${TESTS.length}</b> testiä tehty · <b>${stars} / ${TESTS.length*3}</b> ★`;
+  const root=$("menu"); root.innerHTML="";
+  DATA.forEach((part,pi)=>{
+    const sec=document.createElement("section"); sec.className="part";
+    sec.innerHTML=`<h2>${esc(part.title)}<span class="pg">${esc(part.pg)}</span></h2><div class="cards"></div>`;
+    const cards=sec.querySelector(".cards");
+    TESTS.filter(t=>t.pi===pi).forEach(t=>{
+      const b=best[t.no], btn=document.createElement("button"); btn.type="button"; btn.className="tcard"+(b!=null?" done":"");
+      const topics=[...new Set(t.segs.map(s=>s.t.id))].join(", ");
+      btn.innerHTML=`<span class="tno">Testi ${t.no}</span><span class="ttop">${topics}</span><span class="tmeta">${t.count} kysymystä</span><span class="tstar">${b!=null?starStr(starsFor(b,t.max))+` <small>${b}/${t.max}</small>`:"Aloita →"}</span>`;
+      btn.addEventListener("click",()=>openTest(t.no));
+      cards.appendChild(btn);
     });
     root.appendChild(sec);
   });
-}
-
-function valueOf(t,i){
-  const id=`${t.id}-${i}`;
-  if(t.type==="tf"){const c=document.querySelector(`input[name="${id}"]:checked`);return c?c.value:"";}
-  return document.getElementById(id).value;
-}
-function check(){
-  let got=0; const weak=[];
-  DATA.forEach(p=>p.tasks.forEach(t=>{
-    if(t.type==="write") return;
-    let tg=0;
-    t.items.forEach((it,i)=>{
-      const v=valueOf(t,i), el=document.querySelector(`.item[data-task="${t.id}"][data-i="${i}"]`), fix=el.querySelector(".fix");
-      let ok;
-      if(t.type==="select"||t.type==="tf") ok = norm(v)===norm(it.a[0]);
-      else if(t.type==="clock") ok = it.a.some(a=>normClock(v)===normClock(a));
-      else if(t.type==="contains") ok = it.a.some(a=>norm(v).includes(a));
-      else ok = it.a.some(a=>norm(v)===norm(a));
-      el.classList.toggle("ok",ok); el.classList.toggle("bad",!ok);
-      fix.hidden = ok; fix.textContent = ok?"":"Oikein: "+(it.show||it.a[0]);
-      if(ok){got+=t.pts||1; tg+=t.pts||1;}
-    });
-    const max=(t.pts||1)*t.items.length;
-    if(tg<max) weak.push(`${t.id}: ${tg}/${max}`);
-  }));
-  document.getElementById("score").innerHTML = `${got} / ${total}<small>Pisteet</small>`;
-  const pct = got/total, r=document.getElementById("result");
-  const msg = pct>=.9?"Erinomaista! Olet valmis kokeeseen.":pct>=.75?"Hyvä! Kertaa vielä punaiset kohdat.":"Harjoittele vielä punaiset kohdat ja yritä uudelleen.";
-  const st = pct>=.9?"★★★":pct>=.75?"★★☆":"★☆☆";
-  r.innerHTML = `<div class="stars" aria-label="${st.split('★').length-1} tähteä">${st}</div><h2>${got} / ${total} pistettä</h2><p>${msg}</p>${weak.length?`<p>Kertaa nämä tehtävät:</p><ul>${weak.map(w=>`<li>${w}</li>`).join("")}</ul>`:""}<p class="note">Tehtävä I4 (6 p.) tarkistetaan erikseen.</p>`;
-  r.hidden=false;
-}
-function reset(){
-  document.querySelectorAll("#test input[type=text],#test select,#test textarea").forEach(e=>e.value="");
-  document.querySelectorAll("#test input[type=radio]").forEach(e=>e.checked=false);
-  document.querySelectorAll(".item").forEach(e=>{e.classList.remove("ok","bad");e.querySelector(".fix").hidden=true;});
-  document.getElementById("result").hidden=true;
-  document.getElementById("score").innerHTML = `— / ${total}<small>Pisteet</small>`;
-  try{localStorage.removeItem("koe-draft")}catch(e){}
+  const fb=best.final, fsec=document.createElement("section"); fsec.className="part";
+  fsec.innerHTML=`<h2>Lopputesti<span class="pg">osat A–I</span></h2><button type="button" class="tcard final${fb!=null?" done":""}"><span class="tno">Lopputesti ✦</span><span class="ttop">15 kysymystä kaikista osista</span><span class="tmeta">Joka kerta eri kysymykset!</span><span class="tstar">${fb!=null?`Paras: ${fb.g}/${fb.m} ${starStr(starsFor(fb.g,fb.m))}`:"Aloita →"}</span></button>`;
+  fsec.querySelector("button").addEventListener("click",()=>openTest("final"));
+  root.appendChild(fsec);
+  try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
   window.scrollTo({top:0});
 }
-function save(){
-  const d={};
-  document.querySelectorAll("#nimi,#test input[type=text],#test select,#test textarea").forEach(e=>d[e.id]=e.value);
-  document.querySelectorAll("#test input[type=radio]:checked").forEach(e=>d[e.name]=e.value);
-  try{localStorage.setItem("koe-draft",JSON.stringify(d))}catch(e){}
-}
-function load(){
-  let d; try{d=JSON.parse(localStorage.getItem("koe-draft")||"{}")}catch(e){return}
-  Object.entries(d||{}).forEach(([k,v])=>{
-    const el=document.getElementById(k);
-    if(el) el.value=v; else {const r=document.getElementById(`${k}-${v}`); if(r) r.checked=true;}
+
+function openTest(no){
+  const T=no==="final"?buildFinal():TESTS[no-1]; cur=T; const px=T.final?"X-":"";
+  $("home").hidden=true; $("testview").hidden=false; $("bar").hidden=false; $("result").hidden=true;
+  $("tv-title").textContent=T.final?"Lopputesti ✦":`Testi ${T.no} / ${TESTS.length}`;
+  $("tv-sub").textContent=T.final?"15 kysymystä kaikista osista A–I. Joka kerta eri kysymykset.":`${T.part.title}${T.of>1?` · osa ${T.n}/${T.of}`:""}`;
+  $("score").innerHTML=`— / ${T.max}<small>Pisteet</small>`;
+  const root=$("test"); root.innerHTML="";
+  T.segs.forEach(({t,idx})=>{
+    const box=document.createElement("div"); box.className="task";
+    const per=t.pts||1;
+    let h=`<h3><span class="tid">${t.id}</span>${esc(t.title)}<span class="pts">${t.ptsLabel||per*idx.length+" p."}</span></h3>`;
+    if(t.note) h+=`<p class="note">${esc(t.note)}</p>`;
+    if(t.bank) h+=`<ul class="bank">${t.bank.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`;
+    if(t.reading) h+=`<p class="reading">${esc(t.reading)}</p>`;
+    if(t.table) h+=`<div class="scroll"><table class="tt">${t.table.map((r,i)=>`<tr>${r.map(c=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table></div>`;
+    if(t.type==="write"){ h+=`<textarea id="${t.id}-text" aria-label="${esc(t.title)}"></textarea>`; }
+    else{
+      h+=`<div class="items${t.wide?" wide":""}">`;
+      idx.forEach(i=>{
+        const it=t.items[i], id=`${px}${t.id}-${i}`; let ctl;
+        if(t.type==="select") ctl=`<select id="${id}"><option value="">valitse…</option>${t.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+        else if(t.type==="tf") ctl=`<div class="tf" role="radiogroup">${["T","F"].map(v=>`<label><input type="radio" name="${id}" id="${id}-${v}" value="${v}"><span>${v}</span></label>`).join("")}</div>`;
+        else ctl=`<input type="text" id="${id}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+        const lab=t.type==="clock"?`<label class="q clkq" for="${id}">${clockSVG(...it.clk)}<span>${esc(it.q)}</span></label>`:t.type==="tf"?`<span class="q">${esc(it.q)}</span>`:`<label class="q" for="${id}">${esc(it.q)}</label>`;
+        h+=`<div class="item" data-task="${t.id}" data-i="${i}">${lab}${ctl}<span class="fix" hidden></span></div>`;
+      });
+      h+=`</div>`;
+    }
+    box.innerHTML=h; root.appendChild(box);
   });
+  // restore draft for this test
+  if(!T.final) Object.entries(draft).forEach(([k,v])=>{const el=$(k); if(el&&root.contains(el)) el.value=v; else {const r=$(`${k}-${v}`); if(r&&root.contains(r)) r.checked=true;}});
+  $("next").hidden = !!T.final;
+  $("next").textContent = T.no===TESTS.length?"Lopputesti →":"Seuraava testi →";
+  if(T.no===TESTS.length) $("next").hidden=false;
+  $("retry").textContent = T.final?"Uudet kysymykset":"Yritä uudelleen";
+  try{history.replaceState(null,"",T.final?"#lopputesti":"#testi"+T.no)}catch(e){}
+  window.scrollTo({top:0});
 }
-render();
-document.getElementById("score").innerHTML = `— / ${total}<small>Pisteet</small>`;
-load();
+
+function valueOf(t,i){const id=`${cur&&cur.final?"X-":""}${t.id}-${i}`;if(t.type==="tf"){const c=document.querySelector(`input[name="${id}"]:checked`);return c?c.value:"";}return $(id).value;}
+function check(){
+  if(!cur) return; let got=0; const weak=[];
+  cur.segs.forEach(({t,idx})=>{
+    if(t.type==="write") return; let tg=0;
+    idx.forEach(i=>{
+      const it=t.items[i], v=valueOf(t,i), el=document.querySelector(`.item[data-task="${t.id}"][data-i="${i}"]`), fix=el.querySelector(".fix");
+      let ok;
+      if(t.type==="select"||t.type==="tf") ok=norm(v)===norm(it.a[0]);
+      else if(t.type==="clock") ok=it.a.some(a=>normClock(v)===normClock(a));
+      else if(t.type==="contains") ok=it.a.some(a=>norm(v).includes(a));
+      else ok=it.a.some(a=>norm(v)===norm(a));
+      el.classList.toggle("ok",ok); el.classList.toggle("bad",!ok);
+      fix.hidden=ok; fix.textContent=ok?"":"Oikein: "+(it.show||it.a[0]);
+      if(ok){got+=t.pts||1;tg+=t.pts||1;}
+    });
+    const max=(t.pts||1)*idx.length; if(tg<max) weak.push(`${t.id}: ${tg}/${max}`);
+  });
+  if(cur.final){ if(!best.final||got/cur.max>best.final.g/best.final.m){best.final={g:got,m:cur.max};store.set("koe-best",best);} }
+  else if(best[cur.no]==null||got>best[cur.no]){best[cur.no]=got;store.set("koe-best",best);}
+  $("score").innerHTML=`${got} / ${cur.max}<small>Pisteet</small>`;
+  const n=starsFor(got,cur.max), r=$("result");
+  const msg=n===3?"Erinomaista!":n===2?"Hyvä! Kertaa vielä punaiset kohdat.":"Harjoittele punaiset kohdat ja yritä uudelleen.";
+  const hasWrite=cur.segs.some(s=>s.t.type==="write");
+  r.innerHTML=`<div class="stars" aria-label="${n} tähteä">${starStr(n)}</div><h2>${got} / ${cur.max} pistettä</h2><p>${msg}</p>${weak.length?`<p>Kertaa nämä tehtävät: ${weak.join(" · ")}</p>`:""}${hasWrite?`<p class="note">Kirjoitustehtävä tarkistetaan erikseen.</p>`:""}`;
+  r.hidden=false; $("resbtns").hidden=false;
+  r.scrollIntoView({behavior:"smooth",block:"center"});
+}
+function clearTest(){
+  if(!cur) return;
+  $("test").querySelectorAll("input[type=text],select,textarea").forEach(e=>{e.value="";delete draft[e.id];});
+  $("test").querySelectorAll("input[type=radio]").forEach(e=>{if(e.checked)delete draft[e.name];e.checked=false;});
+  $("test").querySelectorAll(".item").forEach(e=>{e.classList.remove("ok","bad");e.querySelector(".fix").hidden=true;});
+  store.set("koe-draft",draft); $("result").hidden=true; $("resbtns").hidden=true;
+  $("score").innerHTML=`— / ${cur.max}<small>Pisteet</small>`; window.scrollTo({top:0});
+}
+function save(e){
+  const el=e.target; if(!el||!el.id||el.id.startsWith("X-")) return;
+  if(el.type==="radio") draft[el.name]=el.value; else draft[el.id]=el.value;
+  store.set("koe-draft",draft);
+}
 document.addEventListener("input",save); document.addEventListener("change",save);
-document.getElementById("check").addEventListener("click",()=>{check();document.getElementById("result").scrollIntoView({behavior:"smooth",block:"center"});});
-document.getElementById("reset").addEventListener("click",reset);
+$("check").addEventListener("click",check);
+$("reset").addEventListener("click",clearTest);
+$("back").addEventListener("click",showHome);
+$("home2").addEventListener("click",showHome);
+$("next").addEventListener("click",()=>openTest(cur.no===TESTS.length?"final":cur.no+1));
+$("retry").addEventListener("click",()=>{ if(cur&&cur.final) openTest("final"); else clearTest(); });
+const m=/^#testi(\d+)$/.exec(location.hash); 
+if(m&&TESTS[+m[1]-1]) openTest(+m[1]); else if(location.hash==="#lopputesti") openTest("final"); else showHome();
 </script>
 
-</body></html>
+</body>
+</html>
