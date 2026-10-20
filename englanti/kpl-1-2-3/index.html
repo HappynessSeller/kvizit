@@ -1,0 +1,395 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Englannin harjoituskoe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: a sticker-book page on polka dots; one column of soft rounded cards, sticky score bar on top */
+:root{
+  --paper:#fff4f8; --dot:#ffd9e8; --card:#ffffff; --ink:#3d2340; --muted:#8a6b8e;
+  --pink:#e2447e; --pink-soft:#ffe4ef; --lilac:#9a6ad8; --lilac-soft:#f1e7ff; --line:#f4cfe0;
+  --ok:#1f8a52; --ok-bg:#e3f7ec; --bad:#c93a4f; --bad-bg:#ffe5ea;
+  --shadow:0 4px 0 #f6d3e3;
+  --display:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1f1422; --dot:#2d1d32; --card:#2a1b2e; --ink:#f7e8f2; --muted:#c3a6c4;
+  --pink:#ff7aa8; --pink-soft:#43213a; --lilac:#c4a0ff; --lilac-soft:#33244a; --line:#4a2f4b;
+  --ok:#74dba0; --ok-bg:#1c3a2a; --bad:#ff8c9c; --bad-bg:#4a1f2a; --shadow:0 4px 0 #140c16; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1f1422; --dot:#2d1d32; --card:#2a1b2e; --ink:#f7e8f2; --muted:#c3a6c4;
+  --pink:#ff7aa8; --pink-soft:#43213a; --lilac:#c4a0ff; --lilac-soft:#33244a; --line:#4a2f4b;
+  --ok:#74dba0; --ok-bg:#1c3a2a; --bad:#ff8c9c; --bad-bg:#4a1f2a; --shadow:0 4px 0 #140c16; color-scheme:dark}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(var(--dot) 3px,transparent 3.5px);
+  background-size:28px 28px;
+  color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.5;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--card)}
+.wrap{max-width:760px;margin:0 auto;padding-block:24px 60px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:24px}
+header.top{display:flex;flex-direction:column;gap:12px;background:var(--card);border-radius:28px;padding:20px;box-shadow:var(--shadow);border:2px solid var(--line);position:relative;overflow:hidden}
+header.top::after{content:"✦  ✧  ✦";position:absolute;right:18px;top:12px;color:var(--lilac);font-size:18px;letter-spacing:2px;opacity:.8}
+.badge{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;flex:none;
+  background:var(--pink);color:#fff;font-size:30px;line-height:1;box-shadow:0 0 0 5px var(--pink-soft)}
+.titlerow{display:flex;gap:16px;align-items:center}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.05;margin:0;color:var(--pink);text-wrap:balance}
+.sub{color:var(--muted);margin:0}
+.who{display:flex;flex-wrap:wrap;gap:10px}
+.who label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);flex:1 1 180px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:3px dotted var(--line);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:760px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.score{font-family:var(--display);font-weight:700;font-size:22px;margin-right:auto;font-variant-numeric:tabular-nums;color:var(--lilac)}
+.score small{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);display:block;line-height:1}
+button{font:inherit;font-family:var(--display);font-weight:600;border-radius:999px;border:2px solid var(--pink);padding:8px 18px;cursor:pointer;background:var(--card);color:var(--pink)}
+button.primary{background:var(--pink);color:#fff;box-shadow:0 3px 0 color-mix(in srgb,var(--pink) 60%,#000)}
+button.primary:active{transform:translateY(2px);box-shadow:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--lilac);outline-offset:2px}
+
+section.part{display:flex;flex-direction:column;gap:14px}
+.part h2{font-family:var(--display);font-weight:700;font-size:26px;margin:8px 0 0;line-height:1.15;text-wrap:balance;color:var(--ink)}
+.part h2::before{content:"♥ ";color:var(--pink)}
+.part h2 .pg{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:6px}
+.task{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow)}
+.task h3{margin:0;font-size:17px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.task h3 .tid{font-family:var(--display);font-weight:700;color:var(--lilac);background:var(--lilac-soft);border-radius:999px;padding:0 10px;font-size:16px}
+.task h3 .pts{margin-left:auto;font-weight:400;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.note{color:var(--muted);font-size:15px;margin:0}
+.bank{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.bank li{background:var(--lilac-soft);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:15px}
+.reading{background:var(--pink-soft);border-radius:18px;padding:14px 16px;margin:0;line-height:1.65}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px 18px}
+.items.wide{grid-template-columns:1fr}
+.item{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 10px;border-radius:14px;min-width:0}
+.item .q{flex:1 1 140px;min-width:0}
+.item input[type=text],.item select,#nimi{font:inherit;font-size:16px;padding:6px 10px;border:none;border-bottom:2px dashed var(--line);
+  background:transparent;color:var(--ink);flex:1 1 150px;min-width:0;border-radius:0}
+.item input[type=text]:focus,#nimi:focus{border-bottom-color:var(--pink)}
+.items.wide .item input[type=text]{flex:2 1 240px}
+.item select{border:2px solid var(--line);border-radius:12px;background:var(--card)}
+.tf{display:flex;gap:6px}
+.tf label{display:flex;align-items:center;justify-content:center;width:44px;height:38px;border:2px solid var(--line);border-radius:999px;cursor:pointer;font-weight:700;font-family:var(--display)}
+.tf input{position:absolute;opacity:0;pointer-events:none}
+.tf label:has(input:checked){border-color:var(--pink);background:var(--pink);color:#fff}
+.tf label:has(input:focus-visible){outline:3px solid var(--lilac)}
+.item.ok{background:var(--ok-bg)} .item.bad{background:var(--bad-bg)}
+.item.ok .q::after{content:" ★";color:var(--ok)}
+.fix{font-size:14px;color:var(--bad);font-weight:700;flex-basis:100%;padding-left:2px}
+.item.ok .fix{display:none}
+table.tt{border-collapse:separate;border-spacing:0;font-size:15px;min-width:420px;border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.tt th,.tt td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:6px 10px;text-align:left}
+.tt th{background:var(--lilac-soft)}
+.scroll{overflow-x:auto}
+.clkq{display:flex;align-items:center;gap:10px}
+.clk{width:76px;height:76px;flex:none}
+.clk .face{fill:var(--pink-soft);stroke:var(--pink);stroke-width:3}
+.clk .tk{stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+.clk text{fill:var(--ink);font-size:11px;font-family:var(--display);font-weight:600}
+.clk .hh{stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.clk .mh{stroke:var(--lilac);stroke-width:3;stroke-linecap:round}
+.clk .pin{fill:var(--pink)}
+textarea{font:inherit;width:100%;box-sizing:border-box;min-height:130px;padding:10px 14px;border:2px solid var(--line);border-radius:18px;
+  background:repeating-linear-gradient(var(--card) 0 31px,var(--line) 31px 32px);line-height:32px;color:var(--ink)}
+.result{background:var(--card);border:3px solid var(--pink);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.result h2{font-family:var(--display);margin:0 0 6px;font-size:26px;color:var(--pink)}
+.result ul{margin:6px 0 0;padding-left:20px}
+.stars{font-size:28px;letter-spacing:4px;color:var(--lilac)}
+details.parent{background:var(--card);border:2px dashed var(--line);border-radius:20px;padding:12px 16px}
+details.parent summary{cursor:pointer;font-weight:700}
+details.parent li{margin-bottom:4px}
+@media (prefers-reduced-motion:no-preference){.item{transition:background .25s}
+  .result:not([hidden]) .stars{animation:pop .6s ease-out}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}}
+</style>
+
+<div class="bar"><div class="bar-in">
+  <div class="score" id="score">— / 118<small>Pisteet</small></div>
+  <button class="primary" id="check" type="button">Tarkista</button>
+  <button id="reset" type="button">Tyhjennä</button>
+</div></div>
+
+<main class="wrap">
+  <header class="top">
+    <div class="titlerow"><span class="badge" aria-hidden="true">♥</span><h1>Englannin harjoituskoe</h1></div>
+    <p class="sub">Tekstikirja s. 6–22 ja työkirja: kappaleet 1–3, Magic Rules (olla-verbi, kestopreesens, kellonajat) ja Remember? 1–3. Kirjoita vastaukset ja paina lopuksi <b>Tarkista</b>.</p>
+    <div class="who">
+      <label for="nimi">Nimi<input type="text" id="nimi"></label>
+    </div>
+  </header>
+  <div id="test"></div>
+  <div class="result" id="result" hidden></div>
+
+  <details class="parent">
+    <summary>Для родителя: где чаще всего ошибаются</summary>
+    <ul>
+      <li>Нажмите «Tarkista» — неверные ответы подсветятся красным, под ними появится правильный вариант. Регистр букв не проверяется, но в тетради нужно писать Finnish, English, Monday, PE, RE с заглавной.</li>
+      <li>-ing: ride → riding, hide → hiding (e выпадает), swim → swimming (m удваивается).</li>
+      <li>Краткий ответ повторяет местоимение: Yes, he is / No, she isn't.</li>
+      <li>Время: quarter past = 15 минут после, quarter to = без 15, half past = половина. Финны пишут 9.30 с точкой.</li>
+      <li>maths с s на конце. RE = uskonto, ethics = elämänkatsomustieto, science здесь = ympäristöoppi.</li>
+      <li>Задание I4 (рассказ о себе, 6 баллов) проверяете вы — в автоматический счёт оно не входит.</li>
+      <li>По рабочей тетради видно, где дочка ошибается: quater вместо quarter, o'clok, tree вместо three, juise вместо juice, «You are not.» без слова nine. Для этого есть задание H4.</li>
+      <li>Отрицание и вопрос с be: He is not kind / Is he kind? Слово меняется местами, do не нужен.</li>
+      <li>Часы: до половины — past (ten past seven = 7.10), после половины — to и следующий час (ten to seven = 6.50).</li>
+      <li>Артикли a/an/the в словарных заданиях не обязательны, «It's» в часах тоже можно не писать.</li>
+    </ul>
+  </details>
+</main>
+
+<script>
+const T = (q,a,o={}) => ({q, a:Array.isArray(a)?a:[a], ...o});
+const DATA = [
+ {title:"Osa A — Koulun ihmiset ja verbit", pg:"s. 8–9", tasks:[
+  {id:"A1", title:"Yhdistä sana ja suomennos. Valitse kirjain.", type:"select", options:["a","b","c","d"],
+   bank:["a) siivooja","b) sairaanhoitaja","c) opettaja","d) kokki"],
+   items:[T("1. a teacher","c"),T("2. a cook","d"),T("3. a cleaner","a"),T("4. a nurse","b")]},
+  {id:"A2", title:"Kirjoita vastakohta englanniksi.", type:"text",
+   items:[T("weak —","strong"),T("slow —","fast"),T("quiet —","loud"),T("open —","close"),T("throw —","catch"),T("walk —","run")]},
+  {id:"A3", title:"Kirjoita englanniksi.", type:"text",
+   items:[T("odottaa","wait"),T("kysyä","ask"),T("huutaa","shout"),T("puhua",["talk","speak"]),T("kuunnella","listen"),T("nauraa","laugh"),T("hymyillä","smile"),T("lentää","fly")]}
+ ]},
+ {title:"Osa B — Millainen olet?", pg:"kappale 1, s. 10–15", tasks:[
+  {id:"B1", title:"Kirjoita adjektiivi englanniksi.", type:"text",
+   items:[T("ujo","shy"),T("hassu","funny"),T("rohkea","brave"),T("ystävällinen","kind"),T("älykäs","clever"),T("utelias","curious"),
+          T("luova","creative"),T("urheilullinen","sporty"),T("rauhallinen","calm"),T("kömpelö","clumsy"),T("laiska","lazy"),T("aktiivinen","active")]},
+  {id:"B2", title:"Täydennä: am, is vai are?", type:"select", options:["am","is","are"],
+   items:[T("I ___ shy.","am"),T("She ___ sporty.","is"),T("We ___ all funny.","are"),T("You ___ very kind.","are"),T("He ___ clever.","is"),T("They ___ curious.","are")]},
+  {id:"B3", title:"Vastaa lyhyesti kappaleiden perusteella.", note:"Mallit: Yes, he is. / No, she isn't.", type:"text", wide:true,
+   items:[T("1. Is Nadir sporty?",["yes he is"]),T("2. Is Alex funny?",["yes he is"]),T("3. Is Emma shy?",["no she isnt","no she is not"]),
+          T("4. Is Mr Venn late?",["yes he is"]),T("5. Is Izzy lazy?",["no she isnt","no she is not"])]},
+  {id:"B4", title:"Tee kysymys.", note:"Esimerkki: he / lazy → Is he lazy?", type:"text", wide:true,
+   items:[T("1. she / brave →","is she brave"),T("2. he / clumsy →","is he clumsy"),T("3. they / funny →","are they funny")]}
+ ]},
+ {title:"Osa C — Mitä teet nyt?", pg:"kappale 2, s. 16–21", tasks:[
+  {id:"C1", title:"Kirjoita englanniksi.", type:"text",
+   items:[T("ajaa pyörällä",["ride a bike","ride"]),T("nukkua","sleep"),T("kiivetä","climb"),T("etsiä","look for"),T("olla piilossa","hide"),T("ajaa autoa",["drive a car","drive"]),
+          T("heittää","throw"),T("ottaa kiinni","catch"),T("maalata","paint"),T("katsella","watch"),T("avata","open"),T("sulkea","close")]},
+  {id:"C2", title:"Täydennä -ing-muodolla.", type:"text", wide:true,
+   items:[T("1. What are you doing? I'm ___ . (paint)","painting"),T("2. Sofia and Nadir are ___ a bike. (ride)","riding"),
+          T("3. The bee is ___ for Max. (look)","looking"),T("4. Max is ___ in the tree. (hide)","hiding"),T("5. You are ___ . (swim)","swimming"),
+          T("6. She is ___ up a tree. (climb)","climbing"),T("7. A koala is ___ in a tree. (sleep)","sleeping"),T("8. They are ___ TV. (watch)","watching")]},
+  {id:"C3", title:"Kirjoita koko lause.", note:"Esimerkki: he / drive a car → He is driving a car.", type:"text", wide:true, pts:2,
+   items:[T("1. I / throw a ball →",["i am throwing a ball","im throwing a ball"]),T("2. They / catch the ball →",["they are catching the ball","theyre catching the ball"]),
+          T("3. She / open the door →",["she is opening the door","shes opening the door"]),T("4. We / close the window →",["we are closing the window","were closing the window"])]}
+ ]},
+ {title:"Osa D — Kouluaineet ja kellonajat", pg:"kappale 3, s. 22–23", tasks:[
+  {id:"D1", title:"Kirjoita kouluaine englanniksi.", type:"text",
+   items:[T("musiikki","music"),T("suomen kieli","finnish"),T("matematiikka","maths"),T("liikunta","pe"),T("englannin kieli","english"),T("historia","history"),
+          T("uskonto","re"),T("elämänkatsomustieto","ethics"),T("ympäristöoppi","science"),T("kuvaamataito","art"),T("yhteiskuntaoppi","civics"),T("käsityöt","crafts")]},
+  {id:"D2", title:"Kirjoita kellonaika englanniksi.", note:"Esimerkki: 7.00 → seven o'clock", type:"text",
+   items:[T("8.00",["eight oclock"]),T("9.30","half past nine"),T("10.15","quarter past ten"),T("3.45","quarter to four"),
+          T("2.00",["two oclock"]),T("8.30","half past eight"),T("1.15","quarter past one"),T("5.50","ten to six")]},
+  {id:"D3", title:"Kirjoita kellonaika numeroilla.", type:"text",
+   items:[T("half past five",["530"],{show:"5.30"}),T("quarter to eleven",["1045"],{show:"10.45"})]},
+  {id:"D4", title:"Katso lukujärjestystä ja vastaa.", note:"Malli: I have … at … o'clock.", type:"contains", wide:true,
+   table:[["Kello","Monday","Wednesday","Thursday","Friday"],["8","—","music","Finnish","—"],["9","maths","English","RE","ethics"],["10","science","civics","crafts","history"]],
+   items:[T("1. What do you have on Monday at nine o'clock?","i have maths",{show:"I have maths at nine o'clock."}),
+          T("2. What do you have on Wednesday at eight o'clock?","i have music",{show:"I have music at eight o'clock."}),
+          T("3. What do you have on Thursday at ten o'clock?","i have crafts",{show:"I have crafts at ten o'clock."}),
+          T("4. What do you have on Friday at ten o'clock?","i have history",{show:"I have history at ten o'clock."})]}
+ ]},
+ {title:"Osa E — Sanasto", pg:"työkirja s. 18, 28 ja 38", tasks:[
+  {id:"E1", title:"Kappale 1: kirjoita englanniksi.", type:"text",
+   items:[T("vain","just"),T("ensimmäinen","the first"),T("oppitunti","a lesson"),T("muistaa","remember"),T("oikeasti","really"),
+          T("katsoa","look at"),T("työntää","push"),T("vetää","pull"),T("laulu","a song"),T("kolikko","a coin"),
+          T("heittää (kolikkoa)","flip"),T("näyttää","show"),T("seikkailunhaluinen","adventurous"),T("Aloitetaan!","Here we go!"),
+          T("Mitä tapahtuu?","What's going on?"),T("Mitä mieltä olette?","What do you think?")]},
+  {id:"E2", title:"Kappale 2: kirjoita englanniksi.", type:"text",
+   items:[T("ulkona","outside"),T("luokka","a class"),T("vaarallinen","dangerous"),T("tuolla","over there"),T("onko tuo","is that"),
+          T("Varo!","Watch out!"),T("vitsailla","joke"),T("loppu","an end"),T("välitunti","breaktime"),T("vielä","still"),
+          T("seuraava","next"),T("veden alla","underwater"),T("Olen valmis.","I'm done."),T("Aurinko paistaa.","The sun is shining."),
+          T("Etkö näe?","Can't you see?"),T("näyttää joltakin","look")]},
+  {id:"E3", title:"Kappale 3: kirjoita englanniksi.", type:"text",
+   items:[T("kummitus-","haunted"),T("yökoulu","night school"),T("perjantaina","on Friday"),T("kaikki","all"),T("valo","a light"),
+          T("lapset","children"),T("kiirehtiä","hurry"),T("hirviö","a monster"),T("limainen","slimy"),T("hullu","crazy"),
+          T("Minulla myös.","Me too."),T("mutta","but"),T("vihje","a clue"),T("pimeässä","in the dark"),T("lähellä","near"),
+          T("portti","a gate"),T("ääni","a sound"),T("naamio","a mask"),T("takaisin","back"),T("Juuri ajoissa.","Just in time.")]},
+  {id:"E4", title:"Mikä sana? Lue ääntämisohje ja kirjoita sana englanniksi.", type:"text",
+   items:[T("/aut'said/","outside"),T("/breiktaim/","breaktime"),T("/luk/","look"),T("/kla:s/",["class","a class"]),T("/dʒəuk/","joke"),
+          T("/mɔnstə/",["monster","a monster"]),T("/tʃildrən/","children"),T("/geit/",["gate","a gate"])]}
+ ]},
+ {title:"Osa F — Olla-verbi", pg:"Magic Rules, työkirja s. 20–22", tasks:[
+  {id:"F1", title:"Täydennä englanniksi suomenkielisen vihjeen avulla.", note:"Esimerkki: ___ at home. (Minä olen) → I am", type:"text", wide:true,
+   items:[T("1. ___ late. (Minä en ole)",["I am not","I'm not"]),T("2. ___ at school? (Oletko sinä)","Are you"),
+          T("3. ___ funny. (He ovat)",["They are","They're"]),T("4. ___ a teacher? (Onko hän, tyttö)","Is she"),
+          T("5. ___ clumsy. (Hän, poika, ei ole)",["He is not","He isn't","He's not"]),T("6. ___ sad. (Me emme ole)",["We are not","We aren't","We're not"]),
+          T("7. ___ calm. (Te olette)",["You are","You're"]),T("8. ___ old? (Onko se)","Is it"),
+          T("9. ___ sporty. (Sinä et ole)",["You are not","You aren't","You're not"]),T("10. ___ lazy? (Ovatko he)","Are they")]},
+  {id:"F2", title:"Valitse oikea vaihtoehto: am, is vai are?", type:"select", options:["am","is","are"],
+   items:[T("1. We ___ sporty.","are"),T("2. ___ she a cook?","is"),T("3. Mrs Green ___ the head teacher.","is"),T("4. ___ you clumsy?","are"),
+          T("5. I ___ not lazy.","am"),T("6. ___ the dogs funny?","are"),T("7. Emma and Nadir ___ late.","are"),T("8. ___ I late?","am")]},
+  {id:"F3", title:"Muuta virke kielteiseksi (✗) tai kysymykseksi (?).", note:"Muista kirjoittaa koko virke. Esimerkki: He is kind. ✗ → He is not kind.", type:"text", wide:true,
+   items:[T("1. She is kind. ✗",["She is not kind","She isn't kind","She's not kind"]),T("2. She is kind. ?","Is she kind"),
+          T("3. You are nine. ✗",["You are not nine","You aren't nine","You're not nine"]),T("4. You are nine. ?","Are you nine"),
+          T("5. They are here. ✗",["They are not here","They aren't here","They're not here"]),T("6. They are here. ?","Are they here"),
+          T("7. I am a cook. ✗",["I am not a cook","I'm not a cook"]),T("8. I am a cook. ?","Am I a cook")]},
+  {id:"F4", title:"Vastaa lyhyesti kappaleiden perusteella.", note:"Mallit: Yes, she is. / No, they aren't.", type:"text", wide:true,
+   items:[T("1. Is Mrs Green the head teacher?","Yes, she is"),T("2. Is Mr Venn the maths and music teacher?","Yes, he is"),
+          T("3. Are Emma and Sofia late?","Yes, they are"),T("4. Are you a teacher?",["No, I'm not","No, I am not"]),
+          T("5. Is Uluru small?",["No, it isn't","No, it is not","No, it's not"])]}
+ ]},
+ {title:"Osa G — Kestopreesens: mitä teet juuri nyt?", pg:"Magic Rules, työkirja s. 26–28", tasks:[
+  {id:"G1", title:"Kirjoita verbi -ing-muodossa. Huomaa poikkeukset!", note:"hide → hiding, swim → swimming", type:"text",
+   items:[T("play","playing"),T("sing","singing"),T("write","writing"),T("dance","dancing"),T("smile","smiling"),
+          T("ride","riding"),T("swim","swimming"),T("run","running"),T("sit","sitting"),T("eat","eating")]},
+  {id:"G2", title:"Kirjoita englanniksi.", type:"text", wide:true, pts:2,
+   items:[T("1. Minä olen syömässä jäätelöä.",["I am eating ice cream","I'm eating ice cream","I am eating an ice cream","I'm eating an ice cream"]),
+          T("2. Sinä olet juomassa mehua.",["You are drinking juice","You're drinking juice"]),
+          T("3. Hän (tyttö) on juoksemassa.",["She is running","She's running"]),
+          T("4. Me olemme uimassa.",["We are swimming","We're swimming"]),
+          T("5. Oletteko te lukemassa?","Are you reading"),
+          T("6. He eivät ole pelaamassa jalkapalloa.",["They are not playing football","They aren't playing football","They're not playing football"]),
+          T("7. Hän (poika) ei ole katselemassa televisiota.",["He is not watching TV","He isn't watching TV","He's not watching TV"]),
+          T("8. Oletko sinä kiipeämässä?","Are you climbing")]},
+  {id:"G3", title:"Mitä virkkeet ovat englanniksi? Valitse.", type:"select", wide:true,
+   options:["I am drinking.","You are smiling.","He is jumping.","We are eating.","You are laughing.","They are walking."],
+   items:[T("1. Sinä olet hymyilemässä.","You are smiling."),T("2. Me olemme syömässä.","We are eating."),T("3. Minä olen juomassa.","I am drinking."),
+          T("4. He ovat kävelemässä.","They are walking."),T("5. Hän on hyppimässä.","He is jumping."),T("6. Te olette nauramassa.","You are laughing.")]}
+ ]},
+ {title:"Osa H — Kellonajat", pg:"Magic Rules, työkirja s. 40–42 ja 48", tasks:[
+  {id:"H1", title:"Mitä kello on? Kirjoita englanniksi.", note:"Voit aloittaa It's… tai jättää sen pois. Esimerkki: It's two o'clock.", type:"clock",
+   items:[T("1.","two o'clock",{clk:[2,0]}),T("2.","half past four",{clk:[4,30]}),T("3.","quarter past nine",{clk:[9,15]}),
+          T("4.","ten past seven",{clk:[7,10]}),T("5.","ten to seven",{clk:[6,50]}),T("6.","five to nine",{clk:[8,55]}),
+          T("7.","twenty past eight",{clk:[8,20]}),T("8.","quarter to one",{clk:[12,45]}),T("9.","twenty to four",{clk:[3,40]}),
+          T("10.",["twenty-five past eleven","twenty five past eleven"],{clk:[11,25]}),T("11.","eleven o'clock",{clk:[11,0]}),
+          T("12.",["twenty-five to two","twenty five to two"],{clk:[1,35]})]},
+  {id:"H2", title:"Kirjoita kellonaika numeroilla.", note:"Esimerkki: half past seven → 7.30", type:"text",
+   items:[T("ten to seven",["650"],{show:"6.50"}),T("twenty past eight",["820"],{show:"8.20"}),T("five to nine",["855"],{show:"8.55"}),
+          T("quarter past five",["515"],{show:"5.15"})]},
+  {id:"H3", title:"Mitä tarkoittaa suomeksi? Valitse.", type:"select", options:["tasan","vaille","yli","vartti","puoli"],
+   items:[T("o'clock","tasan"),T("to","vaille"),T("past","yli"),T("quarter","vartti"),T("half past","puoli")]},
+  {id:"H4", title:"Tarkkana! Korjaa kirjoitusvirhe.", note:"Näissä sanoissa sattuu helposti virhe.", type:"text",
+   items:[T("quater","quarter"),T("o'clok","o'clock"),T("tree (= 3)","three"),T("juise","juice"),
+          T("swiming","swimming"),T("danceing","dancing"),T("writeing","writing"),T("runing","running")]}
+ ]},
+ {title:"Osa I — Fraasit ja lukeminen", pg:"Welcome ja kappaleet 1–3", tasks:[
+  {id:"I1", title:"Mitä sanot englanniksi? Valitse. Yksi lause jää yli.", type:"select", wide:true,
+   options:["Good morning!","Sorry, I'm late.","What time is it?","Have a nice day!","How are you today?","Thank you!","Nice to meet you!","What are you doing?","Watch out!"],
+   items:[T("1. Tervehdit opettajaa aamulla.","Good morning!"),T("2. Kysyt, paljonko kello on.","What time is it?"),
+          T("3. Kysyt, mitä kaverillesi kuuluu tänään.","How are you today?"),T("4. Tapaat uuden ihmisen ensimmäistä kertaa.","Nice to meet you!"),
+          T("5. Tulet tunnille myöhässä.","Sorry, I'm late."),T("6. Toivotat kaikille mukavaa päivää.","Have a nice day!"),
+          T("7. Kiität kaveria avusta.","Thank you!"),T("8. Kysyt, mitä kaveri tekee juuri nyt.","What are you doing?")]},
+  {id:"I2", title:"Lue teksti. Totta (T) vai väärin (F)?", type:"tf", wide:true,
+   reading:"Hi! I'm Leo. I live in Helsinki and I'm ten years old. I'm curious and funny, but I'm a bit clumsy. Today is Monday. It's half past eight and I'm walking to school. I have maths at nine o'clock and science at quarter past ten. My friend Mia is very sporty. Look! She is riding a bike. My dog Rex is lazy. He is sleeping on the sofa.",
+   items:[T("1. Leo lives in Melbourne.","F"),T("2. Leo is ten years old.","T"),T("3. Leo is clumsy.","T"),T("4. It's eight o'clock.","F"),
+          T("5. Leo has maths at nine o'clock.","T"),T("6. Mia is riding a bike.","T"),T("7. Rex is running in the park.","F"),T("8. Rex is lazy.","T")]},
+  {id:"I3", title:"Australia (s. 14 ja 20). Totta (T) vai väärin (F)?", type:"tf", wide:true,
+   items:[T("1. Christmas is in the summer in Australia.","T"),T("2. Koalas sleep two hours a day.","F"),T("3. Uluru is a big rock.","T"),T("4. One kangaroo jump can be 9 metres long.","T")]},
+  {id:"I4", title:"Kirjoita itsestäsi englanniksi 3–4 lausetta.", type:"write", ptsLabel:"6 p. · aikuinen tarkistaa",
+   note:"Kerro millainen olet, mitä sinulla on koulussa ja mitä teet nyt. Esimerkki: I'm kind and creative. I have English at nine o'clock. I'm writing now."}
+ ]}
+];
+
+const norm = s => (s||"").toLowerCase().replace(/[’‘`´]/g,"'").replace(/o\s*'\s*clock|o clock/g,"oclock").replace(/'/g,"").replace(/-/g," ").replace(/[.,!?:;]/g,"").replace(/\s+/g," ").trim().replace(/^(a|an|the) /,"");
+const normClock = s => norm(s).replace(/^(its|it is) /,"");
+function clockSVG(h,m){
+  const ma=m*6, ha=(h%12)*30+m*0.5, r=a=>a*Math.PI/180;
+  const hand=(a,l)=>`x2="${(50+l*Math.sin(r(a))).toFixed(1)}" y2="${(50-l*Math.cos(r(a))).toFixed(1)}"`;
+  let ticks="";for(let i=0;i<12;i++){const a=r(i*30);ticks+=`<line x1="${50+38*Math.sin(a)}" y1="${50-38*Math.cos(a)}" x2="${50+43*Math.sin(a)}" y2="${50-43*Math.cos(a)}" class="tk"/>`;}
+  const nums=[[12,50,22],[3,80,54],[6,50,86],[9,20,54]].map(([n,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle">${n}</text>`).join("");
+  return `<svg class="clk" viewBox="0 0 100 100" role="img" aria-label="kello"><circle cx="50" cy="50" r="46" class="face"/>${ticks}${nums}<line x1="50" y1="50" ${hand(ha,22)} class="hh"/><line x1="50" y1="50" ${hand(ma,34)} class="mh"/><circle cx="50" cy="50" r="3.5" class="pin"/></svg>`;
+}
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let total = 0;
+
+function render(){
+  const root = document.getElementById("test");
+  DATA.forEach(part=>{
+    const sec = document.createElement("section"); sec.className="part";
+    sec.innerHTML = `<h2>${esc(part.title)}<span class="pg">${esc(part.pg)}</span></h2>`;
+    part.tasks.forEach(t=>{
+      const per = t.pts||1, n=(t.items||[]).length;
+      if(t.type!=="write") total += per*n;
+      const box = document.createElement("div"); box.className="task";
+      let h = `<h3><span class="tid">${t.id}</span>${esc(t.title)}<span class="pts">${t.ptsLabel||per*n+" p."}</span></h3>`;
+      if(t.note) h += `<p class="note">${esc(t.note)}</p>`;
+      if(t.bank) h += `<ul class="bank">${t.bank.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`;
+      if(t.reading) h += `<p class="reading">${esc(t.reading)}</p>`;
+      if(t.table) h += `<div class="scroll"><table class="tt">${t.table.map((r,i)=>`<tr>${r.map(c=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table></div>`;
+      if(t.type==="write"){
+        h += `<textarea id="${t.id}-text" aria-label="${esc(t.title)}"></textarea>`;
+      } else {
+        h += `<div class="items${t.wide?" wide":""}">`;
+        t.items.forEach((it,i)=>{
+          const id = `${t.id}-${i}`;
+          let ctl;
+          if(t.type==="select") ctl = `<select id="${id}"><option value="">valitse…</option>${t.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+          else if(t.type==="tf") ctl = `<div class="tf" role="radiogroup">${["T","F"].map(v=>`<label><input type="radio" name="${id}" id="${id}-${v}" value="${v}"><span>${v}</span></label>`).join("")}</div>`;
+          else ctl = `<input type="text" id="${id}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+          const lab = t.type==="clock"?`<label class="q clkq" for="${id}">${clockSVG(...it.clk)}<span>${esc(it.q)}</span></label>`:t.type==="tf"?`<span class="q">${esc(it.q)}</span>`:`<label class="q" for="${id}">${esc(it.q)}</label>`;
+          h += `<div class="item" data-task="${t.id}" data-i="${i}">${lab}${ctl}<span class="fix" hidden></span></div>`;
+        });
+        h += `</div>`;
+      }
+      box.innerHTML = h; sec.appendChild(box);
+    });
+    root.appendChild(sec);
+  });
+}
+
+function valueOf(t,i){
+  const id=`${t.id}-${i}`;
+  if(t.type==="tf"){const c=document.querySelector(`input[name="${id}"]:checked`);return c?c.value:"";}
+  return document.getElementById(id).value;
+}
+function check(){
+  let got=0; const weak=[];
+  DATA.forEach(p=>p.tasks.forEach(t=>{
+    if(t.type==="write") return;
+    let tg=0;
+    t.items.forEach((it,i)=>{
+      const v=valueOf(t,i), el=document.querySelector(`.item[data-task="${t.id}"][data-i="${i}"]`), fix=el.querySelector(".fix");
+      let ok;
+      if(t.type==="select"||t.type==="tf") ok = norm(v)===norm(it.a[0]);
+      else if(t.type==="clock") ok = it.a.some(a=>normClock(v)===normClock(a));
+      else if(t.type==="contains") ok = it.a.some(a=>norm(v).includes(a));
+      else ok = it.a.some(a=>norm(v)===norm(a));
+      el.classList.toggle("ok",ok); el.classList.toggle("bad",!ok);
+      fix.hidden = ok; fix.textContent = ok?"":"Oikein: "+(it.show||it.a[0]);
+      if(ok){got+=t.pts||1; tg+=t.pts||1;}
+    });
+    const max=(t.pts||1)*t.items.length;
+    if(tg<max) weak.push(`${t.id}: ${tg}/${max}`);
+  }));
+  document.getElementById("score").innerHTML = `${got} / ${total}<small>Pisteet</small>`;
+  const pct = got/total, r=document.getElementById("result");
+  const msg = pct>=.9?"Erinomaista! Olet valmis kokeeseen.":pct>=.75?"Hyvä! Kertaa vielä punaiset kohdat.":"Harjoittele vielä punaiset kohdat ja yritä uudelleen.";
+  const st = pct>=.9?"★★★":pct>=.75?"★★☆":"★☆☆";
+  r.innerHTML = `<div class="stars" aria-label="${st.split('★').length-1} tähteä">${st}</div><h2>${got} / ${total} pistettä</h2><p>${msg}</p>${weak.length?`<p>Kertaa nämä tehtävät:</p><ul>${weak.map(w=>`<li>${w}</li>`).join("")}</ul>`:""}<p class="note">Tehtävä I4 (6 p.) tarkistetaan erikseen.</p>`;
+  r.hidden=false;
+}
+function reset(){
+  document.querySelectorAll("#test input[type=text],#test select,#test textarea").forEach(e=>e.value="");
+  document.querySelectorAll("#test input[type=radio]").forEach(e=>e.checked=false);
+  document.querySelectorAll(".item").forEach(e=>{e.classList.remove("ok","bad");e.querySelector(".fix").hidden=true;});
+  document.getElementById("result").hidden=true;
+  document.getElementById("score").innerHTML = `— / ${total}<small>Pisteet</small>`;
+  try{localStorage.removeItem("koe-draft")}catch(e){}
+  window.scrollTo({top:0});
+}
+function save(){
+  const d={};
+  document.querySelectorAll("#nimi,#test input[type=text],#test select,#test textarea").forEach(e=>d[e.id]=e.value);
+  document.querySelectorAll("#test input[type=radio]:checked").forEach(e=>d[e.name]=e.value);
+  try{localStorage.setItem("koe-draft",JSON.stringify(d))}catch(e){}
+}
+function load(){
+  let d; try{d=JSON.parse(localStorage.getItem("koe-draft")||"{}")}catch(e){return}
+  Object.entries(d||{}).forEach(([k,v])=>{
+    const el=document.getElementById(k);
+    if(el) el.value=v; else {const r=document.getElementById(`${k}-${v}`); if(r) r.checked=true;}
+  });
+}
+render();
+document.getElementById("score").innerHTML = `— / ${total}<small>Pisteet</small>`;
+load();
+document.addEventListener("input",save); document.addEventListener("change",save);
+document.getElementById("check").addEventListener("click",()=>{check();document.getElementById("result").scrollIntoView({behavior:"smooth",block:"center"});});
+document.getElementById("reset").addEventListener("click",reset);
+</script>
+
+</body></html>
